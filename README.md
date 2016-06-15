@@ -17,7 +17,7 @@ __Intellify Learning__
   * Review how current streams work
   * Build our own stream (get horse in front of cart)
 
-__Table Model Refactor__ 
+__[Table Model Refactor](#table-model-refactor)__
   * Goal : simplify html of table
   * Goal : enable table consumer to access rows, columns, cells easier (more detail needed here)
   * Goal (?) : generalize hover behavior
@@ -27,6 +27,7 @@ __Common/Shared Report Service__
   * Goal : reduce code duplication
     - InsertLineBreaks
     - Initialize Intellify
+    - resolveLowSkillTies
     - (there are more here ...)
 
 __Service Caching__
@@ -56,3 +57,42 @@ __Unit testing__
   * make one useful unit test
   * make ten useful unit tests
    
+## Table Model Refactor
+
+### Requirements / Specifications
+- [ ] A table has three general sections: header, body, and footer.
+  - [ ] Each of these areas can contain zero to many rows.
+  - [ ] All rows should contain the same number of elements. (?)
+- [ ] Each table cell should be a valid object describing: the data it contains, cell-specific styling/behavior, and/or cell metadata.
+  - [ ] `value`: The data itself. Required.
+  - [ ] `rowIndex`: The index of the row the cell belongs to. Can be derived if not provided.
+  - [ ] `columnIndex`: The index of the column the cell belongs to. Can be derived if not provided.
+  - [ ] `cssClass` or `style`: Styling specific to the individual cell. Optional.
+- [ ] A row is an ordered collection of valid table cells.
+  - [ ] `index`: The index of the row within the table.
+  - [ ] `sectionIndex`: The index of the row within its section (header, body, footer). (?)
+  - [ ] `name`: A string identifier for the row. Optional.
+- [ ] A column is also an ordered collection of valid table cells. However, while a row will only ever belong
+to a single section, a column spans across all sections.
+  - [ ] `index`: The index of the column within the table.
+  - [ ] `name`: A string identifier for the column. Optional.
+- [ ] CSS classes can be applied to the table at various levels of granularity:
+  - [ ] Global (All cells in the table)
+  - [ ] By section (All cells within the header / body / footer)
+  - [ ] By row (All cells within the row)
+  - [ ] By column (All cells within the column)
+  - [ ] Cell-specific (Styling specific to only a single cell)
+- [ ] A table with no data at all should be supported.
+
+### Methods
+| Name | Description |
+| ----------- | ------- |
+| `getRows()` | Returns the entire table, grouped by row |
+| `getColumns()` | Returns the entire table, grouped by column |
+| `getRow(index | name)` | Returns the row represented by the input - either by index, or if the row has a `name` property, by name |
+| `getColumn(index | name)` | Similar to `getRow` |
+| `setRow(index | name, newRow)` | Overwrites the specified row with a new table row |
+| `setColumn(index | name, newColumn)` | Similar to `setRow` |
+| `getHeader()` | Returns the rows within the header |
+| `getBody()` | Returns the rows within the body |
+| `getFooter()` | Returns the rows within the footer |
