@@ -3,6 +3,7 @@
 __New Visualization: Linear Chart__
   * Standalone html for inovation exploration
   * Wrap in Directive
+  * ![Chart Image](https://github.com/AlanCramer/PSI-9-Planning/blob/master/images/LinearChart.png)
   
 __New Toolbar (used by Leader Central)__
   * Buttons driven by new TLSP api
