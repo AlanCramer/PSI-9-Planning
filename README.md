@@ -33,7 +33,9 @@ __Additional Service Refactoring__
   * What are the goals here?
 
 __New Visualization : Multiple Vertical Bar Chart__
+
 __Bugs__
+
 __Simulator Redirect__
   * Goal : Make it clearer and cleaner to redirect to any desired server
     - support full name
