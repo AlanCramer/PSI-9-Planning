@@ -21,6 +21,7 @@ __Common/Shared Report Service__
   * Goal : reduce code duplication
     - InsertLineBreaks
     - Initialize Intellify
+    - (there are more here ...)
 
 __Service Caching__
   * cache data per class and session
