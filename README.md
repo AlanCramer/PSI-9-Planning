@@ -13,6 +13,10 @@ __Report Infrastructure__
   * New Report Service (used by Leader Central)
   * New Report Directive (used by Leader Central)
 
+__Intellify Learning__
+  * Review how current streams work
+  * Build our own stream (get horse in front of cart)
+
 __[Table Model Refactor](#table-model-refactor)__
   * Goal : simplify html of table
   * Goal : enable table consumer to access rows, columns, cells easier (more detail needed here)
