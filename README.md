@@ -19,6 +19,9 @@ __Intellify Learning__
   * Review how current streams work
   * Build our own stream for future PSI (get horse in front of cart)
 
+__Support Stage C WA__
+  * New set of content and ids
+
 __[Table Model Refactor](#table-model-refactor)__
   * Goal : simplify html of table
   * Goal : enable table consumer to access rows, columns, cells easier (more detail needed here)
