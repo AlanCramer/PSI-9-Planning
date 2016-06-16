@@ -10,8 +10,9 @@ __New Toolbar (used by Leader Central)__
   * ![Toolbar Image](images/toolbar.png)
 
 __Report Infrastructure__
-  * New Report Service (used by Leader Central)
-  * New Report Directive (used by Leader Central)
+  * 4 New Report Services (used by Leader Central)
+  * 4 New Report Directive (used by Leader Central)
+  * Integrate with Nav Bar (support Jay Letto)
 
 __Intellify Learning__
   * Review how current streams work
