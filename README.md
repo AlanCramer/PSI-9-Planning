@@ -35,24 +35,22 @@ __Service Caching__
   * cache data per class and session
   * E3D gets all data up front for dropdown ...
 
-__Additional Service Refactoring__
-  * What are the goals here?
-
-__New Visualization : Multiple Vertical Bar Chart__
-
-__Bugs__
-
-__Simulator Redirect__
-  * Goal : Make it clearer and cleaner to redirect to any desired server
-    - support full name
-    - support x for regex(0*) e.g. h502x1 or h502x11
-
 __Responsive D3 Visualizations__
+  * Spike an example and let POs play with it
   * Visualization svg should respond to window resize
 
 __CSS/LESS Overhaul__
   * less files per report
   * common report css file
+
+__Bugs__
+
+__New Visualization : Multiple Vertical Bar Chart__
+
+__Simulator Redirect__
+  * Goal : Make it clearer and cleaner to redirect to any desired server
+    - support full name
+    - support x for regex(0*) e.g. h502x1 or h502x11
   
 __Unit testing__
   * make one useful unit test
