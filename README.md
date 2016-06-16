@@ -11,12 +11,12 @@ __New Toolbar (used by Leader Central)__
 
 __Report Infrastructure__
   * 4 New Report Services (used by Leader Central)
-  * 4 New Report Directive (used by Leader Central)
+  * 4 New Report Directives (used by Leader Central)
   * Integrate with Nav Bar (support Jay Letto)
 
 __Intellify Learning__
   * Review how current streams work
-  * Build our own stream (get horse in front of cart)
+  * Build our own stream for future PSI (get horse in front of cart)
 
 __[Table Model Refactor](#table-model-refactor)__
   * Goal : simplify html of table
