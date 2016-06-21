@@ -35,10 +35,6 @@ __Common/Shared Report Service__
     - resolveLowSkillTies
     - (there are more here ...)
 
-__Service Caching__
-  * cache data per class and session
-  * E3D gets all data up front for dropdown ...
-
 __Responsive D3 Visualizations__
   * Spike an example and let POs play with it
   * Visualization svg should respond to window resize
@@ -47,8 +43,17 @@ __CSS/LESS Overhaul__
   * less files per report
   * common report css file
 
+__WA report list filtering support__
+  * requires new Intellify API
+  * update dropdown before selecting report to show
+  * sort reports by 'most recently taken' in dropdown
+
 __Bugs__
 
+__Service Caching__
+  * cache data per class and session
+  * E3D gets all data up front for dropdown ...
+  
 __New Visualization : Multiple Vertical Bar Chart__
 
 __Simulator Redirect__
