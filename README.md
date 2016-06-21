@@ -10,29 +10,29 @@ __New Toolbar (used by Leader Central)__
   * ![Toolbar Image](images/toolbar.png)
 
 __Report Infrastructure__
-  * 4 New Report Services (used by Leader Central)
-  * 4 New Report Directives (used by Leader Central)
-  * Integrate with Nav Bar (support Jay Letto)
-  * Drill Down Support
+  * 4 New Report Services (used by Leader Central) (Alan)
+  * 4 New Report Directives (used by Leader Central) 
+  * Integrate with Nav Bar (support Jay Letto) (Bob)
+  * Drill Down Support (Bob)
 
 __Printing__
 
 __CSV Export__
 
-__Intellify Learning__
+__Intellify Learning (Alan)__
   * Review how current streams work
   * Build our own stream for future PSI (get horse in front of cart)
 
 __Support Stage C WA__
   * New set of content and ids
 
-__[Table Model Refactor](#table-model-refactor)__
+__[Table Model Refactor](#table-model-refactor) (Dick)__
   * Goal : simplify html of table
   * Goal : enable table consumer to access rows, columns, cells easier (more detail needed here)
   * Goal (?) : generalize hover behavior
   * Goal : generalized sort support 
 
-__Common/Shared Report Service__
+__Common/Shared Report Service (Dick)__
   * Goal : reduce code duplication
     - InsertLineBreaks
     - Initialize Intellify
@@ -43,13 +43,13 @@ __Responsive D3 Visualizations__
   * Spike an example and let POs play with it
   * Visualization svg should respond to window resize
 
-__CSS/LESS Overhaul__
+__CSS/LESS Overhaul (Dick)__
   * less files per report
   * common report css file
   * "reset" styles to help insulate our visualizations from others' CSS, and provide a reliable starting point for further changes
 
-__WA report list filtering support__
-  * requires new Intellify API
+__WA report list filtering support (Bob)__
+  * requires new Intellify API - actually, we might have this
   * update dropdown before selecting report to show
   * sort reports by 'most recently taken' in dropdown
 
