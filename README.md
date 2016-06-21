@@ -1,7 +1,7 @@
 # PSI-9-Planning
 
 __New Visualization: Linear Chart__
-  * Standalone html for inovation exploration
+  * Standalone html for innovation exploration
   * Wrap in Directive
   * ![Chart Image](images/LinearChart.png)
   
