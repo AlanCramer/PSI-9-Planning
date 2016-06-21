@@ -42,6 +42,7 @@ __Responsive D3 Visualizations__
 __CSS/LESS Overhaul__
   * less files per report
   * common report css file
+  * "reset" styles to help insulate our visualizations from others' CSS, and provide a reliable starting point for further changes
 
 __WA report list filtering support__
   * requires new Intellify API
