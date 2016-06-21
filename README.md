@@ -26,7 +26,7 @@ __[Table Model Refactor](#table-model-refactor)__
   * Goal : simplify html of table
   * Goal : enable table consumer to access rows, columns, cells easier (more detail needed here)
   * Goal (?) : generalize hover behavior
-  * Potential Strategy : Classes - e.g. "tableModel.getColumns()"  
+  * Goal : generalized sort support 
 
 __Common/Shared Report Service__
   * Goal : reduce code duplication
