@@ -8,6 +8,10 @@ __New Visualization: Linear Chart__
 __New Toolbar (used by Leader Central)__
   * Buttons driven by new TLSP api
   * ![Toolbar Image](images/toolbar.png)
+  
+__Summary Bar__
+
+__Table__
 
 __Report Infrastructure__
   * 4 New Report Services (used by Leader Central) (Alan)
