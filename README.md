@@ -15,7 +15,7 @@ __Table__
 
 __Report Infrastructure__
   * 4 New Report Services (used by Leader Central) (Alan)
-  * 4 New Report Directives (used by Leader Central) 
+  * 4 New Report Directives (used by Leader Central) (Bob)
   * Integrate with Nav Bar (support Jay Letto) (Bob)
   * Drill Down Support (Bob)
 
