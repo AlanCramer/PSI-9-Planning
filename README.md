@@ -15,6 +15,10 @@ __Report Infrastructure__
   * Integrate with Nav Bar (support Jay Letto)
   * Drill Down Support
 
+__Printing__
+
+__CSV Export__
+
 __Intellify Learning__
   * Review how current streams work
   * Build our own stream for future PSI (get horse in front of cart)
