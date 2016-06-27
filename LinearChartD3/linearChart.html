@@ -56,6 +56,17 @@ text {
 <body>
 
 <script>
+
+	var getData, setData;
+	var dataShown = false;
+    (function initData() {
+
+		var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 7];
+
+		getData = function() { return data; }
+		setData = function(newData) { data = newData; }
+	})();
+
 	d3.select('body')
 		.append('div')
 		.attr('class', 'title')
@@ -63,9 +74,9 @@ text {
 		.text('Linear Chart Playground');	
 
 	var btnDefs = [
-		{ name : 'Static Graphic', onClick : 'createStaticChart'},
-		{ name: 'Clear', onClick : 'clearGraphic'}, 
-		{ name: 'Edit Data', onClick : 'editData'}, 
+		{ name : 'Static Graphic', onClick : createStaticChart},
+		{ name: 'Clear', onClick : clearGraphic}, 
+		{ name: 'Edit Data', onClick : editData}, 
 	];
 
 	var btns = d3.select('body')
@@ -77,21 +88,32 @@ text {
 		.attr('class', 'radioBtn')
 		.text(function(d) { return d.name;})
 		.on('click', function(d) { 
-			return window[d.onClick](container, data);});
+			return d.onClick(container, getData());});
 
 	var container = d3.select('body')
 		.append('div')
 		.attr('id', 'graphic-container');
 
-	var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 7];
-
     function editData(container, data) {
 
-    	container.insert('label', 'svg')
-    		.style('display', 'block')
-    		.text(data)
-    		.attr('contenteditable', true);
+    	var id = 'the-data';
 
+    	if (dataShown) {
+    		d3.select('#' + id).remove();
+
+    	} else {
+	    	container.insert('label', 'svg')
+	    		.attr('id', id)
+	    		.style('display', 'block')
+	    		.text(data)
+	    		.attr('contenteditable', true)
+	    		.on('input', function() {
+	    			var temp = this.textContent.split(',').map(function(d) {return +d;});
+	    			setData(temp);
+	    		});
+		}
+
+		dataShown = !dataShown;
     }
 
 	function clearGraphic(container) {
@@ -99,6 +121,8 @@ text {
 	}
 
 	function createStaticChart(container, data) {
+
+		clearGraphic(container);
 
 		var	w = 700,
 			h = 300,
