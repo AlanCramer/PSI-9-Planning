@@ -49,6 +49,19 @@ text {
 	background-color: #88a;
 }
 
+#area-graph
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#area-graph
+.area {
+	fill: steelblue;
+}
+
 </style>
 
 </head>
@@ -57,15 +70,34 @@ text {
 
 <script>
 
-	var getData, setData;
-	var dataShown = false;
-    (function initData() {
+	var getBasicData, setBasicData;
+	var basicDataShown = false;
+    (function initBasicData() {
 
 		var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 7];
 
-		getData = function() { return data; }
-		setData = function(newData) { data = newData; }
+		getBasicData = function() { return data; }
+		setBasicData = function(newData) { data = newData; }
 	})();
+
+	var getDateData, setDateData;
+    (function initBasicData() {
+
+		var data = 	[
+			{date: '1-Mar-15', avgVal: 256},
+			{date: '2-Mar-15', avgVal: 512},
+			{date: '3-Mar-15', avgVal: 148},
+			{date: '4-Mar-15', avgVal: 217},
+			{date: '5-Mar-15', avgVal: 84},
+			{date: '6-Mar-15', avgVal: 93}
+		];
+
+		getDateData = function() { return data; }
+		setDateData = function(newData) { data = newData; }
+	})();
+
+	var defaultWidth = 700, 
+		defaultHeight = 300;
 
 	d3.select('body')
 		.append('div')
@@ -74,7 +106,8 @@ text {
 		.text('Linear Chart Playground');	
 
 	var btnDefs = [
-		{ name : 'Static Graphic', onClick : createStaticChart},
+		{ name : 'Line Graph', onClick : createStaticLineGraph},
+		{ name : 'Area Graph', onClick : createStaticAreaGraph},
 		{ name: 'Clear', onClick : clearGraphic}, 
 		{ name: 'Edit Data', onClick : editData}, 
 	];
@@ -88,7 +121,7 @@ text {
 		.attr('class', 'radioBtn')
 		.text(function(d) { return d.name;})
 		.on('click', function(d) { 
-			return d.onClick(container, getData());});
+			return d.onClick(container, getDateData());});
 
 	var container = d3.select('body')
 		.append('div')
@@ -98,7 +131,7 @@ text {
 
     	var id = 'the-data';
 
-    	if (dataShown) {
+    	if (basicDataShown) {
     		d3.select('#' + id).remove();
 
     	} else {
@@ -109,23 +142,93 @@ text {
 	    		.attr('contenteditable', true)
 	    		.on('input', function() {
 	    			var temp = this.textContent.split(',').map(function(d) {return +d;});
-	    			setData(temp);
+	    			setBasicData(temp);
 	    		});
 		}
 
-		dataShown = !dataShown;
+		basicDataShown = !basicDataShown;
     }
 
 	function clearGraphic(container) {
 		container.select('svg').remove();
 	}
 
-	function createStaticChart(container, data) {
+	function createStaticAreaGraph(container, theData) {
 
 		clearGraphic(container);
 
-		var	w = 700,
-			h = 300,
+		var margin = {top: 20, right: 20, bottom: 30, left: 50},
+		    width = defaultWidth - margin.left - margin.right,
+		    height = defaultHeight - margin.top - margin.bottom;
+
+		var parseDate = d3.time.format("%d-%b-%y").parse;
+
+		var x = d3.time.scale()
+		    .range([0, width]);
+
+		var y = d3.scale.linear()
+		    .range([height, 0]);
+
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+		    .orient("bottom");
+
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+		    .orient("left");
+
+		var area = d3.svg.area()
+		    .x(function(d) { return x(d.date); })
+		    .y0(height)
+		    .y1(function(d) { return y(d.avgVal); });
+
+		var svg = container.append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		    .attr('id', 'area-graph')
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		var data = theData.map(function(d) {
+			return {
+				date : parseDate(d.date),
+				avgVal : +d.avgVal
+			};
+		});
+
+		x.domain(d3.extent(data, function(d) { return d.date; }));
+		y.domain([0, d3.max(data, function(d) { return d.avgVal; })]);
+
+		svg.append("path")
+		  .datum(data)
+		  .attr("class", "area")
+		  .attr("d", area);
+
+		svg.append("g")
+		  .attr("class", "x axis")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(xAxis);
+
+		svg.append("g")
+		  .attr("class", "y axis")
+		  .call(yAxis)
+		.append("text")
+		  .attr("transform", "rotate(-90)")
+		  .attr("y", 6)
+		  .attr("dy", ".71em")
+		  .style("text-anchor", "end")
+		  .text("Price ($)");
+
+	}
+
+	function createStaticLineGraph(container, theData) {
+
+		clearGraphic(container);
+
+		var data = theData.map(function(d) {return d.avgVal;});
+
+		var	w = defaultWidth,
+			h = defaultHeight,
 			margin = 20,
 			y = d3.scale.linear().domain([0, d3.max(data)]).range([0 + margin, h - margin]),
 			x = d3.scale.linear().domain([0, data.length]).range([0 + margin, w - margin]);
@@ -190,7 +293,7 @@ text {
 		    .enter().append("svg:line")
 		    .attr("class", "yTicks")
 		    .attr("y1", function(d) { return -1 * y(d); })
-		    .attr("x1", x(-0.3))
+		    .attr("x1", x(-0.1))
 		    .attr("y2", function(d) { return -1 * y(d); })
 		    .attr("x2", x(0));
 	}
