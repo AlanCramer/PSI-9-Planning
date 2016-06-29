@@ -17,10 +17,6 @@ body {
 	display: block;
 }
 
-#main-graphic {
-	margin-bottom: 50px;
-}
-
 path {
     stroke: steelblue;
     stroke-width: 2;
@@ -59,12 +55,33 @@ text {
 	background-color: #88a;
 }
 
+#area-graph {
+	margin-top: 40px;
+}
+
 #area-graph
 .axis path,
 .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+#area-graph
+.tick line{
+  opacity: 0.2;
+}
+
+#area-graph
+.x.axis
+.domain {
+	display:none;
+}
+
+#area-graph
+.y.axis
+.domain {
+	display:none;
 }
 
 #area-graph
@@ -88,18 +105,18 @@ text {
     (function initData() {
 
 		var data = 	[
-			{date: '1-Mar-15', value: 256},
-			{date: '2-Mar-15', value: 512},
-			{date: '3-Mar-15', value: 148},
-			{date: '4-Mar-15', value: 217},
-			{date: '5-Mar-15', value: 84},
-			{date: '6-Mar-15', value: 93},
-			{date: '7-Mar-15', value: 256},
-			{date: '12-Mar-15', value: 512},
-			{date: '13-Mar-15', value: 148},
-			{date: '14-Mar-15', value: 217},
-			{date: '15-Mar-15', value: 84},
-			{date: '16-Mar-15', value: 93}
+			{date: '1-Mar-15', value: 25},
+			{date: '2-Mar-15', value: 5},
+			{date: '3-Mar-15', value: 12},
+			{date: '4-Mar-15', value: 21},
+			{date: '5-Mar-15', value: 8},
+			{date: '6-Mar-15', value: 9},
+			{date: '7-Mar-15', value: 2},
+			{date: '12-Mar-15', value: 5},
+			{date: '13-Mar-15', value: 14},
+			{date: '14-Mar-15', value: 21},
+			{date: '15-Mar-15', value: 8},
+			{date: '16-Mar-15', value: 9}
 		];
 
 		getData = function() { return data; }
@@ -186,7 +203,7 @@ text {
 		clearGraphic(container);
 
 		// setup SVG
-		var margin = {top: 20, right: 20, bottom: 30, left: 50},
+		var margin = {top: 40, right: 20, bottom: 30, left: 50},
 		    width = defaultWidth - margin.left - margin.right,
 		    height = defaultHeight - margin.top - margin.bottom;
 
@@ -195,14 +212,6 @@ text {
 
 		var y = d3.scale.linear()
 		    .range([height, 0]);
-
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("bottom");
-
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left");
 
 		var area = d3.svg.area()
 		    .x(function(d) { return x(d.date); })
@@ -228,6 +237,19 @@ text {
 		x.domain(d3.extent(data, function(d) { return d.date; }));
 		y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
+		var tickPadding = 15;
+
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+		    .orient("bottom");
+
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+		    .orient("left")
+		    .innerTickSize(-width)
+		    .ticks(6)
+		    .tickPadding(tickPadding);
+
 		svg.append("path")
 		  .datum(data)
 		  .attr("class", "area")
@@ -242,11 +264,11 @@ text {
 		  .attr("class", "y axis")
 		  .call(yAxis)
 		.append("text")
-		  .attr("transform", "rotate(-90)")
+		  .attr("transform", "translate(" + (-tickPadding) + ",-30)")
 		  .attr("y", 6)
 		  .attr("dy", ".71em")
-		  .style("text-anchor", "end")
-		  .text("Avg Session Length (min)");
+		  .style("text-anchor", "middle")
+		  .text("Minutes");
 
 		// now add lines and circles  
 		var line = d3.svg.line()
