@@ -1,0 +1,23 @@
+{
+  "name": "psi-9-planning",
+  "version": "1.0.0",
+  "description": "__New Visualization: Linear Chart__   * Standalone html for innovation exploration   * Wrap in Directive   * ![Chart Image](images/LinearChart.png)",
+  "main": "index.js",
+  "dependencies": {
+    "d3": "^3.5.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlanCramer/PSI-9-Planning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlanCramer/PSI-9-Planning/issues"
+  },
+  "homepage": "https://github.com/AlanCramer/PSI-9-Planning#readme"
+}
