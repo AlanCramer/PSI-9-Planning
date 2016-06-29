@@ -36,6 +36,16 @@ text {
     font-size: 9pt;
 }
 
+.super-line {
+	stroke-width:4;
+}
+
+.super-dot {
+	stroke:steelblue;
+	stroke-width: 3px;
+	fill:white;
+}
+
 .radioBtn {
 	color : white;
 	padding : 10px;
@@ -175,11 +185,10 @@ text {
 
 		clearGraphic(container);
 
+		// setup SVG
 		var margin = {top: 20, right: 20, bottom: 30, left: 50},
 		    width = defaultWidth - margin.left - margin.right,
 		    height = defaultHeight - margin.top - margin.bottom;
-
-		var parseDate = d3.time.format("%d-%b-%y").parse;
 
 		var x = d3.time.scale()
 		    .range([0, width]);
@@ -207,6 +216,8 @@ text {
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+		// setup Data
+		var parseDate = d3.time.format("%d-%b-%y").parse;
 		var data = theData.map(function(d) {
 			return {
 				date : parseDate(d.date),
@@ -237,6 +248,24 @@ text {
 		  .style("text-anchor", "end")
 		  .text("Avg Session Length (min)");
 
+		// now add lines and circles  
+		var line = d3.svg.line()
+		    .x(function(d,i) { return x(d.date); })
+		    .y(function(d) { return y(d.value); })
+	
+		svg.append("svg:path")
+			.attr("d", line(data))
+			.attr('class', 'super-line');
+
+		svg.selectAll('.super-dot')
+			.data(data)
+		  .enter()
+		  	.append('circle')
+			.attr('class', 'super-dot')	
+			.attr('cx', function(d) { return x(d.date); })
+			.attr('cy', function(d) { return y(d.value);})
+			.attr('r', 6)
+		
 	}
 
 	function createStaticLineGraph(container, theData) {
