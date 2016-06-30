@@ -105,18 +105,20 @@ text {
     (function initData() {
 
 		var data = 	[
-			{date: '1-Mar-15', value: 25},
-			{date: '2-Mar-15', value: 5},
-			{date: '3-Mar-15', value: 12},
-			{date: '4-Mar-15', value: 21},
-			{date: '5-Mar-15', value: 8},
-			{date: '6-Mar-15', value: 9},
-			{date: '7-Mar-15', value: 2},
-			{date: '12-Mar-15', value: 5},
-			{date: '13-Mar-15', value: 14},
-			{date: '14-Mar-15', value: 21},
-			{date: '15-Mar-15', value: 8},
-			{date: '16-Mar-15', value: 9}
+
+			{date: '23-Aug-15', value: 25},
+			{date: '23-Aug-16', value: 25},
+			{date: '25-Aug-16', value: 5},
+			{date: '26-Aug-16', value: 12},
+			{date: '4-Sep-16', value: 21},
+			{date: '14-Sep-16', value: 8},
+			{date: '18-Sep-16', value: 9},
+			{date: '29-Sep-16', value: 2},
+			{date: '30-Sep-16', value: 5},
+			{date: '5-Oct-16', value: 14},
+			{date: '12-Oct-16', value: 21},
+			{date: '22-Oct-16', value: 8},
+			{date: '25-Oct-16', value: 9}
 		];
 
 		getData = function() { return data; }
@@ -227,12 +229,19 @@ text {
 
 		// setup Data
 		var parseDate = d3.time.format("%d-%b-%y").parse;
+		var parseWeek = d3.time.format("%U");
+
 		var data = theData.map(function(d) {
 			return {
 				date : parseDate(d.date),
+				week : parseWeek(new Date(d.date)),
 				value : +d.value
 			};
 		});
+
+		// var dataByWeek = d3.nest()
+		// 	.key(function(d) {return d.date;})
+		// 	.entries(data);
 
 		x.domain(d3.extent(data, function(d) { return d.date; }));
 		y.domain([0, d3.max(data, function(d) { return d.value; })]);
