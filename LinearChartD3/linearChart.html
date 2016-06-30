@@ -57,6 +57,7 @@ text {
 
 #area-graph {
 	margin-top: 40px;
+	margin-right: 40px;
 }
 
 #area-graph
@@ -106,7 +107,6 @@ text {
 
 		var data = 	[
 
-			{date: '23-Aug-15', value: 25},
 			{date: '23-Aug-16', value: 25},
 			{date: '25-Aug-16', value: 5},
 			{date: '26-Aug-16', value: 12},
@@ -118,7 +118,19 @@ text {
 			{date: '5-Oct-16', value: 14},
 			{date: '12-Oct-16', value: 21},
 			{date: '22-Oct-16', value: 8},
-			{date: '25-Oct-16', value: 9}
+			{date: '25-Oct-16', value: 9},
+			{date: '23-Nov-16', value: 25},
+			{date: '25-Nov-16', value: 5},
+			{date: '26-Nov-16', value: 12},
+			{date: '4-Dec-16', value: 21},
+			{date: '14-Dec-16', value: 8},
+			{date: '18-Dec-16', value: 9},
+			{date: '29-Dec-16', value: 2},
+			{date: '30-Dec-16', value: 5},
+			{date: '5-Jan-17', value: 14},
+			{date: '12-Jan-17', value: 21},
+			{date: '22-Jan-17', value: 8},
+			{date: '25-Jan-17', value: 9}
 		];
 
 		getData = function() { return data; }
@@ -127,7 +139,7 @@ text {
 		setDataValueAt = function(idx, val) { data[idx].value = val; }
 	})();
 
-	var defaultWidth = 700, 
+	var defaultWidth = 550, 
 		defaultHeight = 300;
 
 	d3.select('body')
@@ -156,7 +168,10 @@ text {
 
 	var container = d3.select('body')
 		.append('div')
-		.attr('id', 'graphic-container');
+		.attr('id', 'graphic-container')
+		.style('display', 'flex')
+		.style('align-items', 'center')
+		;
 
     function editData(container, data) {
 
@@ -167,28 +182,43 @@ text {
 
     	} else {
 
-			var table = container.insert('table', 'svg')
-				.attr('id', id);
+			var table = container.append('div')
+				.attr('id', id)
+				.style('display', 'inline')
+				.style('width', '15%')
+			;
+
+			table.style('height', '0')
+				.style('overflow', 'scroll')
+				.transition().duration(2000)
+				.style('height', defaultHeight);
+
     		
     		var trs = table.selectAll('.data-table-row')
     			.data(data)
     		  .enter()
-    			.append('tr')
-    			.attr('class', 'data-table-row');
+    			.append('div')
+    			.attr('class', 'data-table-row')
+    			.style('display', 'flex')
+    			.style('justify-content', 'space-between')
+    			;
 
-    		trs.append('td')
+    		trs.append('label')
 		    	.text(function(d) { return d.date; })
 		    	.attr('contenteditable', true)
 		    	.on('input', function(d, i) {
 		    		setDataDateAt(i, this.textContent);
+		    		updateAreaChart(getData());
 		    	})
 		    	;
 
-		    trs.append('td')
+		    trs.append('label')
 	    		.text(function(d) { return d.value; })
 	    		.attr('contenteditable', true)
+	    		.style('margin-right', '10px')
 	    		.on('input', function(d, i) {
 	    			setDataValueAt(i, this.textContent);
+	   	    		updateAreaChart(getData());
 	    		})
 	    		;
 		}
@@ -297,6 +327,20 @@ text {
 			.attr('cy', function(d) { return y(d.value);})
 			.attr('r', 6)
 		
+	}
+
+	function updateAreaChart(newData) {
+		
+		var circs = d3.selectAll('.super-dot')
+			.data(newData)
+		  .enter()
+		  	.append('circle')
+		  	.attr('class', 'super-dot');
+
+		circs.attr('cx', function(d) { return x(d.date); })
+			.attr('cy', function(d) { return y(d.value);})
+			.attr('r', 6);
+
 	}
 
 	function createStaticLineGraph(container, theData) {
