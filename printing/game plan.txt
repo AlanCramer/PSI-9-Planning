@@ -1,0 +1,55 @@
+
+Create A Page that Looks like the Printed Report
+
+1024 px wide
+No hover state rendering
+
+No Data Page
+Default sort order - Not necessarily matching what is shown on screen
+No Focus
+No Carets
+Assumption - D3-Graphic will never be longer than a page
+Data for H503 - (is h502 data there?)
+8.5 x 11 form
+
+
+<Server Side Work>
+
+(Bob)
+. Reactivate the Print Button
+   A. Open a new page (pop up window) that we display in.
+ 
+(Alan)  
+. Create New Report Dir (for each report) dedicated to printing.
+   A. 6 new directives
+   B. Need new template files
+
+(Alan)
+. Update Horiz Bar Chart Dir to accept "strand" to render only that strand 
+   A. remove buttons (except, I guess, the chosen strand)
+   B. Wrap this in ng-repeat for each strand in the model
+
+(Dick)
+. Skills Table Needs to accept Level input and render only that one
+   A. Build a new directive?
+   B. Wrap in ng-repeat
+
+(Bob)
+. Handle Page Breaks - fake data - demo page breaking - size the story
+   A. media query
+   B. Page breaking
+   C. Graphic not breaking
+   D. Table breaks
+   E. Repeat the header 
+
+(Dick)
+. Header Generation
+   A. Directive (which will need a model)
+   B. Intellify Service has this data?
+
+(Bob)
+. Footer Generation
+   A. Do we need a reusable widget (directive)?
+
+
+
