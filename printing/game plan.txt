@@ -15,9 +15,15 @@ Data for H503 - (is h502 data there?)
 
 <Server Side Work>
 
+
 (Bob)
 . Reactivate the Print Button
    A. Open a new page (pop up window) that we display in.
+
+  AC: 
+     new URL - has own url
+     navigates to a completely blank 
+     <state, controller, template>
  
 (Alan)  
 . Create New Report Dir (for each report) dedicated to printing.
@@ -36,11 +42,14 @@ Data for H503 - (is h502 data there?)
 
 (Bob)
 . Handle Page Breaks - fake data - demo page breaking - size the story
-   A. media query
+   Graphics do break correctly
+   Table breaks nicely - 
+   A. media query 'print.css'
    B. Page breaking
    C. Graphic not breaking
-   D. Table breaks
-   E. Repeat the header 
+   D. Table breaks (show title with ('continued'))
+   E. Repeat the header (?)
+   F. See the table footer on the final one
 
 (Dick)
 . Header Generation
