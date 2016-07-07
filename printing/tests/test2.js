@@ -11,5 +11,5 @@ page.open(url, function(status) {
      console.log(typeof window.setTimeout);
 
   }
-  phantom.exit();
+  phantom.exit(); // NO! this kills things (of course)
 });
