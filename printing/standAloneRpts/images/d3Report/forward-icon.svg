@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: sketchtool 3.4.4 (395) - http://www.bohemiancoding.com/sketch -->
+    <title>Forward Icon</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Reports---Phonics" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Phonics-Proficiency---Student" sketch:type="MSArtboardGroup" transform="translate(-569.000000, -199.000000)" stroke="#9B9B9B">
+            <g id="Body" sketch:type="MSLayerGroup" transform="translate(237.000000, 121.000000)">
+                <g id="Header" sketch:type="MSShapeGroup">
+                    <g id="Tools" transform="translate(0.000000, 77.000000)">
+                        <g id="Learn-More" transform="translate(333.000000, 2.000000)">
+                            <g id="Forward-Icon">
+                                <path d="M10,0 C4.4771525,0 0,4.4771525 0,10 C-2.36847579e-15,15.5228475 4.4771525,20 10,20 C15.5228475,20 20,15.5228475 20,10 C20,4.4771525 15.5228475,2.36847579e-15 10,0 L10,0 Z" id="Oval-16-Copy"></path>
+                                <path d="M7.53061793,14.6915755 C7.69147764,14.8558946 7.95179362,14.8558946 8.11265333,14.6915755 L13.199193,10.0257791 C13.2493536,10.0084824 13.2964872,9.97821305 13.3367021,9.9349712 C13.422321,9.85281167 13.4590766,9.74038284 13.4538876,9.62795401 C13.4577793,9.5159576 13.4205913,9.40309635 13.3358373,9.32093682 C13.2960548,9.28245157 13.249786,9.25174985 13.2004903,9.23012892 L8.11308575,4.56476491 C7.95222604,4.40433762 7.69191006,4.40433762 7.53105035,4.56476491 C7.37019064,4.72432737 7.37019064,4.98377851 7.53105035,5.14852999 L12.4173802,9.62795401 L7.53061793,14.112567 C7.36975822,14.2721295 7.36975822,14.5315806 7.53061793,14.6915755 Z" id="Fill-245-Copy" stroke-width="0.5" fill="#9B9B9B"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

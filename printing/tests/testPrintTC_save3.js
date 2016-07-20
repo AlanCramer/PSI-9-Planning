@@ -11,7 +11,7 @@ page.paperSize = {
 	//viewportSize: { width: 960, height: 1200 },
 	//zoomFactor: .1,
     width: '18in',
-    height: '24in',
+    height: '25in',
     border: '0px',
     margin: '0px',
     header: {
@@ -23,7 +23,7 @@ page.paperSize = {
     footer: {
         height: '3cm',
         contents: phantom.callback(function (pageNum, numPages) {
-            return '<div style="text-align: right; font-size: 12px;"> Check out this footer with page numbers: ' + pageNum + ' / ' + numPages + '</div>';
+            return '<div style="text-align: right; font-size: 12px;">' + pageNum + ' / ' + numPages + '</div>';
         })
     }
 };

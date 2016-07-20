@@ -1,0 +1,45 @@
+<h2>Fine Scotches</h2>
+
+<table class="table table-hover table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr ng-repeat="scotch in scotches">
+        <td>{{ scotch.name }}</td>
+        <td>${{ scotch.price }}</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<title>Test</title>
+<style type="text/css">
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+</style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Cost</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr><td>notes</td></tr>
+    </tfoot>
+    <tbody>
+    <tr ng-repeat="scotch in scotches">
+        <td>{{ scotch.name }}</td>
+        <td>${{ scotch.price }}</td>
+    </tr>
+    </tbody>
+</table>

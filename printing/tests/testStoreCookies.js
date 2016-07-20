@@ -5,13 +5,6 @@ var fs = require('fs');
 var CookieJar = "cookiejar.json";
 
 var page = require('webpage').create();
-
-if(fs.isFile(CookieJar)) {
-    Array.prototype.forEach.call(JSON.parse(fs.read(CookieJar)), function(x){
-        phantom.addCookie(x);
-    });
-}
-
 page.open(url, function(status) {
   var title = page.evaluate(function() {
     return document.title;
