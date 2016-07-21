@@ -1,7 +1,7 @@
 {
-  "name": "d3-server-side-demo",
-  "description": "uses d3.js to render svg charts on the server-side",
-  "version": "0.0.2",
+  "name": "Server-LRS-to-PDF",
+  "description": "Takes reportName and data then renders PDF from html template on the server",
+  "version": "0.0.1",
   "private": true,
   "main": "app.js",
   "engines": {
@@ -11,6 +11,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "d3": "~3.5.6",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
