@@ -6,7 +6,7 @@ var io = require('socket.io')(server);
 
 // Serve index.html for all GET requests
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 // Enable CORS processing - Apparently, not needed for Socket.io's "Hello World"...?
