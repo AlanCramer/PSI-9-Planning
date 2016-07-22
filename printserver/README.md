@@ -14,6 +14,8 @@ Server-side generation of PDFs intended for printing
 - Install dependencies
   - First, ensure you are in the right directory - it should contain printserver's `package.json` file
   - `npm install`
+- Start the server. Currently, it defaults to [`http://localhost:3000`](http://localhost:3000)
+  - `npm start`
 
 ## Dependencies
 - [Node.js](https://nodejs.org/dist/latest-v6.x/docs/api/)
