@@ -5,10 +5,9 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <!-- This import is currently broken, need to diagnose and fix -->
         <script src="/socket.io/socket.io.js"></script>
         <script>
-          var socket = io.connect('http://localhost');
+          var socket = io.connect();
           socket.on('news', function (data) {
             console.log(data);
             socket.emit('my other event', { my: 'data' });
