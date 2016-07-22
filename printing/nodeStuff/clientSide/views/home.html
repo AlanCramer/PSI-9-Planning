@@ -1,0 +1,23 @@
+<!--This page uses the httpController controller defined in app.js-->
+<div class="jumbotron text-center">
+    <h2>LRS Report Printing</h2>
+    <p>This page demonstrates <span class="text-danger">Server-side PDF Generation</span></p>
+    <p> </p>
+
+    <div>
+        <button  class="btn btn-primary btn-spacing btn-width" ng-click="goToNamedState('irc')" >Independent Reading Class Report</button>
+    </div>
+
+
+    <div>
+        <button  class="btn btn-warning btn-spacing btn-width" ng-click="goToNamedState('irs')" >Independent Reading Student Report</button>
+    </div>
+
+
+    <div>
+        <button  class="btn btn-success btn-spacing btn-width" ng-click="goToNamedState('wac')" >Workshop Assesment Class Report</button>
+    </div>
+
+</div>
+
+<div ui-view></div>

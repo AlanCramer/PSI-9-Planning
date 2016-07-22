@@ -1,0 +1,26 @@
+{
+  "name": "Server-LRS-to-PDF",
+  "description": "Takes reportName and data then renders PDF from html template on the server",
+  "version": "0.0.1",
+  "private": true,
+  "main": "app.js",
+  "engines": {
+    "node": "0.10.38"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "d3": "~3.5.6",
+    "ejs": "~2.3.3",
+    "express": "~4.13.1",
+    "html-pdf": "^2.0.1",
+    "jsdom": "~3.1.2",
+    "phantom": "^2.1.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gregjopa/d3-server-side-demo"
+  }
+}
