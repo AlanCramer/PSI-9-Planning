@@ -7,11 +7,36 @@
     <body>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-          var socket = io.connect();
-          socket.on('news', function (data) {
-            console.log(data);
-            socket.emit('my other event', { my: 'data' });
-          });
+            // "Hello World" test for Socket.io
+            var socket = io.connect();
+                socket.on('news', function (data) {
+                console.log(data);
+                socket.emit('my other event', { my: 'data' });
+            });
+
+            // Sample WAC report data
+            var myData = {
+                "header": {
+                    "reportName": "Workshop Assessment Report",
+                    "className": "Class 1 - Read 180",
+                    "teacher": "Cabrera, Vanessa; Williams, John; Broido, Marianne",
+                    "grade": "7, 8",
+                    "school": "George Washington Carver Middle School",
+                    "assessment": "Workshop Assessment 4"
+                }
+            };
+
+            // Send the sample data to the server
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Alert the server's response
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send(JSON.stringify(myData));
         </script>
     </body>
 </html>
