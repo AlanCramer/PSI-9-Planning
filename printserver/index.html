@@ -6,8 +6,10 @@
     </head>
     <body>
         <script src="/socket.io/socket.io.js"></script>
+        <script src="/app.bundle.js"></script>
         <script>
           var socket = io.connect();
+          console.log(reportData);
           socket.on('news', function (data) {
             console.log(data);
             socket.emit('my other event', { my: 'data' });

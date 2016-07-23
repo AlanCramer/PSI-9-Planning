@@ -22,5 +22,10 @@
     "express": "^4.14.0",
     "phantom": "^2.1.13",
     "socket.io": "^1.4.8"
+  },
+  "devDependencies": {
+    "json-loader": "^0.5.4",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
   }
 }

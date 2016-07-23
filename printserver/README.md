@@ -17,6 +17,10 @@ Server-side generation of PDFs intended for printing
 - Start the server. Currently, it defaults to [`http://localhost:3000`](http://localhost:3000)
   - `npm start`
 
+## Development
+- Webpack TODO: Add more notes, Webpack is complicated...
+- webpack-dev-server TODO: Add more notes
+
 ## Dependencies
 - [Node.js](https://nodejs.org/dist/latest-v6.x/docs/api/)
 - [Express](https://expressjs.com/en/4x/api.html)
