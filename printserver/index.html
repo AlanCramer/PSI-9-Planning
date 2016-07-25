@@ -9,7 +9,7 @@
         <script>
             // "Hello World" test for Socket.io
             var socket = io.connect();
-                socket.on('news', function (data) {
+            socket.on('news', function (data) {
                 console.log(data);
                 socket.emit('my other event', { my: 'data' });
             });
