@@ -3,6 +3,21 @@
 <head>
     <script src="d3/d3.min.js"></script>
     <script src='reportUtil.js'></script>
+    <script src='horizBarChart.js'></script>
+    
+    <style>
+        body {
+            max-width : 900px;
+        }
+        
+        .bar-chart-div {
+            margin : 10px;
+            padding: 20px;
+            border : 2px solid black;
+            border-radius : 15px;
+        }
+    </style>
+    
     <link rel="stylesheet" type="text/css" href="css/summary.css">
 </head>
 
@@ -15,6 +30,9 @@
 
     LRS.buildSummary(title, subTitle, logoFile);
 
+    var barChartDiv = d3.select('body').append('div').attr('class', 'bar-chart-div');
+    createBarChart(barChartDiv, fakeBCModel);
+    
 </script>
 
 </body>
