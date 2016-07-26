@@ -1,10 +1,13 @@
 
 var LRS = LRS || {};
-LRS.buildSummary = function(title, subTitle, logo) {
 
-    //d3.select('body').append('h1').text('yo, world');
-    //var body = d3.select('body');
-    var container = d3.select('body').append('div');
+// appends a summary to the passed in container (a d3 selection),
+// e.g. 
+// LRS.buildSummary(d3.select('body'), 'title', 'sub', path-to-logo-as-string)
+
+LRS.buildTitle = function(container, title, subTitle, logo) {
+
+    container.append('div');
 
     container.append('div')
     	.attr('id', 'title')
@@ -21,4 +24,3 @@ LRS.buildSummary = function(title, subTitle, logo) {
     	.append('label')
     	.text(subTitle);
 }
-
