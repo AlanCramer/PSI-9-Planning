@@ -20,10 +20,10 @@ var fakeBCModel = {
     data  : [ 
         {   name : 'Some thing',  
             values : [ 17, 12, 15 ], 
-            cssClasses : [ 'level-a', 'level-b', 'level-a'] },
+            cssClass : [ 'bar0', 'bar1', 'bar2'] },
         {   name : 'Some other thing',  
             values : [ 10, 12, 15 ], 
-            cssClasses : [ 'level-a', 'level-b', 'level-a' ] } ],
+            cssClass : [ 'bar0', 'bar1', 'bar2'] } ],
     legend : [ 
         {   name : 'bar zero', 
             cssClasses : 'bar0'},

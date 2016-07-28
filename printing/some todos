@@ -1,0 +1,23 @@
+
+
+1. Solve the login session id SSO problem.
+  Keep getting the login page.
+
+2. On page ready solution.
+  how to tell that the print preview has fully loaded?
+
+3. TLSP APIs for input and output
+   A. url as input
+   B. pdf document (file) as output 
+
+4. Load Balancing 
+  A. are the requests queued?
+  B. what happens if second request fires while PDF #1 is still being generated?
+  C. Can phantomjs crash?
+  D. Are we keeping a single process running or will we create seperate processes in some cases (or for each and every request).
+  E. Would or could we spin up a server instance (only running phantomjs) under high load?
+
+5. Architecture Forum Review
+
+
+

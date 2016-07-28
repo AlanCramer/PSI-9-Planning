@@ -57,6 +57,14 @@ app.post('/', function(req, res) {
         console.log('Error occurred in Phantom: ', msg); // http://phantomjs.org/api/webpage/handler/on-error.html
       });
 
+      // page.on('onLoadFinished', function(status) {
+      //   console.log('Load finished, status : ' + status); // http://phantomjs.org/api/webpage/handler/on-load-finished
+      //   console.log('about to render');
+      // 	page.render('output.pdf'); 
+      // 	//ph.exit(); // Close the Phantom instance
+
+      // });
+
       page.on('onInitialized', function() {
         console.log('Page initialized'); // http://phantomjs.org/api/webpage/handler/on-initialized.html
       });
@@ -96,7 +104,22 @@ app.post('/', function(req, res) {
 
     }).then(function() {
       // Inject a <script> element onto the page with 'src' set to D3's CDN download address
-      page.includeJs('https://cdnjs.cloudflare.com/ajax/libs/d3/4.1.1/d3.js');
+      // page.includeJs('https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js');
+
+    }).then(function() {
+      // page.injectJs() returns true if injection is successful, otherwise false
+      console.log ('injecting d3');
+      return page.injectJs('./standAloneReports/d3/d3.min.js');
+
+    }).then(function() {
+      // page.injectJs() returns true if injection is successful, otherwise false
+      console.log('injecting reportUtil');
+      return page.injectJs('./standAloneReports/reportUtil.js');
+
+    }).then(function() {
+      // page.injectJs() returns true if injection is successful, otherwise false
+      console.log('injecting horizBarChart');
+      return page.injectJs('./standAloneReports/horizBarChart.js');
 
     }).then(function() {
       // page.injectJs() returns true if injection is successful, otherwise false
@@ -134,15 +157,21 @@ app.post('/', function(req, res) {
 
       }, JSON.stringify(req.body), 'foo');
 
-      page.render('output.pdf'); // Render the page to PDF
-      ph.exit(); // Close the Phantom instance
+      console.log('phantom setup complete');
+
+      setTimeout(function ()  { // really want onLoadFinished, but that's not working
+        console.log('about to render');
+      	page.render('output.pdf'); 
+      	ph.exit(); // Close the Phantom instance
+      	res.download('./output.pdf', 'output.pdf');
+
+      }, 3000);
 
     }).catch(function(error) {
       console.log(error);
       ph.exit(); // Always remember to close the Phantom instance no matter what!
     });
 
-  res.download('./output.pdf', 'output.pdf');
 });
 
 // "Hello World" test for Socket.io
