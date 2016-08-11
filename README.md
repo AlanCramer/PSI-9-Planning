@@ -1,6 +1,6 @@
 # PSI-9-Planning
 
-__New Visualization: Linear Chart__
+__New Visualization: [Linear Chart](http://alancramer.github.io/PSI-9-Planning/LinearChartD3/linearChart.html)__
   * Standalone html for innovation exploration
   * Wrap in Directive
   * ![Chart Image](images/LinearChart.png)
