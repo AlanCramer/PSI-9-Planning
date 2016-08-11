@@ -7,14 +7,14 @@
 <style>
 
 body {
-	margin-left:50px;
+    margin-left:50px;
 }
 
 .title {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	font-size: 30px;
-	display: block;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-size: 30px;
+    display: block;
 }
 
 path {
@@ -33,31 +33,31 @@ text {
 }
 
 .super-line {
-	stroke-width:4;
+    stroke-width:4;
 }
 
 .super-dot {
-	stroke:steelblue;
-	stroke-width: 3px;
-	fill:white;
+    stroke:steelblue;
+    stroke-width: 3px;
+    fill:white;
 }
 
 .radioBtn {
-	color : white;
-	padding : 10px;
-	border: 2px solid black;
-	background-color: #00e;
-	margin : 10px;
-	border-radius: 8px;
+    color : white;
+    padding : 10px;
+    border: 2px solid black;
+    background-color: #00e;
+    margin : 10px;
+    border-radius: 8px;
 }
 
 .radioBtn:hover {
-	background-color: #88a;
+    background-color: #88a;
 }
 
 #area-graph {
-	margin-top: 40px;
-	margin-right: 40px;
+    margin-top: 40px;
+    margin-right: 40px;
 }
 
 #area-graph
@@ -76,20 +76,25 @@ text {
 #area-graph
 .x.axis
 .domain {
-	display:none;
+    display:none;
 }
 
 #area-graph
 .y.axis
 .domain {
-	display:none;
+    display:none;
 }
 
 #area-graph
 .area {
-	fill: #E9F3Fd;
-	//background-image: linear-gradient(166deg, #E9F3Fd, rgba(255, 255, 255, 0.0));
-	stroke-width : 0px;
+    fill: #E9F3Fd;
+    //background-image: linear-gradient(166deg, #E9F3Fd, rgba(255, 255, 255, 0.0));
+    stroke-width : 0px;
+}
+
+.overlay {
+    fill-opacity: 0;
+    cursor: move;
 }
 
 </style>
@@ -99,326 +104,380 @@ text {
 <body>
 
 <script>
-
-	var getData, setData, 
-		dataShown = false;
+    var getData, setData, 
+        dataShown = false;
 
     (function initData() {
 
-		var data = 	[
+        var data =  [
 
-			{date: '23-Aug-16', value: 25},
-			{date: '25-Aug-16', value: 5},
-			{date: '26-Aug-16', value: 12},
-			{date: '4-Sep-16', value: 21},
-			{date: '14-Sep-16', value: 8},
-			{date: '18-Sep-16', value: 9},
-			{date: '29-Sep-16', value: 2},
-			{date: '30-Sep-16', value: 5},
-			{date: '5-Oct-16', value: 14},
-			{date: '12-Oct-16', value: 21},
-			{date: '22-Oct-16', value: 8},
-			{date: '25-Oct-16', value: 9},
-			{date: '23-Nov-16', value: 25},
-			{date: '25-Nov-16', value: 5},
-			{date: '26-Nov-16', value: 12},
-			{date: '4-Dec-16', value: 21},
-			{date: '14-Dec-16', value: 8},
-			{date: '18-Dec-16', value: 9},
-			{date: '29-Dec-16', value: 2},
-			{date: '30-Dec-16', value: 5},
-			{date: '5-Jan-17', value: 14},
-			{date: '12-Jan-17', value: 21},
-			{date: '22-Jan-17', value: 8},
-			{date: '25-Jan-17', value: 9}
-		];
+            {date: '23-Aug-16', value: 25},
+            {date: '25-Aug-16', value: 5},
+            {date: '26-Aug-16', value: 12},
+            {date: '4-Sep-16', value: 21},
+            {date: '14-Sep-16', value: 8},
+            {date: '18-Sep-16', value: 9},
+            {date: '29-Sep-16', value: 2},
+            {date: '30-Sep-16', value: 5},
+            {date: '5-Oct-16', value: 14},
+            {date: '12-Oct-16', value: 21},
+            {date: '22-Oct-16', value: 8},
+            {date: '25-Oct-16', value: 9},
+            {date: '23-Nov-16', value: 25},
+            {date: '25-Nov-16', value: 5},
+            {date: '26-Nov-16', value: 12},
+            {date: '4-Dec-16', value: 21},
+            {date: '14-Dec-16', value: 8},
+            {date: '18-Dec-16', value: 9},
+            {date: '29-Dec-16', value: 2},
+            {date: '30-Dec-16', value: 5},
+            {date: '5-Jan-17', value: 14},
+            {date: '12-Jan-17', value: 21},
+            {date: '22-Jan-17', value: 17},
+            {date: '25-Jan-17', value: 9}
+        ];
 
-		getData = function() { return data; }
-		setData = function(newData) { data = newData; }
-		setDataDateAt = function(idx, dateStr) { data[idx].date = dateStr; }		
-		setDataValueAt = function(idx, val) { data[idx].value = val; }
-	})();
+        getData = function() { return data; }
+        setData = function(newData) { data = newData; }
+        setDataDateAt = function(idx, dateStr) { data[idx].date = dateStr; }        
+        setDataValueAt = function(idx, val) { data[idx].value = val; }
+    })();
 
-	var defaultWidth = 550, 
-		defaultHeight = 300;
+    var defaultWidth = 550, 
+        defaultHeight = 300;
 
-	d3.select('body')
-		.append('div')
-		.attr('class', 'title')
-		.append('label')
-		.text('Linear Chart Playground');	
+    d3.select('body')
+        .append('div')
+        .attr('class', 'title')
+        .append('label')
+        .text('Linear Chart Playground');   
 
-	var btnDefs = [
-		{ name : 'Line Graph', onClick : createStaticLineGraph},
-		{ name : 'Area Graph', onClick : createStaticAreaGraph},
-		{ name: 'Clear', onClick : clearGraphic}, 
-		{ name: 'Edit Data', onClick : editData}, 
-	];
+    var btnDefs = [
+        { name : 'Line Graph', onClick : createStaticLineGraph},
+        { name : 'Area Graph', onClick : createStaticAreaGraph},
+        { name: 'Clear', onClick : clearGraphic}, 
+        { name: 'Edit Data', onClick : editData}, 
+    ];
 
-	var btns = d3.select('body')
-		.append('div')
-		.selectAll('.radioBtn')
-		.data(btnDefs)
-	  .enter()
-		.append('button')
-		.attr('class', 'radioBtn')
-		.text(function(d) { return d.name;})
-		.on('click', function(d) { 
-			return d.onClick(container, getData());});
+    var btns = d3.select('body')
+        .append('div')
+        .selectAll('.radioBtn')
+        .data(btnDefs)
+      .enter()
+        .append('button')
+        .attr('class', 'radioBtn')
+        .text(function(d) { return d.name;})
+        .on('click', function(d) { 
+            return d.onClick(container, getData());});
 
-	var container = d3.select('body')
-		.append('div')
-		.attr('id', 'graphic-container')
-		.style('display', 'flex')
-		.style('align-items', 'center')
-		;
+    var container = d3.select('body')
+        .append('div')
+        .attr('id', 'graphic-container')
+        .style('display', 'flex')
+        .style('align-items', 'center');
 
     function editData(container, data) {
 
-    	var id = 'the-data';
+        var id = 'the-data';
 
-    	if (dataShown) {
-    		d3.select('#' + id).remove();
+        if (dataShown) {
+            d3.select('#' + id).remove();
 
-    	} else {
+        } else {
 
-			var table = container.append('div')
-				.attr('id', id)
-				.style('display', 'inline')
-				.style('width', '15%')
-			;
+            var table = container.append('div')
+                .attr('id', id)
+                .style('display', 'inline')
+                .style('width', '15%')
+            ;
 
-			table.style('height', '0')
-				.style('overflow', 'scroll')
-				.transition().duration(2000)
-				.style('height', defaultHeight);
+            table.style('height', '0')
+                .style('overflow', 'scroll')
+                .transition().duration(2000)
+                .style('height', defaultHeight);
 
-    		
-    		var trs = table.selectAll('.data-table-row')
-    			.data(data)
-    		  .enter()
-    			.append('div')
-    			.attr('class', 'data-table-row')
-    			.style('display', 'flex')
-    			.style('justify-content', 'space-between')
-    			;
+            
+            var trs = table.selectAll('.data-table-row')
+                .data(data)
+              .enter()
+                .append('div')
+                .attr('class', 'data-table-row')
+                .style('display', 'flex')
+                .style('justify-content', 'space-between')
+                ;
 
-    		trs.append('label')
-		    	.text(function(d) { return d.date; })
-		    	.attr('contenteditable', true)
-		    	.on('input', function(d, i) {
-		    		setDataDateAt(i, this.textContent);
-		    		updateAreaChart(getData());
-		    	})
-		    	;
+            trs.append('label')
+                .text(function(d) { return d.date; })
+                .attr('contenteditable', true)
+                .on('input', function(d, i) {
+                    setDataDateAt(i, this.textContent);
+                    updateAreaChart(getData());
+                })
+                ;
 
-		    trs.append('label')
-	    		.text(function(d) { return d.value; })
-	    		.attr('contenteditable', true)
-	    		.style('margin-right', '10px')
-	    		.on('input', function(d, i) {
-	    			setDataValueAt(i, this.textContent);
-	   	    		updateAreaChart(getData());
-	    		})
-	    		;
-		}
+            trs.append('label')
+                .text(function(d) { return d.value; })
+                .attr('contenteditable', true)
+                .style('margin-right', '10px')
+                .on('input', function(d, i) {
+                    setDataValueAt(i, this.textContent);
+                    updateAreaChart(getData());
+                })
+                ;
+        }
 
-		dataShown = !dataShown;
+        dataShown = !dataShown;
     }
 
-	function clearGraphic(container) {
-		container.select('svg').remove();
-	}
+    function clearGraphic(container) {
+        container.select('svg').remove();
+    }
 
-	function createStaticAreaGraph(container, theData) {
+    function createStaticAreaGraph(container, theData) {
 
-		clearGraphic(container);
+        clearGraphic(container);
 
-		// setup SVG
-		var margin = {top: 40, right: 20, bottom: 30, left: 50},
-		    width = defaultWidth - margin.left - margin.right,
-		    height = defaultHeight - margin.top - margin.bottom;
+        // setup SVG
+        var margin = {top: 40, right: 20, bottom: 30, left: 50},
+            width = defaultWidth - margin.left - margin.right,
+            height = defaultHeight - margin.top - margin.bottom;
 
-		var x = d3.time.scale()
-		    .range([0, width]);
+        var x = d3.time.scale()
+            .range([0, width]);
 
-		var y = d3.scale.linear()
-		    .range([height, 0]);
+        var y = d3.scale.linear()
+            .range([height, 0]);
 
-		var area = d3.svg.area()
-		    .x(function(d) { return x(d.date); })
-		    .y0(height)
-		    .y1(function(d) { return y(d.value); });
+        var area = d3.svg.area()
+            .x(function(d) { return x(d.date); })
+            .y0(height)
+            .y1(function(d) { return y(d.value); });
 
-		var svg = container.append("svg")
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		    .attr('id', 'area-graph')
-		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var overlay = d3.svg.area()
+            .x(function(d) { return x(d.date); })
+            .y0(height)
+            .y1(0);
 
-		// setup Data
-		var parseDate = d3.time.format("%d-%b-%y").parse;
-		var parseWeek = d3.time.format("%U");
+        var minZoomScale = 0.25,
+            maxZoomScale = 4;
 
-		var data = theData.map(function(d) {
-			return {
-				date : parseDate(d.date),
-				week : parseWeek(new Date(d.date)),
-				value : +d.value
-			};
-		});
+        var zoom = d3.behavior.zoom()
+            .scaleExtent([minZoomScale, maxZoomScale])
+            .on('zoom', draw);
 
-		// var dataByWeek = d3.nest()
-		// 	.key(function(d) {return d.date;})
-		// 	.entries(data);
+        var plotChart = container.append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr('id', 'area-graph')
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		x.domain(d3.extent(data, function(d) { return d.date; }));
-		y.domain([0, d3.max(data, function(d) { return d.value; })]);
+        var plotArea = plotChart.append('g')
+            .attr('clip-path', 'url(#plotAreaClip)');
 
-		var tickPadding = 15;
+        plotArea.append('clipPath')
+            .attr('id', 'plotAreaClip')
+            .append('rect')
+            .attr({'width': width, 'height': height});
 
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("bottom");
+        // setup Data
+        var parseDate = d3.time.format("%d-%b-%y").parse;
+        var parseWeek = d3.time.format("%U");
 
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left")
-		    .innerTickSize(-width)
-		    .ticks(6)
-		    .tickPadding(tickPadding);
+        var minDate = d3.min(theData, function(d) { return new Date(d.date); });
+        var maxDate = d3.max(theData, function(d) { return new Date(d.date); });
 
-		svg.append("path")
-		  .datum(data)
-		  .attr("class", "area")
-		  .attr("d", area);
+        var data = theData.map(function(d) {
+            return {
+                date : parseDate(d.date),
+                week : parseWeek(new Date(d.date)),
+                value : +d.value
+            };
+        });
 
-		svg.append("g")
-		  .attr("class", "x axis")
-		  .attr("transform", "translate(0," + height + ")")
-		  .call(xAxis);
+        // var dataByWeek = d3.nest()
+        //  .key(function(d) {return d.date;})
+        //  .entries(data);
 
-		svg.append("g")
-		  .attr("class", "y axis")
-		  .call(yAxis)
-		.append("text")
-		  .attr("transform", "translate(" + (-tickPadding) + ",-30)")
-		  .attr("y", 6)
-		  .attr("dy", ".71em")
-		  .style("text-anchor", "middle")
-		  .text("Minutes");
+        x.domain([new Date(2016, 9, 1), new Date(2016, 9, 31)]);
+        // x.domain(d3.extent(data, function(d) { return d.date; })); // original line
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+        zoom.x(x);
 
-		// now add lines and circles  
-		var line = d3.svg.line()
-		    .x(function(d,i) { return x(d.date); })
-		    .y(function(d) { return y(d.value); })
-	
-		svg.append("svg:path")
-			.attr("d", line(data))
-			.attr('class', 'super-line');
+        var tickPadding = 15;
 
-		svg.selectAll('.super-dot')
-			.data(data)
-		  .enter()
-		  	.append('circle')
-			.attr('class', 'super-dot')	
-			.attr('cx', function(d) { return x(d.date); })
-			.attr('cy', function(d) { return y(d.value);})
-			.attr('r', 6)
-		
-	}
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .ticks(6)
+            .orient("bottom");
 
-	function updateAreaChart(newData) {
-		
-		var circs = d3.selectAll('.super-dot')
-			.data(newData)
-		  .enter()
-		  	.append('circle')
-		  	.attr('class', 'super-dot');
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .innerTickSize(-width)
+            .ticks(6)
+            .tickPadding(tickPadding);
 
-		circs.attr('cx', function(d) { return x(d.date); })
-			.attr('cy', function(d) { return y(d.value);})
-			.attr('r', 6);
+        plotArea.append("path")
+          .datum(data)
+          .attr('class', 'area')
+          .attr("d", area);
 
-	}
+        plotChart.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-	function createStaticLineGraph(container, theData) {
+        plotChart.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("transform", "translate(" + (-tickPadding) + ",-30)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "middle")
+          .text("Minutes");
 
-		clearGraphic(container);
+        // now add lines and circles  
+        var line = d3.svg.line()
+            .x(function(d,i) { return x(d.date); })
+            .y(function(d) { return y(d.value); })
+    
+        plotArea.append("path")
+            .attr("d", line(data))
+            .attr('class', 'super-line');
 
-		var data = theData.map(function(d) {return d.value;});
+        plotArea.selectAll('.super-dot')
+            .data(data)
+          .enter()
+            .append('circle')
+            .attr('class', 'super-dot') 
+            .attr('cx', function(d) { return x(d.date); })
+            .attr('cy', function(d) { return y(d.value);})
+            .attr('r', 6);
 
-		var	w = defaultWidth,
-			h = defaultHeight,
-			margin = 20,
-			y = d3.scale.linear().domain([0, d3.max(data)]).range([0 + margin, h - margin]),
-			x = d3.scale.linear().domain([0, data.length]).range([0 + margin, w - margin]);
+        plotArea.append('rect')
+            .attr({'width': width, 'height': height})
+            .attr('class', 'overlay')
+            .call(zoom);
 
-		var vis = container
-		    .append("svg:svg")
-		    .attr("width", w)
-		    .attr("height", h)
-		    .attr('id', 'main-graphic');
+        function draw() {
+            var t = zoom.translate(),
+                tx = t[0],
+                ty = t[1];
 
-		var g = vis.append("svg:g")
-		    .attr("transform", "translate(0, " + h + ")");
-		
-		var line = d3.svg.line()
-		    .x(function(d,i) { return x(i); })
-		    .y(function(d) { return -1 * y(d); })
-		
-		g.append("svg:path").attr("d", line(data));
-		
-		g.append("svg:line")
-		    .attr("x1", x(0))
-		    .attr("y1", -1 * y(0))
-		    .attr("x2", x(w))
-		    .attr("y2", -1 * y(0))
+            if (x.domain()[0] < minDate) {
+                var newX = tx - x(minDate) + 0;
+                zoom.translate([newX, 0]);
+            } else if (x.domain()[1] > maxDate) {
+                var newX = tx - x(maxDate) + 480;
+                zoom.translate([newX, 0]);
+            }
 
-		g.append("svg:line")
-		    .attr("x1", x(0))
-		    .attr("y1", -1 * y(0))
-		    .attr("x2", x(0))
-		    .attr("y2", -1 * y(d3.max(data)))
-		
-		g.selectAll(".xLabel")
-		    .data(x.ticks(5))
-		    .enter().append("svg:text")
-		    .attr("class", "xLabel")
-		    .text(String)
-		    .attr("x", function(d) { return x(d) })
-		    .attr("y", 0)
-		    .attr("text-anchor", "middle")
+            console.log('tx: ', tx);
+            console.log('x(minDate): ', x(minDate));
+            console.log('newTx: ', newX);
 
-		g.selectAll(".yLabel")
-		    .data(y.ticks(4))
-		    .enter().append("svg:text")
-		    .attr("class", "yLabel")
-		    .text(String)
-		    .attr("x", 0)
-		    .attr("y", function(d) { return -1 * y(d) })
-		    .attr("text-anchor", "right")
-		    .attr("dy", 4)
-		
-		g.selectAll(".xTicks")
-		    .data(x.ticks(5))
-		    .enter().append("svg:line")
-		    .attr("class", "xTicks")
-		    .attr("x1", function(d) { return x(d); })
-		    .attr("y1", -1 * y(0))
-		    .attr("x2", function(d) { return x(d); })
-		    .attr("y2", -1 * y(-0.3))
+            plotChart.select('g.x.axis').call(xAxis);
+            plotChart.select('g.y.axis').call(yAxis);
+            plotArea.select('path.area').attr('d', area);
+            plotArea.select('path.super-line').attr('d', line(data));
+            plotArea.selectAll('circle.super-dot')
+                .attr('cx', function(d) { return x(d.date); })
+                .attr('cy', function(d) { return y(d.value); });
+        }
+    }
 
-		g.selectAll(".yTicks")
-		    .data(y.ticks(4))
-		    .enter().append("svg:line")
-		    .attr("class", "yTicks")
-		    .attr("y1", function(d) { return -1 * y(d); })
-		    .attr("x1", x(-0.1))
-		    .attr("y2", function(d) { return -1 * y(d); })
-		    .attr("x2", x(0));
-	}
+    function updateAreaChart(newData) {
+        
+        var circs = d3.selectAll('.super-dot')
+            .data(newData)
+          .enter()
+            .append('circle')
+            .attr('class', 'super-dot');
+
+        circs.attr('cx', function(d) { return x(d.date); })
+            .attr('cy', function(d) { return y(d.value);})
+            .attr('r', 6);
+
+    }
+
+    function createStaticLineGraph(container, theData) {
+
+        clearGraphic(container);
+
+        var data = theData.map(function(d) {return d.value;});
+
+        var w = defaultWidth,
+            h = defaultHeight,
+            margin = 20,
+            y = d3.scale.linear().domain([0, d3.max(data)]).range([0 + margin, h - margin]),
+            x = d3.scale.linear().domain([0, data.length]).range([0 + margin, w - margin]);
+
+        var vis = container
+            .append("svg:svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr('id', 'main-graphic');
+
+        var g = vis.append("svg:g")
+            .attr("transform", "translate(0, " + h + ")");
+        
+        var line = d3.svg.line()
+            .x(function(d,i) { return x(i); })
+            .y(function(d) { return -1 * y(d); })
+        
+        g.append("svg:path").attr("d", line(data));
+        
+        g.append("svg:line")
+            .attr("x1", x(0))
+            .attr("y1", -1 * y(0))
+            .attr("x2", x(w))
+            .attr("y2", -1 * y(0))
+
+        g.append("svg:line")
+            .attr("x1", x(0))
+            .attr("y1", -1 * y(0))
+            .attr("x2", x(0))
+            .attr("y2", -1 * y(d3.max(data)))
+        
+        g.selectAll(".xLabel")
+            .data(x.ticks(5))
+            .enter().append("svg:text")
+            .attr("class", "xLabel")
+            .text(String)
+            .attr("x", function(d) { return x(d) })
+            .attr("y", 0)
+            .attr("text-anchor", "middle")
+
+        g.selectAll(".yLabel")
+            .data(y.ticks(4))
+            .enter().append("svg:text")
+            .attr("class", "yLabel")
+            .text(String)
+            .attr("x", 0)
+            .attr("y", function(d) { return -1 * y(d) })
+            .attr("text-anchor", "right")
+            .attr("dy", 4)
+        
+        g.selectAll(".xTicks")
+            .data(x.ticks(5))
+            .enter().append("svg:line")
+            .attr("class", "xTicks")
+            .attr("x1", function(d) { return x(d); })
+            .attr("y1", -1 * y(0))
+            .attr("x2", function(d) { return x(d); })
+            .attr("y2", -1 * y(-0.3))
+
+        g.selectAll(".yTicks")
+            .data(y.ticks(4))
+            .enter().append("svg:line")
+            .attr("class", "yTicks")
+            .attr("y1", function(d) { return -1 * y(d); })
+            .attr("x1", x(-0.1))
+            .attr("y2", function(d) { return -1 * y(d); })
+            .attr("x2", x(0));
+    }
 
 </script>
 
