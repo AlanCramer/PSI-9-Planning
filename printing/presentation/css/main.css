@@ -1,0 +1,55 @@
+
+body {
+    background: #eeffff;
+    margin: 80px;
+    width: 600px;
+    //border: 1px solid black;
+}
+
+.top-level-div {
+    display: flex;
+}
+
+.pres-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-left: 1em;
+    text-decoration: underline;
+}
+
+.bullets-div {
+    height: 400px;
+}
+
+.bullet {
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-size: 20px;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+button.nav-button {
+
+    background-color: #005599;
+    color: white;
+    border: none;
+    font-size: 14px;
+    padding:1em 2em;
+    border-radius: 1em;
+}
+
+button.nav-button:hover {
+    background-color: #22aaee;
+}
