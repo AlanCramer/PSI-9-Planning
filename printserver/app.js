@@ -25,8 +25,8 @@ app.get('/', function(req, res) {
 
 // Log the request body and echo it back to the client
 app.post('/', function(req, res) {
-  // console.log(req.body); // Check if the requests's body contains the expected data
-  // res.send(req.body); // Test out echoing the data back to the client
+  console.log(req.body); // Check if the requests's body contains the expected data
+  res.send(req.body); // Test out echoing the data back to the client
 
   /* Begin Phantom experiment*/
   var ph = null;
@@ -36,6 +36,7 @@ app.post('/', function(req, res) {
   // Create a Phantom instance
   phantom.create()
     .then(function(instance) {
+        console.log('create started');
       // Capture the new Phantom instance in a closure variable
       ph = instance;
 
@@ -43,6 +44,7 @@ app.post('/', function(req, res) {
       return ph.createPage();
 
     }).then(function(webpage) {
+        console.log('page created')
       // Capture the new WedPage instance in a closure variable
       page = webpage;
 
@@ -60,7 +62,7 @@ app.post('/', function(req, res) {
       // page.on('onLoadFinished', function(status) {
       //   console.log('Load finished, status : ' + status); // http://phantomjs.org/api/webpage/handler/on-load-finished
       //   console.log('about to render');
-      // 	page.render('output.pdf'); 
+      // 	page.render('output.pdf');
       // 	//ph.exit(); // Close the Phantom instance
 
       // });
@@ -161,7 +163,7 @@ app.post('/', function(req, res) {
 
       setTimeout(function ()  { // really want onLoadFinished, but that's not working
         console.log('about to render');
-      	page.render('output.pdf'); 
+      	page.render('output.pdf');
       	ph.exit(); // Close the Phantom instance
       	res.download('./output.pdf', 'output.pdf');
 

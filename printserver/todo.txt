@@ -1,0 +1,7 @@
+scent-client setup
+
+css make the report prettier
+
+Add a table
+
+Localhost server
