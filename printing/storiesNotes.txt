@@ -1,0 +1,73 @@
+
+(Dick)
+Angular Route for a new Report Page
+   Place holder page
+   Identify Issue/Workshop route of printed version
+    Q: query string or URL path?
+    Q: date range picker - Printed version has the whole year, right?
+    Q: state of UI (tooltips, previous date period (LC)) ignored in printed report
+
+
+(Alan + Chuck)
+Make a new Template and Render WAC as a printed report
+    Not worrying about pagination, but want to see the input to phantomjs
+   < make new stories around fixing it >
+   < refactoring of existing code >
+   Q: How pervasive will the concept of 'for-print-report' need to be in the code?
+   Q: How do we minimize this?
+
+(Alan + Chuck)
+LRSTable massaging
+  calculating size on page
+  breaking into new tables
+
+
+< Alan is very skeptical >
+LRSTable with paged media (downgrade phantomjs 1.9.7)
+
+
+Server -
+    AI: Alan harass Adam and Rich for server
+    Chuck: Ask JH for EC2 instance borrowing
+    'Hello World' Server
+        Where does this code go?
+        Alan: Make a Repo
+        Deployment scripts (?) - npm install
+    Install Phantomjs
+        add to deployment scripts
+    Build a router to handle
+        if Node then Express
+        if JBOSS then match the DCT approach
+        Puts { classId, reportId }
+        Response of URL to printed report, or report!
+    WebSockets (give pdf to client)- Spike, return document when built
+    WebSockets (talk to WebWorkers)- Spike, coordinate phantom instances
+    Authentication
+    Queuing Spike
+        investigate RabbitMQ and other queuing technologies
+        AmazonSimpleQueueService
+        Pick one
+        Simulate hitting the fake server with simulated print reports
+            Adding and removing print jobs
+        Simulate spinning up new Phantom instances (web workers)
+
+    Do we need queuing? (we think 'yes')
+    Do we want a separate phantom process for each report?
+
+    Interactive or Polling?
+    Batch considerations?
+    Ping Rubesh, JBOSS vs Node
+
+    Where is the code?
+
+    Part of TLSP vs Standalone?
+    Web Sockets? (worth investigating)
+    Polling? (fall back)
+    Direct return or copy to S3 Bucket?
+    John Hubner ... EC2 instances available?
+
+
+Redesign WAC Table (at least for print report)
+  Each student gets a table
+  Transpose the Table
+  Rows are skills
