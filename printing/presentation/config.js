@@ -17,7 +17,7 @@ var pages = [
         'Our Web App: TLSP',
         'Angular',
         'D3',
-        'RequireJS, Gulp, Grunt, ++',
+        'RequireJS, Gulp, Grunt, bower, npm, ++',
         'Intellify',
     ] },
     { title: 'Some PDF Generation Technologies', bullets: [
@@ -28,8 +28,9 @@ var pages = [
         'Others - <ul style=\'font-size:smaller\'><li>Snappy (wkhtmltopdf wrapper)</li>' +
             '<li>DocRaptor (commercial service)</li>' +
             '<li>wicked_pdf (ruby scripting)</li></ul>',
-        'Comment: Consistency Requirement implies Server Side Solution',
-        'Comment: Code Reuse implies Headless Browser Approach'
+        '<span class=\'comment\'>Comment: Consistency Requirement implies Server Side Solution</span>',
+        '<span class=\'comment\'>Comment: Code Reuse implies Headless Browser Approach</span>',
+        '<span class=\'comment\'>Comment: Both Phantom and WK use (versions of) QTWebkit</span>'
     ] },
     { title: 'Server', bullets: [
         'AWS',
@@ -40,12 +41,17 @@ var pages = [
     { title: 'Proof Of Concept', bullets: [
         'Start with PhantomJS: somewhat proven',
         'Stand Alone Pages',
-        ''
+        'Can we get a header and footer?',
+        'Are images handled?',
+        'Will D3 render correctly?',
+        'Can we set the page size?',
+        'Can we do anything with Tables?'
     ] },
     { title: 'Demo of Current State', bullets: [] },
     { title: 'Final Comments', bullets: [
         'Code Reuse: add Route for printed version of report',
-        'Security: TLSP vs Independent, SSO'
+        'Vertical and Horizontal Table Page Breaks',
+        'Security: TLSP vs Independent, SSO',
     ] },
 ];
 
