@@ -2,7 +2,6 @@
 
 <head>
     <script src="d3/d3.min.js"></script>
-    <script src='reportUtil.js'></script>
 
     <style>
         body {
@@ -30,20 +29,31 @@
 
 <body>
 
+<script src='reportHorizBarChartDir.js'></script>
+
 <script>
-    var title = 'Workshop Asssessment Class Report';
-    var subTitle = 'Class 1 - Read 180';
-    logoFile = 'images/d3Report/work_shop_logo.svg';
-
-    LRS.buildTitle(d3.select('body'), title, subTitle, logoFile);
-
     var barChartDiv = d3.select('body').append('div').attr('class', 'bar-chart-div');
-    //createBarChart(barChartDiv, fakeBCModel);
-
+    var fakeBCModel = {
+        title : 'This is a Bar Chart',
+        data  : [
+            {   name : 'Theme',
+                values : [ 57, 92 ],
+                cssClasses : [ 'level-a', 'level-b'] },
+            {   name : 'Context Clues',
+                values : [ 60, 12],
+                cssClasses : [ 'level-a', 'level-b'] },
+            {   name : 'Word Meanings',
+                values : [ 60, 12],
+                cssClasses : [ 'level-a', 'level-b'] } ],
+        legend : [
+            {   name : 'Level A',
+                cssClasses : 'level-a'},
+            {   name : 'Level B',
+                cssClasses : 'level-b'}
+            ]
+    };
+    createBarChart(barChartDiv, fakeBCModel);
 </script>
-
-
-<script src='horizBarChart.js'></script>
 
 </body>
 </html>

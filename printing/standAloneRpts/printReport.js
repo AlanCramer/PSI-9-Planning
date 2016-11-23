@@ -14,10 +14,23 @@ page.paperSize = {
     border: '50px',
     margin: '0px',
     header: {
-    	height: '2cm',
+    	height: '50px',
     	contents: phantom.callback(function (pageNum, numPages) {
-            return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
-        })
+/*
+        var title = 'Workshop Asssessment Class Report';
+        var subTitle = 'Class 1 - Read 180';
+        var logoFile = 'images/d3Report/work_shop_logo.svg';
+
+        var result = '<div>';
+        result = result + '<div id="title" style="text-align: right; font-size 24px;"><label text="' + title + '"/></div>';
+        result = result + '<div class="rightbox"><img src="' + logo + '"/></div>';
+        result = result + '<div id="subtitle"><label text="' + subtitle + '"/></div>';
+        result = result + '</div>';
+        console.write(result);
+        return result;
+*/
+        return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
+      })
     },
     footer: {
         height: '3cm',
@@ -46,4 +59,3 @@ page.open(url, function(status) {
 	}, 2000);
 
 });
-
