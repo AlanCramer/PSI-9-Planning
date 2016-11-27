@@ -23,10 +23,10 @@ page.paperSize = {
 
         var result = '<div>';
         result = result + '<div id="title" style="text-align: right; font-size 24px;"><label text="' + title + '"/></div>';
-        result = result + '<div class="rightbox"><img src="' + logo + '"/></div>';
-        result = result + '<div id="subtitle"><label text="' + subtitle + '"/></div>';
+        result = result + '<div class="rightbox"><img src="' + logoFile + '"/></div>';
+        result = result + '<div id="subtitle"><label text="' + subTitle + '"/></div>';
         result = result + '</div>';
-        console.write(result);
+        console.log(result);
         return result;
 */
         return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
