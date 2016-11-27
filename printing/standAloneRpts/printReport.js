@@ -16,20 +16,20 @@ page.paperSize = {
     header: {
     	height: '50px',
     	contents: phantom.callback(function (pageNum, numPages) {
-/*
+
         var title = 'Workshop Asssessment Class Report';
         var subTitle = 'Class 1 - Read 180';
         var logoFile = 'images/d3Report/work_shop_logo.svg';
 
         var result = '<div>';
-        result = result + '<div id="title" style="text-align: right; font-size 24px;"><label text="' + title + '"/></div>';
+        result = result + '<div id="title" style="text-align: left; font-size 24px;">' + title + '</div>';
         result = result + '<div class="rightbox"><img src="' + logoFile + '"/></div>';
-        result = result + '<div id="subtitle"><label text="' + subTitle + '"/></div>';
+        result = result + '<div id="subtitle">' + subTitle + '</div>';
         result = result + '</div>';
         console.log(result);
         return result;
-*/
-        return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
+
+//        return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
       })
     },
     footer: {

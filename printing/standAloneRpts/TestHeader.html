@@ -1,5 +1,6 @@
 <html>
 <head>
+  <link rel="stylesheet" type="text/css" href="css/summary.css"/>
 <script type="text/javascript">
 var header = function (pageNum, numPages) {
 
@@ -8,9 +9,9 @@ var header = function (pageNum, numPages) {
   var logoFile = 'images/d3Report/work_shop_logo.svg';
 
   var result = '<div>';
-  result = result + '<div id="title" style="text-align: right; font-size 24px;"><label text="' + title + '"/></div>';
+  result = result + '<div id="title" style="text-align: left; font-size 24px;">' + title + '</div>';
   result = result + '<div class="rightbox"><img src="' + logoFile + '"/></div>';
-  result = result + '<div id="subtitle"><label text="' + subTitle + '"/></div>';
+  result = result + '<div id="subtitle">' + subTitle + '</div>';
   result = result + '</div>';
   console.log(result);
   return result;
