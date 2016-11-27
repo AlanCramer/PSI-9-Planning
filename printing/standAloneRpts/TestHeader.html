@@ -1,0 +1,44 @@
+<html>
+<head>
+<script type="text/javascript">
+var header = function (pageNum, numPages) {
+
+  var title = 'Workshop Asssessment Class Report';
+  var subTitle = 'Class 1 - Read 180';
+  var logoFile = 'images/d3Report/work_shop_logo.svg';
+
+  var result = '<div>';
+  result = result + '<div id="title" style="text-align: right; font-size 24px;"><label text="' + title + '"/></div>';
+  result = result + '<div class="rightbox"><img src="' + logoFile + '"/></div>';
+  result = result + '<div id="subtitle"><label text="' + subTitle + '"/></div>';
+  result = result + '</div>';
+  console.log(result);
+  return result;
+//        return '<div style="text-align: left; font-size: 12px;">This is the header, lovely, no?</div>';
+};
+</script>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+function appendStringAsNodes(element, html) {
+var frag = document.createDocumentFragment(),
+    tmp = document.createElement('body'), child;
+tmp.innerHTML = html;
+// Append elements in a loop to a DocumentFragment, so that the browser does
+// not re-render the document for each node
+while (child = tmp.firstChild) {
+    frag.appendChild(child);
+}
+element.appendChild(frag); // Now, append all elements at once
+frag = tmp = null;
+}
+    var bodies = document.getElementsByTagName("body");
+    var numBodies = bodies.length;
+    if (numBodies > 0)
+    {
+      var body = bodies.item(0);
+      appendStringAsNodes(body,header());
+    }
+</script>
+</html>
