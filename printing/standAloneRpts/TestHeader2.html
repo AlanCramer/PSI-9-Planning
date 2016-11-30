@@ -1,0 +1,38 @@
+<html>
+<head>
+<script type="text/javascript">
+var getClassHeaderInfo = function (response) {
+  var obj = null;
+  if (typeof response === 'string')
+  {
+    try {
+      obj = JSON.parse(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  var className = obj.basicInformation.className;
+  var grades = obj.basicInformation.selectedGrades.map(function(currentGrade) {
+      return currentGrade.abbreviatedName;
+  }).join(", ");
+  var teachers = obj.basicInformation.teachers.map(function(currentTeacher) {
+    var teacherName = currentTeacher.lastName + "," + currentTeacher.firstName;
+    return teacherName;
+  }).join("; ");
+  var retval = {className: className, grades: grades, teachers: teachers};
+  return retval;
+};
+</script>
+</head>
+<body>
+  <div id='response'>
+  </div>
+</body>
+<script type="text/javascript">
+
+var response = '{"basicInformation":{"className":"R180UB","schoolIri":"L3NjaG9vbHMvZW1wamhwMDQxMnZmdjZsZHJqMThsdG9vXzF1YW12ZTA=","selectedGrades":[{"abbreviatedName":"PK","systemId":"99","selected":true},{"abbreviatedName":"K","systemId":"100","selected":true},{"abbreviatedName":"1","systemId":"101","selected":true}],"classIRI":"L3NjaG9vbHMvZW1wamhwMDQxMnZmdjZsZHJqMThsdG9vXzF1YW12ZTAvY2xhc3Nlcy9wbHVwcjBoaWc4MXBiMG02aDdjcWdpZDlfMXVhbXZlMA==","teachers":[{"iri":"L2VkdWNhdG9ycy8wOGNvNjAzc2Mxc3YybDBsNTM0MW9oYmJfMXVhbXZlMA==","systemId":"08co603sc1sv2l0l5341ohbb_1uamve0","firstName":"Mainak","lastName":"teacher r180ub"},{"iri":"L2VkdWNhdG9ycy9zYjhmZHYyYmZyZzUxZHFjaGo5MDF2ZzRfMXVhbXZlMA==","systemId":"sb8fdv2bfrg51dqchj901vg4_1uamve0","firstName":"Teach101_First","lastName":"Teach101_Last"}]},"productIds":[],"managedProductList":[{"systemId":"R180U","name":"READ 180 Universal","category":"Literacy","selected":false}]}';
+var result = getClassHeaderInfo(response);
+var divElmt = document.getElementById('response');
+divElmt.innerText = JSON.stringify(result);
+</script>
+</html>
