@@ -1,5 +1,14 @@
 <html>
 <head>
+<style type="text/css">
+tr,th,td {
+/*  border: 2px solid black; */
+  padding: 10px;
+}
+th {
+  text-align: left;
+}
+</style>
 <script type="text/javascript">
 var getClassHeaderInfo = function (response) {
   var obj = null;
@@ -22,6 +31,14 @@ var getClassHeaderInfo = function (response) {
   var retval = {className: className, grades: grades, teachers: teachers};
   return retval;
 };
+var getClassHeaderInfoTable = function (classInfo)
+{
+  var tbl = "<table>";
+  tbl = tbl + "<tr><th>Teacher</th><th>Grade</th><th>School</th><th>Assessment</th></tr>";
+  tbl = tbl + "<tr><td>" + classInfo.teachers + "</td><td>" + classInfo.grades + "</td><td>George Washington Carver Middle School</td><td>Workshop Assessment 4</td></tr>";
+  tbl = tbl + "</table>";
+  return tbl;
+}
 </script>
 </head>
 <body>
@@ -29,10 +46,22 @@ var getClassHeaderInfo = function (response) {
   </div>
 </body>
 <script type="text/javascript">
-
+function appendStringAsNodes(element, html) {
+    var frag = document.createDocumentFragment(),
+         tmp = document.createElement('body'), child;
+    tmp.innerHTML = html;
+    // Append elements in a loop to a DocumentFragment, so that the browser does
+    // not re-render the document for each node
+    while (child = tmp.firstChild) {
+      frag.appendChild(child);
+    }
+    element.appendChild(frag); // Now, append all elements at once
+    frag = tmp = null;
+}
 var response = '{"basicInformation":{"className":"R180UB","schoolIri":"L3NjaG9vbHMvZW1wamhwMDQxMnZmdjZsZHJqMThsdG9vXzF1YW12ZTA=","selectedGrades":[{"abbreviatedName":"PK","systemId":"99","selected":true},{"abbreviatedName":"K","systemId":"100","selected":true},{"abbreviatedName":"1","systemId":"101","selected":true}],"classIRI":"L3NjaG9vbHMvZW1wamhwMDQxMnZmdjZsZHJqMThsdG9vXzF1YW12ZTAvY2xhc3Nlcy9wbHVwcjBoaWc4MXBiMG02aDdjcWdpZDlfMXVhbXZlMA==","teachers":[{"iri":"L2VkdWNhdG9ycy8wOGNvNjAzc2Mxc3YybDBsNTM0MW9oYmJfMXVhbXZlMA==","systemId":"08co603sc1sv2l0l5341ohbb_1uamve0","firstName":"Mainak","lastName":"teacher r180ub"},{"iri":"L2VkdWNhdG9ycy9zYjhmZHYyYmZyZzUxZHFjaGo5MDF2ZzRfMXVhbXZlMA==","systemId":"sb8fdv2bfrg51dqchj901vg4_1uamve0","firstName":"Teach101_First","lastName":"Teach101_Last"}]},"productIds":[],"managedProductList":[{"systemId":"R180U","name":"READ 180 Universal","category":"Literacy","selected":false}]}';
-var result = getClassHeaderInfo(response);
+var classInfo = getClassHeaderInfo(response);
+var tbl = getClassHeaderInfoTable(classInfo);
 var divElmt = document.getElementById('response');
-divElmt.innerText = JSON.stringify(result);
+appendStringAsNodes(divElmt, tbl);
 </script>
 </html>
