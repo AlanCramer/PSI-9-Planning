@@ -1,5 +1,5 @@
 
-var url = 'https://h502000001.education.scholastic.com/HMHCentral/?cb=1468345273681;0.5453774699620084#/dataAnalytics?class=orljsmjj7vb6d81le936gli6_1cqnue0&report=103.1'
+var url = 'https://h503000001.education.scholastic.com/HMHCentral/#/dataAnalytics?class=ru479hdip5lrb9lf6p91dr5s_1uamve0&report=103.1'
 
 var fs = require('fs');
 var CookieJar = "cookiejar.json";
@@ -47,4 +47,3 @@ page.open(url, function(status) {
 	}, 7000);
 
 });
-

@@ -6,7 +6,8 @@ Angular Route for a new Report Page
     Q: query string or URL path?
     Q: date range picker - Printed version has the whole year, right?
     Q: state of UI (tooltips, previous date period (LC)) ignored in printed report
-
+  Q: How can Phantom get there if users cannot?
+  Q: do we care if customers stumble on this page?
 
 (Alan + Chuck)
 Make a new Template and Render WAC as a printed report
@@ -38,11 +39,11 @@ Server -
     Build a router to handle
         if Node then Express
         if JBOSS then match the DCT approach
-        Puts { classId, reportId }
+        PUTS { classId, reportId }
         Response of URL to printed report, or report!
     WebSockets (give pdf to client)- Spike, return document when built
     WebSockets (talk to WebWorkers)- Spike, coordinate phantom instances
-    Authentication
+    Authentication?
     Queuing Spike
         investigate RabbitMQ and other queuing technologies
         AmazonSimpleQueueService
@@ -56,6 +57,7 @@ Server -
 
     Interactive or Polling?
     Batch considerations?
+
     Ping Rubesh, JBOSS vs Node
 
     Where is the code?

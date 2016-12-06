@@ -35,7 +35,9 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     // Alert the server's response
-                    alert(xhr.responseText);
+                    //alert(xhr.responseText);
+                    d3.select('body').append('p')
+                        .text(xhr.responseText);
                 }
             };
             xhr.send(JSON.stringify(myData));
