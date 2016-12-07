@@ -2,7 +2,7 @@
 <head>
   <link rel="stylesheet" type="text/css" href="css/summary.css"/>
 <script type="text/javascript">
-var header = function (pageNum, numPages) {
+  var header = function (pageNum, numPages) {
 
   var title = 'Workshop Asssessment Class Report';
   var subTitle = 'Class 1 - Read 180';
@@ -22,24 +22,24 @@ var header = function (pageNum, numPages) {
 <body>
 </body>
 <script type="text/javascript">
-function appendStringAsNodes(element, html) {
-var frag = document.createDocumentFragment(),
-    tmp = document.createElement('body'), child;
-tmp.innerHTML = html;
-// Append elements in a loop to a DocumentFragment, so that the browser does
-// not re-render the document for each node
-while (child = tmp.firstChild) {
-    frag.appendChild(child);
-}
-element.appendChild(frag); // Now, append all elements at once
-frag = tmp = null;
-}
-    var bodies = document.getElementsByTagName("body");
-    var numBodies = bodies.length;
-    if (numBodies > 0)
-    {
-      var body = bodies.item(0);
-      appendStringAsNodes(body,header());
-    }
+  function appendStringAsNodes(element, html) {
+      var frag = document.createDocumentFragment(),
+           tmp = document.createElement('body'), child;
+      tmp.innerHTML = html;
+      // Append elements in a loop to a DocumentFragment, so that the browser does
+      // not re-render the document for each node
+      while (child = tmp.firstChild) {
+        frag.appendChild(child);
+      }
+      element.appendChild(frag); // Now, append all elements at once
+      frag = tmp = null;
+  }
+  var bodies = document.getElementsByTagName("body");
+  var numBodies = bodies.length;
+  if (numBodies > 0)
+  {
+    var body = bodies.item(0);
+    appendStringAsNodes(body,header());
+  }
 </script>
 </html>

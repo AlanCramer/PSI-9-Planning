@@ -1,7 +1,7 @@
 
 var reportUrl = 'WAC.html'
 var fs = require('fs');
-var CookieJar = "cookies.json";
+var CookieJar = "cookiejar.json";
 
 var page = require('webpage').create();
 
@@ -64,7 +64,7 @@ page.paperSize = {
     border: '50px',
     margin: '0px',
     header: {
-    	height: '50px',
+    	height: '200px',
     	contents: phantom.callback(function (pageNum, numPages) {
 
         var result = '<div>';
@@ -98,6 +98,10 @@ var schoolClassesUrl = getSchoolClassesURL(hostId, schoolId, classId);
 console.log("Attempting to open url: " + schoolClassesUrl);
 page.open(schoolClassesUrl, function(status) {
     console.log("Loaded " + schoolClassesUrl + " with status: " + status);
+    var cookies = page.cookies;
+    cookies.forEach (function (cookie) {
+      console.log('cookie = ' + JSON.stringify(cookie));
+    });
     if (status === "success") {
       var jsonSource = page.plainText;
       console.log(jsonSource);

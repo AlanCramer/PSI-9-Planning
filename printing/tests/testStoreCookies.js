@@ -1,5 +1,5 @@
 
-var url = 'https://h502000001.education.scholastic.com/HMHCentral/?cb=1468268146349;0.408462481187881#/teacherDashboard/class?class=p8libnvtn19ap6rdu7me8h61_1cqnue0&school=ij8ocgj4u7u8c386dt939nsi_1cqnue0'
+var url = 'https://h503000001.education.scholastic.com/HMHCentral/#/leaderCentral/dataAnalytics?report=district-snapshot'
 
 var fs = require('fs');
 var CookieJar = "cookiejar.json";
