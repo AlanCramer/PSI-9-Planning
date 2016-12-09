@@ -177,7 +177,7 @@ app.post('/', function(req, res) {
 							page.render('output.pdf');
 							ph.exit(); // Close the Phantom instance
 							res.download('./output.pdf', 'output.pdf');
-						}, 3000);
+						}, 7000);
 					}, function () {
 						console.log("open page failed");
     }).catch(function(error) {
