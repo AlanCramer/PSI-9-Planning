@@ -1,0 +1,85 @@
+<html>
+<head>
+  <script type="text/javascript">
+  function QueryStringToJSON() {
+    var pairs = location.search.slice(1).split('&');
+
+    var result = {};
+    pairs.forEach(function(pair) {
+        pair = pair.split('=');
+        result[pair[0]] = decodeURIComponent(pair[1] || '');
+    });
+
+    return JSON.parse(JSON.stringify(result));
+}
+
+// parseUri 1.2.2
+// (c) Steven Levithan <stevenlevithan.com>
+// MIT License
+
+function parseUri (str) {
+	var	o   = parseUri.options,
+		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		uri = {},
+		i   = 14;
+
+	while (i--) uri[o.key[i]] = m[i] || "";
+
+	uri[o.q.name] = {};
+	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+		if ($1) uri[o.q.name][$1] = $2;
+	});
+
+	return uri;
+};
+
+parseUri.options = {
+	strictMode: false,
+	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+	q:   {
+		name:   "queryKey",
+		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+	},
+	parser: {
+		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+	}
+};
+
+function createSessionCookie(encodedUrl, sessionId) {
+  /*
+  {"domain":"h503000001.education.scholastic.com",
+  "httponly":false,
+  "name":"JSESSIONID",
+  "path":"/HMHCentral",
+  "secure":true,
+  "value":"EnR-MTWIpFpfdE-3PNL4kIX0.undefined"
+  }
+  */
+  let decodedUrl = decodeURIComponent(encodeUrl);
+  let parsedUri = parseUri(decodedUrl);
+  let domain = parsedUri.host;
+  let cookie = {
+    domain: domain,
+    httponly: false,
+    name: 'JSESSIONID',
+    path: '/HMHCentral',
+    secure: true,
+    value: sessionId
+  }
+  return cookie;
+}
+
+  let query = QueryStringToJSON();
+  let decodedUrl = query.url;
+  let sessionId = query.jsessionid;
+  let cookie = createSessionCookie(decodedUrl,sessionId);
+
+//  let url =
+  console.log(JSON.stringify(cookie));
+
+  </script>
+</head>
+<body>
+</body>
+</html>
