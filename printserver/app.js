@@ -18,15 +18,71 @@ var port = process.env.PORT || 3000;
 // Middleware for parsing 'Content-Type': 'application/json'
 app.use(bodyParser.json());
 
+// parseUri 1.2.2
+// (c) Steven Levithan <stevenlevithan.com>
+// MIT License
+
+function parseUri (str) {
+	var	o   = parseUri.options,
+		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		uri = {},
+		i   = 14;
+
+	while (i--) uri[o.key[i]] = m[i] || "";
+
+	uri[o.q.name] = {};
+	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+		if ($1) uri[o.q.name][$1] = $2;
+	});
+
+	return uri;
+};
+
+parseUri.options = {
+	strictMode: false,
+	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+	q:   {
+		name:   "queryKey",
+		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+	},
+	parser: {
+		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+	}
+};
+
+function createSessionCookie(decodedUrl, sessionId) {
+  /*
+  {"domain":"h503000001.education.scholastic.com",
+  "httponly":false,
+  "name":"JSESSIONID",
+  "path":"/HMHCentral",
+  "secure":true,
+  "value":"EnR-MTWIpFpfdE-3PNL4kIX0.undefined"
+  }
+  */
+  var parsedUri = parseUri(decodedUrl);
+  var domain = parsedUri.host;
+  var cookie = {
+    domain: domain,
+    httponly: false,
+    name: 'JSESSIONID',
+    path: '/HMHCentral',
+    secure: true,
+    value: sessionId
+  }
+  return cookie;
+}
+
 // Serve index.html for all GET requests
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+	res.sendFile(__dirname + '/index.html');
 });
 
 // Log the request body and echo it back to the client
 app.post('/', function(req, res) {
-  console.log(req.body); // Check if the requests's body contains the expected data
-  res.send(req.body); // Test out echoing the data back to the client
+  console.log(req.url); // Check if the requests's body contains the expected data
+//  res.send(req.body); // Test out echoing the data back to the client
 
   /* Begin Phantom experiment*/
   var ph = null;
@@ -105,70 +161,25 @@ app.post('/', function(req, res) {
       });
 
     }).then(function() {
-      // Inject a <script> element onto the page with 'src' set to D3's CDN download address
-      // page.includeJs('https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js');
-
-    }).then(function() {
-      // page.injectJs() returns true if injection is successful, otherwise false
-      console.log ('injecting d3');
-      return page.injectJs('./standAloneReports/d3/d3.min.js');
-
-    }).then(function() {
-      // page.injectJs() returns true if injection is successful, otherwise false
-      console.log('injecting reportUtil');
-      return page.injectJs('./standAloneReports/reportUtil.js');
-
-    }).then(function() {
-      // page.injectJs() returns true if injection is successful, otherwise false
-      console.log('injecting horizBarChart');
-      return page.injectJs('./standAloneReports/horizBarChart.js');
-
-    }).then(function() {
-      // page.injectJs() returns true if injection is successful, otherwise false
-      return page.injectJs('./constructReport.js');
-
-    }).then(function(scriptLoaded) {
-      // Check that our script was injected - this should return 'true'
-      console.log(scriptLoaded);
-
-      page.evaluate(function(data, foo) {
-        // Woah! How does referencing 'd3' not throw a ReferenceError?
-
-        // page.evaluate() runs the provided function from within the Phantom process.
-        // Thus, you need to remember that the context / memory space are completely
-        // different than here in app.js. What we are logging in this case is the
-        // <script> element injected by the previous call to page.includeJs()
-
-        // Also, notice that this console log comes through the page's 'onConsoleMessage'
-        // event handler we set up above. Again, we are in the context of the Phantom
-        // process, so logging is happening...but it is not apparent unless we hook into
-        // the 'onConsoleMessage' event and pipe the logs back over to the Node process.
-
-        console.log(d3.select('body').html()); // Check if D3 was loaded properly by interacting with it
-        console.log(data); // Check if our stringified header data made it to Phantom
-        console.log(foo); // Test out passing a second argument to page.evaluate()
-        console.log(constructReport); // Check if our custom function defined with page.injectJs() is available
-
-        // Clear the <script> used to load D3 out of the page.
-        // Then, parse the data and run it through our custom function.
-        // Finally, check if it worked by console logging the contents of the <body>.
-        d3.select('body').html('');
-        data = JSON.parse(data);
-        constructReport(data);
-        console.log(d3.select('body').html());
-
-      }, JSON.stringify(req.body), 'foo');
-
-      console.log('phantom setup complete');
-
-      setTimeout(function ()  { // really want onLoadFinished, but that's not working
-        console.log('about to render');
-      	page.render('output.pdf');
-      	ph.exit(); // Close the Phantom instance
-      	res.download('./output.pdf', 'output.pdf');
-
-      }, 3000);
-
+			var encodedUrl = req.query.url;
+			var sessionId = req.query.jsessionid;
+			var decodedUrl = decodeURIComponent(encodedUrl);
+			console.log("request query string args: url=" + decodedUrl + " , jsessionid=" + sessionId);
+			var cookie = createSessionCookie(decodedUrl, sessionId);
+			console.log("cookie: " + JSON.stringify(cookie));
+			page.addCookie(cookie);
+			console.log("opening page: " + decodedUrl);
+			return page.open(decodedUrl);
+		}).then( function () {
+						console.log("opened page successfully");
+						setTimeout(function ()  { // really want onLoadFinished, but that's not working
+							console.log('about to render');
+							page.render('output.pdf');
+							ph.exit(); // Close the Phantom instance
+							res.download('./output.pdf', 'output.pdf');
+						}, 3000);
+					}, function () {
+						console.log("open page failed");
     }).catch(function(error) {
       console.log(error);
       ph.exit(); // Always remember to close the Phantom instance no matter what!
