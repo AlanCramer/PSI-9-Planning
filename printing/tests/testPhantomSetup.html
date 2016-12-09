@@ -46,7 +46,7 @@ parseUri.options = {
 	}
 };
 
-function createSessionCookie(encodedUrl, sessionId) {
+function createSessionCookie(decodedUrl, sessionId) {
   /*
   {"domain":"h503000001.education.scholastic.com",
   "httponly":false,
@@ -56,7 +56,6 @@ function createSessionCookie(encodedUrl, sessionId) {
   "value":"EnR-MTWIpFpfdE-3PNL4kIX0.undefined"
   }
   */
-  let decodedUrl = decodeURIComponent(encodeUrl);
   let parsedUri = parseUri(decodedUrl);
   let domain = parsedUri.host;
   let cookie = {
@@ -71,8 +70,9 @@ function createSessionCookie(encodedUrl, sessionId) {
 }
 
   let query = QueryStringToJSON();
-  let decodedUrl = query.url;
+  let encodedUrl = query.url;
   let sessionId = query.jsessionid;
+  let decodedUrl = decodeURIComponent(encodeUrl);
   let cookie = createSessionCookie(decodedUrl,sessionId);
 
 //  let url =
