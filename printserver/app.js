@@ -80,13 +80,17 @@ app.get('/', function(req, res) {
 });
 
 // Log the request body and echo it back to the client
-app.post('/', function(req, res) {
+app.post('/',
+function(req, res) {
   console.log(req.url); // Check if the requests's body contains the expected data
 //  res.send(req.body); // Test out echoing the data back to the client
 
   /* Begin Phantom experiment*/
   var ph = null;
   var page = null;
+	var title = 'Workshop Asssessment Class Report';
+	var subTitle = 'Class 1 - Read 180';
+	var logoFile = 'images/d3Report/work_shop_logo.svg';
 
   console.log('POST received. Spinning up a Phantom instance...');
   // Create a Phantom instance
@@ -100,9 +104,37 @@ app.post('/', function(req, res) {
       return ph.createPage();
 
     }).then(function(webpage) {
-        console.log('page created')
+        console.log('page created');
       // Capture the new WedPage instance in a closure variable
       page = webpage;
+			page.paperSize = {
+				//viewportSize: { width: 960, height: 1200 },
+				//zoomFactor: .1,
+			    width: '8.5in',
+			    height: '11in',
+			    border: '50px',
+			    margin: '0px',
+			    header: {
+			    	height: '200px',
+			    	contents: function (pageNum, numPages) {
+
+			        var result = '<div>';
+			        result = result + '<div id="title" style="text-align: left; font-size: 24px; color: red;">' + title + '</div>';
+			        result = result + '<div><img src="' + logoFile + '"/></div>';
+			        result = result + '<div id="subtitle">' + subTitle + '</div>';
+			        result = result + '</div>';
+			        console.log(result);
+			        return result;
+			      }
+			    },
+			    footer: {
+			        height: '3cm',
+			        contents: function (pageNum, numPages) {
+			            return '<div style="text-align: right; font-size: 12px;"> Check out this footer with page numbers: ' + pageNum + ' / ' + numPages + '</div>';
+			        }
+			    }
+			};
+
 
       // console.log('Phantom page: ', page); // For inspecting the newly created WebPage instance
 
@@ -160,7 +192,7 @@ app.post('/', function(req, res) {
         }
       });
 
-    }).then(function() {
+			console.log("Decoding request query string arguments: " + JSON.stringify(req.query));
 			var encodedUrl = req.query.url;
 			var sessionId = req.query.jsessionid;
 			var decodedUrl = decodeURIComponent(encodedUrl);
@@ -170,6 +202,8 @@ app.post('/', function(req, res) {
 			page.addCookie(cookie);
 			console.log("opening page: " + decodedUrl);
 			return page.open(decodedUrl);
+		}, function () {
+			console.log("create page failed");
 		}).then( function () {
 						console.log("opened page successfully");
 						setTimeout(function ()  { // really want onLoadFinished, but that's not working
@@ -177,10 +211,8 @@ app.post('/', function(req, res) {
 							page.render('output.pdf');
 							ph.exit(); // Close the Phantom instance
 							res.download('./output.pdf', 'output.pdf');
-						}, 7000);
-					}, function () {
-						console.log("open page failed");
-    }).catch(function(error) {
+						}, 60000);
+		}).catch(function(error) {
       console.log(error);
       ph.exit(); // Always remember to close the Phantom instance no matter what!
     });
