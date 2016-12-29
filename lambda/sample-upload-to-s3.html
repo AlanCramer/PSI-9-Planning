@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS SDK for JavaScript - Sample Application</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.6.10.min.js"></script>
+</head>
+
+<body>
+    <table>
+      <tr>
+        <td>Access Key ID: </td><td><input type="text" id="access-key"/></td>
+      </tr>
+      <tr>
+        <td>Secret Access Key: </td><td><input type="text" id="secret-key"/></td>
+      </tr>
+      <tr>
+        <td><button id="list-objects">List Objects</button></td>
+      </tr>
+      <tr>
+        <td><input type="file" id="file-chooser"></td>
+        <td><button id="upload-button">Upload to S3</button></td>
+      </tr>
+    </table>
+    <div id="results"></div>
+    <script type="text/javascript">
+var bucketName = 'com.hmhco.lrs.pdf';
+//var regionName = 'us-west-2';
+//AWS.config.region = regionName;
+
+var fileChooser = document.getElementById('file-chooser');
+var uploadButton = document.getElementById('upload-button');
+var results = document.getElementById('results');
+var btnListObjects = document.getElementById('list-objects');
+var s_bucket = null;
+
+var getCredentials = function() {
+  var accessKey = document.getElementById('access-key');
+  var secretKey = document.getElementById('secret-key');
+  var credentials = null;
+  if (accessKey.value == null)
+  {
+    alert("you must enter an access key id");
+  }
+  else if (secretKey.value == null)
+  {
+    alert("you must enter a secret access key");
+  }
+  else {
+    credentials = new AWS.Credentials({accessKeyId: accessKey.value, secretAccessKey: secretKey.value});
+  }
+  return credentials;
+}
+
+var getBucket = function()
+{
+  var credentials = getCredentials();
+   if (credentials != null && s_bucket == null)
+   {
+     s_bucket = new AWS.S3(
+     {
+       credentials: credentials,
+       params: {
+           Bucket: bucketName
+       },
+     }
+   );
+ }
+ return s_bucket;
+}
+
+uploadButton.addEventListener('click', function () {
+    var bucket = getBucket();
+    var file = fileChooser.files[0];
+    if (file) {
+        results.innerHTML = '';
+        //Object key will be FILE_NAME
+        var objKey = file.name;
+        var params = {
+            Key: objKey,
+            ContentType: file.type,
+            Body: file,
+            ACL: 'public-read'
+        };
+        if (!bucket)
+        {
+          alert("No bucket available to upload");
+        }
+        else
+        {
+          console.log("uploading/putting file: " + JSON.stringify(file) + " to bucket: " + JSON.stringify(bucket));
+          bucket.putObject(params, function (err, data) {
+            if (err) {
+                results.innerHTML = 'ERROR: ' + err;
+            } else {
+                listObjs(bucket);
+            }
+          });
+        }
+    } else {
+        results.innerHTML = 'Nothing to upload.';
+    }
+}, false);
+
+btnListObjects.addEventListener('click', function () {
+  var bucket = getBucket();
+  listObjs(bucket);
+}, false);
+
+function listObjs(bucket) {
+  if (!bucket) {
+    alert("No bucket available to list objects");
+  }
+  else {
+    console.log("listing objects of bucket: " + JSON.stringify(bucket));
+    bucket.listObjects(null, function (err, data) {
+        if (err) {
+            results.innerHTML = 'ERROR: ' + err;
+        } else {
+            var objKeys = "";
+            data.Contents.forEach(function (obj) {
+                objKeys += obj.Key + "<br>";
+            });
+            results.innerHTML = objKeys;
+        }
+    });
+  }
+}
+</script>
+</body>
+</html>
