@@ -1,0 +1,23 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "Server-side generation of PDFs intended for printing",
+  "private": true,
+  "main": "handler.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/AlanCramer/PSI-9-Planning.git"
+  },
+  "author": "Chuck Doucette",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlanCramer/PSI-9-Planning/issues"
+  },
+  "homepage": "https://github.com/AlanCramer/PSI-9-Planning#readme",
+  "dependencies": {
+    "aws-sdk": "^2.7.21",
+    "parseuri": "0.0.5",
+    "path": "^0.12.7",
+    "phantom": "^2.1.13"
+  }
+}
