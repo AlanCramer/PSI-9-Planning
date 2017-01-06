@@ -6,14 +6,21 @@ const parseuri = require('parseuri');
 const fs = require('fs');
 const request = require('request');
 const path = require('path');
-var S3 = null;
-
+var S3 = new AWS.S3();
+/*
 const getProcessArgs = function () {
     let args = {};
     args.encodedFileUrl = process.argv[2];
     args.bucketName = process.argv[3];
     args.accessKeyId= process.argv[4];
     args.secretAccessKey = process.argv[5];
+    return args;
+};
+*/
+const getQueryStringArgs = function (queryStringParams) {
+    let args = {};
+    args.encodedFileUrl = queryStringParams.url;
+    args.bucketName = queryStringParams.bucket;
     return args;
 };
 
@@ -124,7 +131,7 @@ const doneDownloadingCallback = function(msg) {
 
   let awsRequest = download(fileUrl, destFilePath, doneDownloadingCallback);
 };
-
+/*
 let args = getProcessArgs();
 if (args.accessKeyId && args.secretAccessKey)
 {
@@ -136,3 +143,8 @@ if (args.accessKeyId && args.secretAccessKey)
 }
 S3 = new AWS.S3();
 copyUrlToS3(args);
+*/
+exports.handler = (event, context, callback) => {
+  let args = getQueryStringArgs(event.queryStringParameters);
+  copyUrlToS3(args);
+};
