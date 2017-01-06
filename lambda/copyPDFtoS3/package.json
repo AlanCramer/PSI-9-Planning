@@ -17,6 +17,7 @@
   "dependencies": {
     "aws-sdk": "^2.7.21",
     "parseuri": "0.0.5",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "request": "^2.79.0"
   }
 }
