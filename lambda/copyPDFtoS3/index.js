@@ -7,7 +7,7 @@ const fs = require('fs');
 const request = require('request');
 const path = require('path');
 var S3 = new AWS.S3();
-/*
+
 const getProcessArgs = function () {
     let args = {};
     args.encodedFileUrl = process.argv[2];
@@ -16,7 +16,7 @@ const getProcessArgs = function () {
     args.secretAccessKey = process.argv[5];
     return args;
 };
-*/
+
 const getQueryStringArgs = function (queryStringParams) {
     let args = {};
     args.encodedFileUrl = queryStringParams.url;
@@ -94,7 +94,6 @@ const upload = function() {
     console.log("No target bucket name provided!");
   }
   else {
-    console.log("uploading file: " + destFilePath + " to bucket: " + args.bucketName);
     let uploadFile = fs.createReadStream(destFilePath);
     let fileName = path.parse(destFilePath).base;
     console.log("parsed file name: '" + fileName + "'");
@@ -105,6 +104,9 @@ const upload = function() {
         Body: uploadFile,
         ACL: 'public-read'
     };
+    console.log("uploading file: " + destFilePath + " to bucket: " + args.bucketName);
+    console.log("S3: " + JSON.stringify(S3));
+    console.log("params: " + JSON.stringify(params));
     let awsRequest = S3.putObject(params, function (err, data) {
       if (err)
       {
@@ -145,6 +147,12 @@ S3 = new AWS.S3();
 copyUrlToS3(args);
 */
 exports.handler = (event, context, callback) => {
-  let args = getQueryStringArgs(event.queryStringParameters);
-  copyUrlToS3(args);
+  console.log("running handler with event: " + JSON.stringify(event));
+  if (!event.queryStringParameters) {
+    console.log("Missing event.queryStringParameters!");
+  }
+  else {
+    let args = getQueryStringArgs(event.queryStringParameters);
+    copyUrlToS3(args);
+  }
 };
