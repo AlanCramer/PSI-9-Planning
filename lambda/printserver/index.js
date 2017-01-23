@@ -1,24 +1,34 @@
 'use strict';
 
 // string constants
+// query string parameters (intended for API gateway)
 const queryStringPropName = "queryStringParameters";
-const pageUrlArgName = "url";
-const bucketArgName = "bucket";
-const sessionIdArgName = "jsessionid";
+const urlQsName = "url";
+const bucketQsName = "bucket";
+const sessionIdQsName = "jsessionid";
+// internal args properties
+const urlPropName = "encodedFileUrl";
+const bucketPropName = "bucketName";
+const sessionIdPropName = "jsessionid";
+const accessKeyIdPropName = "accessKeyId";
+const secretAccessKeyPropName = "secretAccessKey";
+// PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
 
 // Node.js dependencies
 const Guid = require("guid");
 const parseuri = require("parseuri");
 const phantom = require("phantom");
+const fs = require("fs");
 const AWS = require("aws-sdk");
-const S3 = new AWS.S3();
+var S3 = new AWS.S3();
 
 // module/container variables
-var phantomPromise = null;
+var phantomCreatePromise = null;
 var phantomInstance = null;
 var containerId = Date.now().toString().slice(-6); // Any unique-ish id will do.
 var configTimestamp = new Date().toISOString();
+let phantomExitPromise = null;
 
 // functions
 
@@ -27,10 +37,10 @@ const validateArguments = function (event) {
   let queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
     err = "event does not contain: " + queryStringPropName;
-  } else if (!queryStringParameters.hasOwnProperty(pageUrlArgName)) {
-    err = "(page) '" + pageUrlArgName + "' was not provided (in query string)";
-  } else if (!queryStringParameters.hasOwnProperty(bucketArgName)) {
-    err = "'" + bucketArgName + "' (name) was not provided (in query string)"
+  } else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
+    err = "(page) '" + urlQsName + "' was not provided (in query string)";
+  } else if (!queryStringParameters.hasOwnProperty(bucketQsName)) {
+    err = "'" + bucketQsName + "' (name) was not provided (in query string)"
   }
   return err;
 };
@@ -62,26 +72,29 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   console.log("setting up phantom page")
   let page = webpage;
 
-  page.paperSize = {
+  page.property("paperSize", {
     //viewportSize: { width: 960, height: 1200 },
     //zoomFactor: .1,
       width: '8.5in',
       height: '11in',
       border: '50px',
       margin: '0px',
+// @@@ DT: Comment out the header and footer section to stop the error: SyntaxError: Unexpected EOF
       header: {
-        height: '5cm',
+        height: '10cm',
         contents: function (pageNum, numPages) {
           return '<div style="text-align: right; font-size: 12px;"> Check out this header with page numbers: ' + pageNum + ' / ' + numPages + '</div>';
         }
-      },
-      footer: {
-          height: '5cm',
+      }
+/*
+      ,footer: {
+          height: '10cm',
           contents: function (pageNum, numPages) {
               return '<div style="text-align: right; font-size: 12px;"> Check out this footer with page numbers: ' + pageNum + ' / ' + numPages + '</div>';
           }
       }
-  };
+*/
+  });
 
   /* Set up various event handlers on the WebPage instance */
   page.on('onConsoleMessage', function(msg) {
@@ -99,17 +112,20 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   });
 
   page.on('onResourceRequested', function(requestData) {
-    console.log('page.onResourceRequested ...'); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
+//    console.log('page.onResourceRequested ...'); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
+/*
     for (var key in requestData) {
       console.log('Key: ' + key + ', Value: ' + requestData[key]);
     }
+*/
   });
 
   page.on('onResourceReceived', function(response) {
     // This 'stage' check can be removed if you want to view
     // more info about the chunks of the response as it is received.
     if (response.stage === 'end') {
-      console.log('page.onResourceReceived ...'); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
+//      console.log('page.onResourceReceived ...'); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
+/*
       for (var key in response) {
         console.log('Key: ' + key + ', Value: ' + response[key]);
       }
@@ -117,19 +133,22 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
       for (var key in response.headers) {
         console.log(response.headers[key]);
       }
+*/
     }
   });
 
   page.on('onResourceError', function(requestError) {
     console.log('page.onResourceError ...'); // http://phantomjs.org/api/webpage/handler/on-resource-error.html
+    /*
     for (var key in requestError) {
       console.log('Key: ' + key + ', Value: ' + requestError[key]);
     }
+    */
   });
 
   if (sessionId) {
     var cookie = createSessionCookie(decodedUrl, sessionId);
-    console.log("adding cookie '%s' to page.", JSON.stringify(cookie));
+    console.log("adding cookie '%s' to page.", cookie);
     page.addCookie(cookie);
   };
 };
@@ -147,7 +166,15 @@ const getTempFilePath = function (fileName) {
 };
 
 const getUploadRequest = function (filePath, bucketName, keyName) {
-  console.log("will be uploading file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
+  console.log("creating upload request for file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
+  let awsRequest = null;
+  if (!filePath) {
+    return new Error("getUploadRequest: No file path");
+  } else if (!bucketName) {
+    return new Error("getUploadRequest: No S3 bucket name");
+  } else if (!keyName) {
+    return new Error("getUploadRequest: No S3 key name");
+  }
   let uploadFile = fs.createReadStream(filePath);
   let params = {
     Bucket: bucketName,
@@ -156,9 +183,9 @@ const getUploadRequest = function (filePath, bucketName, keyName) {
     Body: uploadFile,
     ACL: 'public-read'
   };
-  console.log("S3: " + JSON.stringify(S3));
+  console.log("S3: " + S3);
   console.log("params: " + JSON.stringify(params));
-  let awsRequest = S3.putObject(params);
+  awsRequest = S3.putObject(params);
   return awsRequest;
 };
 
@@ -172,28 +199,57 @@ const getSignedUrlForGetObject = function (filePath, bucketName, keyName, callba
 
 const uploadRenderedPageToS3 = function (filePath, bucketName, keyName, callback) {
   let awsRequest = getUploadRequest(filePath, bucketName, keyName);
-  awsRequest.
-  on('success', function(response) {
-    console.log("Successfully uploaded file to S3!");
-    getSignedUrlForGetObject(filePath, bucketName, keyName, callback);
-  }).
-  on('error', function(error) {
-    console.error("Error! failed to upload file to S3: " + error);
-    callback(error);
-  }).
-  send();
+  if (awsRequest instanceof Error)
+  {
+    let error = awsRequest;
+      console.error("Failed to create upload request: " + error);
+      callback(error);
+      return Promise.reject(error);
+  }
+  else {
+    awsRequest.
+    on('success', function(response) {
+      console.log("Successfully uploaded file to S3!");
+      getSignedUrlForGetObject(filePath, bucketName, keyName, callback);
+    }).
+    on('error', function(error) {
+      console.error("Error! failed to upload file to S3: " + error);
+      callback(error);
+    }).
+    send();
+  }
+};
+
+const phantomExitHandler = function(error, callback) {
+  if (error) {
+    console.error("Got phantom error: " + error);
+  }
+  if (phantomInstance && !phantomExitPromise) {
+    console.log("Shutting down phantom instance...");
+    phantomExitPromise = phantomInstance.exit();
+    phantomExitPromise.then(function () {
+      phantomInstance = null;
+      phantomExitPromise = null;
+      console.error("Finished shutting down phantom instance.");
+      if (callback)
+      {
+        callback(error);
+      }
+    });
+  }
 };
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
 
   const phantomErrorHandler = function (error) {
-    console.error("Got phantom error: " + error + "; shutting down phantom instance...");
-    let exitPromise = phantomInstance.exit();
-    exitPromise.then(function () {
-      phantomInstance = null;
-      console.error("Finished shutting down phantom instance and existing lambda handler");
-      handlerFinishedCallback(error);
-    });
+    // @@@ DT: If this is called (for page.on("onError"), I want the handlerFinishedCallback to be called (once eventually) and the promise chain to stop!
+    phantomExitHandler(error, handlerFinishedCallback);
+/*
+    // @@@ DT: How do I break the promise chain?
+    if (error) {
+      throw new Error(error);
+    }
+*/
   };
 
   let phantomPage = null;
@@ -201,45 +257,67 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
   let filePath = null;
 
   console.log("Creating page...");
+  const stepErrorHandler = function(errMsg) {
+    let error = new Error(errMsg);
+    console.error(error);
+    handlerFinishedCallback(null, error);
+    throw error;
+  }
   phantomInstance.createPage().
     then( function (webpage) {
       console.log("Page created (successfully).");
       phantomPage = webpage;
       setupPage(webpage, decodedUrl, sessionId, phantomErrorHandler);
       console.log("Using page to open URL: " + decodedUrl);
-      return phantomPage.open(decodedUrl);
-    }, handlerFinishedCallback).
+      let pageOpenPromise = phantomPage.open(decodedUrl);
+      return pageOpenPromise;
+    }).
     then( function () {
       fileName = getNewFileName(pdfExtension);
       filePath = getTempFilePath(fileName);
       console.log("Rendering opened page to file: %s", filePath);
-      return phantomPage.render(filePath);
-    }, handlerFinishedCallback).
+      let pageRenderPromise = null;
+      try {
+        pageRenderPromise = phantomPage.render(filePath);
+      }
+      catch (err)
+      {
+        console.error("Got error while rendering page: " + error);
+        pageRenderPromise = Promise.reject(err);
+      }
+      return pageRenderPromise;
+    }).
     then( function () {
       let keyName = fileName;
-      uploadRenderedPageToS3(filePath, bucketName, keyName, handlerFinishedCallback);
-    }, handlerFinishedCallback);
+      // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
+      console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, keyName);
+/*
+//      @@@ DT: I am temporarily commenting out this section to upload the file so you can play with this w/o actually uploading (since you need an AWS account).
+      // Please note that I am not currently using the Promise version of AWS SDK but using AWS.Request objects instead.
+      // Perhaps I should change this approach to be consistent!
+      let uploadResult = uploadRenderedPageToS3(filePath, bucketName, keyName, handlerFinishedCallback);
+      if (uploadResult && uploadResult instanceof Promise)
+      {
+        return uploadResult;
+      }
+*/
+    }, handlerFinishedCallback).
+    catch( handlerFinishedCallback);
 };
 
-exports.handler = (event, context, handlerFinishedCallback) => {
+const processRequest = function(args, handlerFinishedCallback) {
+  console.log("processRequest was called with: " + args);
 
-  console.log("lambda handler called with: " + JSON.stringify(event));
-
-  let argsError = validateArguments(event);
-  if (argsError) {
-    handlerFinishedCallback(argsError);
-  } else {
-    let args = event[queryStringPropName];
-    let encodedUrlOfPageToPrint = args[pageUrlArgName];
+    let encodedUrlOfPageToPrint = args[urlPropName];
     let decodedUrlOfPageToPrint = decodeURIComponent(encodedUrlOfPageToPrint);
-    let bucketName = args[bucketArgName];
-    let sessionId = args[sessionIdArgName];
+    let bucketName = args[bucketPropName];
+    let sessionId = args[sessionIdPropName];
 
     const capturePhantomInstance = function(instance) {
       if (phantomInstance) {
         console.warn("Already captured phantom instance!");
       } else {
-        console.log("Phantom instance created: " + JSON.stringify(instance));
+        console.log("Phantom instance created: " + instance);
         phantomInstance = instance;
       }
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
@@ -250,15 +328,72 @@ exports.handler = (event, context, handlerFinishedCallback) => {
       console.log("Container %s reusing phantom instance created at: %s", containerId, configTimestamp);
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
     } else {
-      if (!phantomPromise) {
+      if (!phantomCreatePromise) {
         console.log("Container %s creating new phantom instance at: %s", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
-            logLevel: 'debug',
+//            logLevel: "debug"
           };
-        phantomPromise = phantom.create(phantomArgs,phantomOptions);
-        phantomPromise.then(capturePhantomInstance,handlerFinishedCallback);
+        phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
+        phantomCreatePromise.then(capturePhantomInstance).
+        catch(handlerFinishedCallback);
       }
     }
+};
+
+exports.handler = (event, context, handlerFinishedCallback) => {
+  let argsError = validateArguments(event);
+  if (argsError) {
+    handlerFinishedCallback(argsError);
+  } else {
+    let queryStringParams = event[queryStringPropName];
+
+    const getQueryStringArgs = function (queryStringParams) {
+        let args = {};
+        args[urlPropName] = queryStringParams[urlQsName]
+        args[bucketPropName] = queryStringParams[bucketQsName];
+        args[sessionIdPropName] = queryStringParams[sessionIdQsName];
+        return args;
+    };
+    let args = getQueryStringArgs(queryStringParams);
+    processRequest(args,handlerFinishedCallback);
   }
 };
+
+
+const getProcessArgs = function () {
+    let args = {};
+    let argv = process.argv;
+    let numArgs = argv.length;
+    console.log("Processing args: " + JSON.stringify(argv));
+    if (numArgs < 6) {
+      console.error("Not enough args: %d", numArgs);
+    } else {
+      args[urlPropName] = argv[2];
+      args[bucketPropName]= argv[3];
+      args[accessKeyIdPropName]= argv[4];
+      args[secretAccessKeyPropName] = argv[5];
+      if (numArgs >= 7)
+      {
+        args[sessionIdPropName] = argv[6];
+      }
+    }
+    return args;
+};
+
+const commandLineFinishedCallback = function (error,result) {
+  console.log("Called commandLineFinishedCallback: ('%s',%s)", error,result);
+  phantomExitHandler();
+};
+
+let args = getProcessArgs();
+if (args.accessKeyId && args.secretAccessKey)
+{
+  console.log("Setting up default credentials to AWS");
+  let credentials = new AWS.Credentials({accessKeyId: args.accessKeyId, secretAccessKey: args.secretAccessKey});
+  AWS.config.credentials = credentials;
+  delete args.accessKeyId;
+  delete args.secretAccessKey;
+  S3 = new AWS.S3();
+}
+processRequest(args, commandLineFinishedCallback);
