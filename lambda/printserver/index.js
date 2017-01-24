@@ -255,7 +255,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
   let phantomPage = null;
   let fileName = null;
   let filePath = null;
-
+  // @@@ DT: Below is the sequence of operations.
   console.log("Creating page...");
   const stepErrorHandler = function(errMsg) {
     let error = new Error(errMsg);
@@ -286,6 +286,9 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
         pageRenderPromise = Promise.reject(err);
       }
       return pageRenderPromise;
+    }).
+    then( function () {
+      return phantomPage.close();
     }).
     then( function () {
       let keyName = fileName;
@@ -359,7 +362,6 @@ exports.handler = (event, context, handlerFinishedCallback) => {
     processRequest(args,handlerFinishedCallback);
   }
 };
-
 
 const getProcessArgs = function () {
     let args = {};
