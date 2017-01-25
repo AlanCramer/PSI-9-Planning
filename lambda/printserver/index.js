@@ -34,7 +34,7 @@ let phantomExitPromise = null;
 
 const validateArguments = function (event) {
   let err = null;
-  let queryStringParameters = event[queryStringPropName];
+  const queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
     err = "event does not contain: " + queryStringPropName;
   } else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
@@ -70,7 +70,7 @@ const createSessionCookie = function (decodedUrl, sessionId) {
 
 const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler) {
   console.log("setting up phantom page")
-  let page = webpage;
+  const page = webpage;
 
   page.property("paperSize", {
     //viewportSize: { width: 960, height: 1200 },
@@ -80,13 +80,14 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
       border: '50px',
       margin: '0px',
 // @@@ DT: Comment out the header and footer section to stop the error: SyntaxError: Unexpected EOF
+/*
       header: {
         height: '10cm',
         contents: function (pageNum, numPages) {
           return '<div style="text-align: right; font-size: 12px;"> Check out this header with page numbers: ' + pageNum + ' / ' + numPages + '</div>';
         }
       }
-/*
+
       ,footer: {
           height: '10cm',
           contents: function (pageNum, numPages) {
@@ -161,63 +162,52 @@ const getNewFileName = function (extension) {
 const getTempFilePath = function (fileName) {
   const tmpDir = "/tmp";
   const pathSeparator = '/';
-  let filePath = tmpDir + pathSeparator + fileName;
+  const filePath = tmpDir + pathSeparator + fileName;
   return filePath;
 };
 
-const getUploadRequest = function (filePath, bucketName, keyName) {
-  console.log("creating upload request for file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
-  let awsRequest = null;
+const getUploadPromise = function (filePath, bucketName, keyName) {
+  let promiseResult = null;
   if (!filePath) {
-    return new Error("getUploadRequest: No file path");
+    promiseResult = Promise.reject(new Error("getUploadPromise: No file path"));
   } else if (!bucketName) {
-    return new Error("getUploadRequest: No S3 bucket name");
+    promiseResult = Promise.reject(new Error("getUploadPromise: No S3 bucket name"));
   } else if (!keyName) {
-    return new Error("getUploadRequest: No S3 key name");
-  }
-  let uploadFile = fs.createReadStream(filePath);
-  let params = {
-    Bucket: bucketName,
-    Key: keyName,
-    ContentType: uploadFile.type,
-    Body: uploadFile,
-    ACL: 'public-read'
-  };
-  console.log("S3: " + S3);
-  console.log("params: " + JSON.stringify(params));
-  awsRequest = S3.putObject(params);
-  return awsRequest;
-};
-
-const getSignedUrlForGetObject = function (filePath, bucketName, keyName, callback) {
-  const expirationSeconds = 900; // 15 minutes (900 seconds)- the default
-  const operation = "getObject";
-  let params = {Bucket: bucketName, Key: keyName, Expires: expirationSeconds};
-  console.log("Getting signed URL for: '" + operation + "' with: " + JSON.stringify(params));
-  S3.getSignedUrl(operation, params, callback);
-};
-
-const uploadRenderedPageToS3 = function (filePath, bucketName, keyName, callback) {
-  let awsRequest = getUploadRequest(filePath, bucketName, keyName);
-  if (awsRequest instanceof Error)
-  {
-    let error = awsRequest;
-      console.error("Failed to create upload request: " + error);
-      callback(error);
-      return Promise.reject(error);
+    promiseResult = Promise.reject(new Error("getUploadPromise: No S3 key name"));
   }
   else {
-    awsRequest.
-    on('success', function(response) {
-      console.log("Successfully uploaded file to S3!");
-      getSignedUrlForGetObject(filePath, bucketName, keyName, callback);
-    }).
-    on('error', function(error) {
-      console.error("Error! failed to upload file to S3: " + error);
-      callback(error);
-    }).
-    send();
+    console.log("creating upload request for file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
+    let uploadFile = fs.createReadStream(filePath);
+    const params = {
+      Bucket: bucketName,
+      Key: keyName,
+      ContentType: uploadFile.type,
+      Body: uploadFile,
+      ACL: 'public-read'
+    };
+    console.log("S3: " + S3);
+    console.log("params: " + JSON.stringify(params));
+    const awsRequest = S3.putObject(params);
+    promiseResult = awsRequest.promise();
   }
+  return promiseResult;
+};
+
+const getSignedUrlPromise = function (bucketName, keyName) {
+  const expirationSeconds = 900; // 15 minutes (900 seconds)- the default
+  const operation = "getObject";
+  const params = {Bucket: bucketName, Key: keyName, Expires: expirationSeconds};
+  console.log("Getting signed URL for: '" + operation + "' with: " + JSON.stringify(params));
+  const promise = new Promise(function(resolve, reject) {
+    S3.getSignedUrl(operation, params, function(err, data) {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(data);
+        }
+    });
+  });
+  return promise;
 };
 
 const phantomExitHandler = function(error, callback) {
@@ -230,7 +220,7 @@ const phantomExitHandler = function(error, callback) {
     phantomExitPromise.then(function () {
       phantomInstance = null;
       phantomExitPromise = null;
-      console.error("Finished shutting down phantom instance.");
+      console.log("Finished shutting down phantom instance.");
       if (callback)
       {
         callback(error);
@@ -240,36 +230,28 @@ const phantomExitHandler = function(error, callback) {
 };
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
+  let pageRenderPromise = null;
 
   const phantomErrorHandler = function (error) {
-    // @@@ DT: If this is called (for page.on("onError"), I want the handlerFinishedCallback to be called (once eventually) and the promise chain to stop!
-    phantomExitHandler(error, handlerFinishedCallback);
-/*
-    // @@@ DT: How do I break the promise chain?
-    if (error) {
-      throw new Error(error);
-    }
-*/
+    // @@@ DT: This may be called (for page.on("onError"). Is throwing an exception the proper way to reject the current promise?
+    phantomExitHandler(error, function () {
+      throw error;
+    });
   };
 
   let phantomPage = null;
   let fileName = null;
   let filePath = null;
+
   // @@@ DT: Below is the sequence of operations.
   console.log("Creating page...");
-  const stepErrorHandler = function(errMsg) {
-    let error = new Error(errMsg);
-    console.error(error);
-    handlerFinishedCallback(null, error);
-    throw error;
-  }
   phantomInstance.createPage().
     then( function (webpage) {
       console.log("Page created (successfully).");
       phantomPage = webpage;
       setupPage(webpage, decodedUrl, sessionId, phantomErrorHandler);
       console.log("Using page to open URL: " + decodedUrl);
-      let pageOpenPromise = phantomPage.open(decodedUrl);
+      const pageOpenPromise = phantomPage.open(decodedUrl);
       return pageOpenPromise;
     }).
     then( function () {
@@ -291,20 +273,17 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       return phantomPage.close();
     }).
     then( function () {
-      let keyName = fileName;
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
-      console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, keyName);
-/*
-//      @@@ DT: I am temporarily commenting out this section to upload the file so you can play with this w/o actually uploading (since you need an AWS account).
-      // Please note that I am not currently using the Promise version of AWS SDK but using AWS.Request objects instead.
-      // Perhaps I should change this approach to be consistent!
-      let uploadResult = uploadRenderedPageToS3(filePath, bucketName, keyName, handlerFinishedCallback);
-      if (uploadResult && uploadResult instanceof Promise)
-      {
-        return uploadResult;
-      }
-*/
-    }, handlerFinishedCallback).
+      console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, fileName);
+      //      return Promise.resolve(filePath);
+      const uploadPromise = getUploadPromise(filePath, bucketName, fileName);
+      return uploadPromise;
+    }).
+    then( function () {
+      const urlPromise = getSignedUrlPromise(bucketName, fileName)
+      return urlPromise;
+    }).
+    then ( handlerFinishedCallback ).
     catch( handlerFinishedCallback);
 };
 
