@@ -323,7 +323,7 @@ const processRequest = function(args, handlerFinishedCallback) {
       if (phantomInstance) {
         console.warn("Already captured phantom instance!");
       } else {
-        console.log("Phantom instance created: " + JSON.stringify(instance));
+        console.log("Phantom instance created: " + instance);
         phantomInstance = instance;
       }
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
