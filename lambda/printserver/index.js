@@ -312,7 +312,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
 };
 
 const processRequest = function(args, handlerFinishedCallback) {
-  console.log("processRequest was called with: " + args);
+  console.log("processRequest was called with: " + JSON.stringify(args));
 
     let encodedUrlOfPageToPrint = args[urlPropName];
     let decodedUrlOfPageToPrint = decodeURIComponent(encodedUrlOfPageToPrint);
@@ -323,7 +323,7 @@ const processRequest = function(args, handlerFinishedCallback) {
       if (phantomInstance) {
         console.warn("Already captured phantom instance!");
       } else {
-        console.log("Phantom instance created: " + instance);
+        console.log("Phantom instance created: " + JSON.stringify(instance));
         phantomInstance = instance;
       }
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
@@ -387,7 +387,7 @@ const getProcessArgs = function () {
 };
 
 const commandLineFinishedCallback = function (error,result) {
-  console.log("Called commandLineFinishedCallback: ('%s',%s)", error,result);
+  console.log("Called commandLineFinishedCallback: ('%s',%s)", JSON.stringify(error),JSON.stringify(result));
   phantomExitHandler();
 };
 /*
