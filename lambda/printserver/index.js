@@ -308,7 +308,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     catch( function (error) {
       console.log("In final catch handler with error: " + JSON.stringify(error));
       handlerFinishedCallback(error, null);
-    }
+    });
 };
 
 const processRequest = function(args, handlerFinishedCallback) {
