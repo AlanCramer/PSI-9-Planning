@@ -14,7 +14,7 @@ const accessKeyIdPropName = "accessKeyId";
 const secretAccessKeyPropName = "secretAccessKey";
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 5000;
+const pageRenderTimeout = 15000;
 
 // Node.js dependencies
 const Guid = require("guid");
@@ -103,7 +103,10 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
     console.log('page.onConsoleMessage : ', msg); // http://phantomjs.org/api/webpage/handler/on-console-message.html
   });
 
-  page.on('onError', phantomErrorHandler); // http://phantomjs.org/api/webpage/handler/on-error.html
+  page.on('onError', function(msg,trace) { // http://phantomjs.org/api/webpage/handler/on-error.html
+    console.error('page.onError',msg);
+    phantomErrorHandler(msg);
+  });
 
   page.on('onInitialized', function() {
     console.log('page.onInitialized'); // http://phantomjs.org/api/webpage/handler/on-initialized.html
@@ -139,8 +142,10 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
     }
   });
 
-  page.on('onResourceError', function(requestError) {
-    console.log('page.onResourceError ...'); // http://phantomjs.org/api/webpage/handler/on-resource-error.html
+  page.on('onResourceError', function(resourceError) { // http://phantomjs.org/api/webpage/handler/on-resource-error.html
+    console.error('page.onResourceError: (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+    console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+    phantomErrorHandler(resourceError);
     /*
     for (var key in requestError) {
       console.log('Key: ' + key + ', Value: ' + requestError[key]);
@@ -241,9 +246,6 @@ const phantomExitHandler = function(error, result, callback) {
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
   const phantomErrorHandler = function (error) {
-    if (error) {
-      console.error("Got phantom error: " + error);
-    }
     phantomExitHandler(error, null, function () {
       throw error;
     });
