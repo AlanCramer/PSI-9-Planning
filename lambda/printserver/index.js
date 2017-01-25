@@ -201,8 +201,10 @@ const getSignedUrlPromise = function (bucketName, keyName) {
   const promise = new Promise(function(resolve, reject) {
     S3.getSignedUrl(operation, params, function(err, data) {
         if (err) {
+            console.log("getSignedUrl will be rejected with err: " + JSON.stringify(err));
             reject(err);
         } else {
+            console.log("getSignedUrl will be fulfilled with data: " + JSON.stringify(data));
             resolve(data);
         }
     });
@@ -299,8 +301,14 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       // console.log("Signed URL promise: " + JSON.stringify(signedUrlPromise));
       return signedUrlPromise;
     }).
-    then ( handlerFinishedCallback ).
-    catch( handlerFinishedCallback);
+    then ( function (result) {
+      console.log("In final then handler with result: " + JSON.stringify(result));
+      handlerFinishedCallback(null, result);
+    }).
+    catch( function (error) {
+      console.log("In final catch handler with error: " + JSON.stringify(error));
+      handlerFinishedCallback(error, null);
+    }
 };
 
 const processRequest = function(args, handlerFinishedCallback) {
