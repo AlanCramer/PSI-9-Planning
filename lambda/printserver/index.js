@@ -212,10 +212,7 @@ const getSignedUrlPromise = function (bucketName, keyName) {
   return promise;
 };
 
-const phantomExitHandler = function(error, callback) {
-  if (error) {
-    console.error("Got phantom error: " + error);
-  }
+const phantomExitHandler = function(error, result, callback) {
   if (phantomInstance && !phantomExitPromise) {
     console.log("Shutting down phantom instance...");
     phantomExitPromise = phantomInstance.exit();
@@ -228,7 +225,7 @@ const phantomExitHandler = function(error, callback) {
       {
         let fnName = callback.name;
         console.log("Calling phantom exit callback with name: " + fnName);
-        callback(error);
+        callback(error,result);
       }
     };
 
@@ -243,7 +240,10 @@ const phantomExitHandler = function(error, callback) {
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
   const phantomErrorHandler = function (error) {
-    phantomExitHandler(error, function () {
+    if (error) {
+      console.error("Got phantom error: " + error);
+    }
+    phantomExitHandler(error, null, function () {
       throw error;
     });
   };
@@ -303,11 +303,11 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     }).
     then ( function (result) {
       console.log("In final then handler with result: " + JSON.stringify(result));
-      handlerFinishedCallback(null, result);
+      phantomExitHandler(null, result, handlerFinishedCallback);
     }).
     catch( function (error) {
       console.log("In final catch handler with error: " + JSON.stringify(error));
-      handlerFinishedCallback(error, null);
+      phantomExitHandler(error, null, handlerFinishedCallback);
     });
 };
 
