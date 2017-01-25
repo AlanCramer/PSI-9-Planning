@@ -14,6 +14,7 @@ const accessKeyIdPropName = "accessKeyId";
 const secretAccessKeyPropName = "secretAccessKey";
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
+const pageRenderTimeout = 5000;
 
 // Node.js dependencies
 const Guid = require("guid");
@@ -149,7 +150,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
 
   if (sessionId) {
     var cookie = createSessionCookie(decodedUrl, sessionId);
-    console.log("Adding cookie '%s' to page.", cookie);
+    console.log("Adding cookie '%s' to page.", JSON.stringify(cookie));
     page.addCookie(cookie);
   };
 };
@@ -269,17 +270,14 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       fileName = getNewFileName(pdfExtension);
       filePath = getTempFilePath(fileName);
       console.log("Rendering opened page to file: %s", filePath);
-      let pageRenderPromise = null;
-      try {
-        pageRenderPromise = phantomPage.render(filePath);
-      }
-      catch (err)
-      {
-        console.error("Caught error while rendering page: " + error);
-        pageRenderPromise = Promise.reject(err);
-      }
-      // console.log("Page render promise: " + JSON.stringify(pageRenderPromise));
-      return pageRenderPromise;
+      let timeoutPromise = new Promise( function (resolve,reject) {
+        setTimeout( function () {
+          let pageRenderPromise = phantomPage.render(filePath);
+          pageRenderPromise.then(resolve);
+        }, pageRenderTimeout);
+      });
+      // console.log("Page render promise: " + JSON.stringify(timeoutPromise));
+      return timeoutPromise;
     }).
     then( function () {
       let closePromise = phantomPage.close();
@@ -338,7 +336,7 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance at: %s", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
-            logLevel: "debug"
+//            logLevel: "debug"
           };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
@@ -388,7 +386,6 @@ const getProcessArgs = function () {
 
 const commandLineFinishedCallback = function (error,result) {
   console.log("Called commandLineFinishedCallback: ('%s',%s)", JSON.stringify(error),JSON.stringify(result));
-  phantomExitHandler();
 };
 /*
 let args = getProcessArgs();
