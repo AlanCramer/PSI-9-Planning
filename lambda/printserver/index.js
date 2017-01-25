@@ -69,7 +69,7 @@ const createSessionCookie = function (decodedUrl, sessionId) {
 };
 
 const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler) {
-  console.log("setting up phantom page")
+  console.log("Setting up a phantom page (callbacks and paperSize)...")
   const page = webpage;
 
   page.property("paperSize", {
@@ -149,7 +149,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
 
   if (sessionId) {
     var cookie = createSessionCookie(decodedUrl, sessionId);
-    console.log("adding cookie '%s' to page.", cookie);
+    console.log("Adding cookie '%s' to page.", cookie);
     page.addCookie(cookie);
   };
 };
@@ -176,7 +176,7 @@ const getUploadPromise = function (filePath, bucketName, keyName) {
     promiseResult = Promise.reject(new Error("getUploadPromise: No S3 key name"));
   }
   else {
-    console.log("creating upload request for file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
+    console.log("Creating upload request for file: '%s' to bucket/key: '%s'/'%s'", filePath,bucketName, keyName);
     let uploadFile = fs.createReadStream(filePath);
     const params = {
       Bucket: bucketName,
@@ -185,8 +185,8 @@ const getUploadPromise = function (filePath, bucketName, keyName) {
       Body: uploadFile,
       ACL: 'public-read'
     };
-    console.log("S3: " + S3);
-    console.log("params: " + JSON.stringify(params));
+    //console.log("S3: " + S3);
+    //console.log("params: " + JSON.stringify(params));
     const awsRequest = S3.putObject(params);
     promiseResult = awsRequest.promise();
   }
@@ -217,15 +217,25 @@ const phantomExitHandler = function(error, callback) {
   if (phantomInstance && !phantomExitPromise) {
     console.log("Shutting down phantom instance...");
     phantomExitPromise = phantomInstance.exit();
-    phantomExitPromise.then(function () {
+
+    const finishedExitingPhantom = function () {
       phantomInstance = null;
       phantomExitPromise = null;
       console.log("Finished shutting down phantom instance.");
-      if (callback)
+      if (callback && typeof callback === "function")
       {
+        let fnName = callback.name;
+        console.log("Calling phantom exit callback with name: " + fnName);
         callback(error);
       }
-    });
+    };
+
+    console.log("Phantom exit promise: " + JSON.stringify(phantomExitPromise));
+    if (!phantomExitPromise) {
+      finishedExitingPhantom();
+    } else {
+      phantomExitPromise.then(finishedExitingPhantom);
+    };
   }
 };
 
@@ -241,14 +251,17 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
   let filePath = null;
 
   // @@@ DT: Below is the sequence of operations.
-  console.log("Creating page...");
-  phantomInstance.createPage().
-    then( function (webpage) {
+  console.log("Creating phantom page...");
+  let createPagePromise = phantomInstance.createPage();
+  // console.log("Create page promise: " + JSON.stringify(createPagePromise));
+  createPagePromise.then( function (webpage) {
       console.log("Page created (successfully).");
       phantomPage = webpage;
       setupPage(webpage, decodedUrl, sessionId, phantomErrorHandler);
       console.log("Using page to open URL: " + decodedUrl);
-      return phantomPage.open(decodedUrl);
+      let openPromise = phantomPage.open(decodedUrl);
+      // console.log("Page open (url) promise: " + JSON.stringify(openPromise));
+      return openPromise;
     }).
     then( function () {
       fileName = getNewFileName(pdfExtension);
@@ -263,20 +276,28 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
         console.error("Caught error while rendering page: " + error);
         pageRenderPromise = Promise.reject(err);
       }
+      // console.log("Page render promise: " + JSON.stringify(pageRenderPromise));
       return pageRenderPromise;
     }).
     then( function () {
-      return phantomPage.close();
+      let closePromise = phantomPage.close();
+      // console.log("Page close promise: " + JSON.stringify(closePromise));
+      return closePromise;
     }).
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
       console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, fileName);
+      let uploadPromise = null;
       // @@@ DT: Uncomment the following line and comment out the subsequent line to disable use of AWS for testing.
-      //      return Promise.reject(filePath);
-      return getUploadPromise(filePath, bucketName, fileName);
+      //      uploadPromise = Promise.reject(filePath);
+      uploadPromise = getUploadPromise(filePath, bucketName, fileName);
+      // console.log("Page upload promise: " + JSON.stringify(uploadPromise));
+      return uploadPromise;
     }).
     then( function () {
-      return getSignedUrlPromise(bucketName, fileName)
+      let signedUrlPromise = getSignedUrlPromise(bucketName, fileName);
+      // console.log("Signed URL promise: " + JSON.stringify(signedUrlPromise));
+      return signedUrlPromise;
     }).
     then ( handlerFinishedCallback ).
     catch( handlerFinishedCallback);
