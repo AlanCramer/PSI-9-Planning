@@ -21,6 +21,6 @@
     "fs": "0.0.1-security",
     "guid": "0.0.12",
     "parseuri": "0.0.5",
-    "phantom": "4.0.0"
+    "phantom": "2.1.21"
   }
 }

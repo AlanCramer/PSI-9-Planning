@@ -230,10 +230,7 @@ const phantomExitHandler = function(error, callback) {
 };
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
-  let pageRenderPromise = null;
-
   const phantomErrorHandler = function (error) {
-    // @@@ DT: This may be called (for page.on("onError"). Is throwing an exception the proper way to reject the current promise?
     phantomExitHandler(error, function () {
       throw error;
     });
@@ -251,8 +248,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       phantomPage = webpage;
       setupPage(webpage, decodedUrl, sessionId, phantomErrorHandler);
       console.log("Using page to open URL: " + decodedUrl);
-      const pageOpenPromise = phantomPage.open(decodedUrl);
-      return pageOpenPromise;
+      return phantomPage.open(decodedUrl);
     }).
     then( function () {
       fileName = getNewFileName(pdfExtension);
@@ -264,7 +260,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       }
       catch (err)
       {
-        console.error("Got error while rendering page: " + error);
+        console.error("Caught error while rendering page: " + error);
         pageRenderPromise = Promise.reject(err);
       }
       return pageRenderPromise;
@@ -275,13 +271,12 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
       console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, fileName);
-      //      return Promise.resolve(filePath);
-      const uploadPromise = getUploadPromise(filePath, bucketName, fileName);
-      return uploadPromise;
+      // @@@ DT: Uncomment the following line and comment out the subsequent line to disable use of AWS for testing.
+      //      return Promise.reject(filePath);
+      return getUploadPromise(filePath, bucketName, fileName);
     }).
     then( function () {
-      const urlPromise = getSignedUrlPromise(bucketName, fileName)
-      return urlPromise;
+      return getSignedUrlPromise(bucketName, fileName)
     }).
     then ( handlerFinishedCallback ).
     catch( handlerFinishedCallback);
@@ -314,7 +309,7 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance at: %s", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
-//            logLevel: "debug"
+            logLevel: "debug"
           };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
@@ -337,8 +332,8 @@ exports.handler = (event, context, handlerFinishedCallback) => {
         args[sessionIdPropName] = queryStringParams[sessionIdQsName];
         return args;
     };
-    let args = getQueryStringArgs(queryStringParams);
-    processRequest(args,handlerFinishedCallback);
+    let qsArgs = getQueryStringArgs(queryStringParams);
+    processRequest(qsArgs,handlerFinishedCallback);
   }
 };
 
@@ -366,7 +361,7 @@ const commandLineFinishedCallback = function (error,result) {
   console.log("Called commandLineFinishedCallback: ('%s',%s)", error,result);
   phantomExitHandler();
 };
-
+/*
 let args = getProcessArgs();
 if (args.accessKeyId && args.secretAccessKey)
 {
@@ -378,3 +373,4 @@ if (args.accessKeyId && args.secretAccessKey)
   S3 = new AWS.S3();
 }
 processRequest(args, commandLineFinishedCallback);
+*/
