@@ -14,7 +14,7 @@ const accessKeyIdPropName = "accessKeyId";
 const secretAccessKeyPropName = "secretAccessKey";
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 60000;
+const pageRenderTimeout = 90000;
 
 // Node.js dependencies
 const Guid = require("guid");
