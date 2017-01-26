@@ -14,7 +14,7 @@ const accessKeyIdPropName = "accessKeyId";
 const secretAccessKeyPropName = "secretAccessKey";
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 15000;
+const pageRenderTimeout = 60000;
 
 // Node.js dependencies
 const Guid = require("guid");
@@ -76,8 +76,8 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   page.property("paperSize", {
     //viewportSize: { width: 960, height: 1200 },
     //zoomFactor: .1,
-      width: '8.5in',
-      height: '11in',
+      width: '12in',
+      height: '34in',
       border: '50px',
       margin: '0px',
 // @@@ DT: Comment out the header and footer section to stop the error: SyntaxError: Unexpected EOF
@@ -145,7 +145,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   page.on('onResourceError', function(resourceError) { // http://phantomjs.org/api/webpage/handler/on-resource-error.html
     console.error('page.onResourceError: (#' + resourceError.id + 'URL:' + resourceError.url + ')');
     console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-    phantomErrorHandler(resourceError);
+//    phantomErrorHandler(resourceError);
     /*
     for (var key in requestError) {
       console.log('Key: ' + key + ', Value: ' + requestError[key]);
