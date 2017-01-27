@@ -326,6 +326,7 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Phantom instance created: " + instance);
         phantomInstance = instance;
       }
+      phantomCreatePromise = null;
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
     };
 
@@ -335,7 +336,7 @@ const processRequest = function(args, handlerFinishedCallback) {
       createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
     } else {
       if (!phantomCreatePromise) {
-        console.log("Container %s creating new phantom instance at: %s", containerId, configTimestamp);
+        console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
 //            logLevel: "debug"
@@ -343,6 +344,11 @@ const processRequest = function(args, handlerFinishedCallback) {
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
         catch(handlerFinishedCallback);
+      } else {
+        let errMsg = "Container " + containerId + " somehow awaiting resolution of promise to create of phantom instance!";
+        let error = new Error(errMsg);
+        console.error(errMsg);
+        handlerFinishedCallback(error);
       }
     }
 };
