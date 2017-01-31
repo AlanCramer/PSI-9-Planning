@@ -29,7 +29,7 @@ const getProcessArgs = function () {
 };
 
 const commandLineFinishedCallback = function (error,result) {
-  console.log("Called commandLineFinishedCallback: ('%s',%s)", JSON.stringify(error),JSON.stringify(result));
+  console.log("Called commandLineFinishedCallback: (%s,%s)", JSON.stringify(error),JSON.stringify(result));
 };
 
 let args = getProcessArgs();

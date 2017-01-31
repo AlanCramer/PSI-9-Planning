@@ -39,7 +39,16 @@ let phantomExitPromise = null;
 
 // functions
 
-const validateArguments = function (event) {
+const isValidUrl = function (url) {
+  let result = parseuri(url);
+  let protocol = result.protocol;
+  let host = result.host;
+  let valid = (result.protocol === "http" || result.protocol==="https") && (result.host.length > 0);
+//  console.log("parseuri('%s') => %s; valid: %s", url, JSON.stringify(result), JSON.stringify(valid));
+  return valid;
+};
+
+const preValidateArguments = function (event) {
   let err = null;
   const queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
@@ -277,6 +286,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     });
   };
 
+  const httpStatusOk = 200;
   let phantomPage = null;
   let fileName = null;
   let filePath = null;
@@ -317,7 +327,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
       let promiseResult = null;
-      if (!bucketName || bucketName.length == 0) {
+      if (!bucketName || bucketName.length === 0) {
         console.log("Since no bucket name was passed, we assume this is not a lambda environment.")
         let result = getFileUrlFromFilePath(filePath);
         console.log("Constructed result URL => " + result);
@@ -328,34 +338,43 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       return promiseResult;
     }).
     then ( function (result) {
-      console.log("In final then handler with result: " + JSON.stringify(result));
-      phantomExitHandler(null, result, handlerFinishedCallback);
+      console.log("In final then handler with result body: " + JSON.stringify(result));
+      let resultObject = {statusCode: httpStatusOk, headers:{}, body: result};
+      phantomExitHandler(null, resultObject, handlerFinishedCallback);
     }).
     catch( function (error) {
-      console.log("In final catch handler with error: " + JSON.stringify(error));
-      phantomExitHandler(error, null, handlerFinishedCallback);
+      console.log("In final catch handler with error: " + error);
+      let errMsg = isError ? error.message : error;
+      phantomExitHandler(errMsg, null, handlerFinishedCallback);
     });
 };
 
 const processRequest = function(args, handlerFinishedCallback) {
   console.log("processRequest was called with: " + JSON.stringify(args));
 
-    let encodedUrlOfPageToPrint = args[urlPropName];
-    let decodedUrlOfPageToPrint = decodeURIComponent(encodedUrlOfPageToPrint);
-    let bucketName = args[bucketPropName];
-    let sessionId = args[sessionIdPropName];
+  let encodedUrlOfPageToPrint = args[urlPropName];
+  let decodedUrlOfPageToPrint = decodeURIComponent(encodedUrlOfPageToPrint);
+  let bucketName = args[bucketPropName];
+  let sessionId = args[sessionIdPropName];
 
-    const capturePhantomInstance = function(instance) {
-      if (phantomInstance) {
-        console.warn("Already captured phantom instance!");
-      } else {
-        console.log("Phantom instance created: " + instance);
-        phantomInstance = instance;
-      }
-      phantomCreatePromise = null;
-      createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
-    };
+  const capturePhantomInstance = function(instance) {
+    if (phantomInstance) {
+      console.warn("Already captured phantom instance!");
+    } else {
+      console.log("Phantom instance created: " + instance);
+      phantomInstance = instance;
+    }
+    phantomCreatePromise = null;
+    createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
+  };
 
+  if (!isValidUrl(decodedUrlOfPageToPrint)) {
+    let errMsg = "Url: '" + decodedUrlOfPageToPrint + "' is not a valid url!";
+    console.error(errMsg);
+    console.error('Calling handlerFinishedCallback("%s",null)', errMsg);
+    handlerFinishedCallback(errMsg, null);
+  } else {
+    console.log("'%s' appears to be a valid url - proceeding...");
     // create phantomInstance object if it doesn't already exist (once per container)
     if (phantomInstance) {
       console.log("Container %s reusing phantom instance created at: %s", containerId, configTimestamp);
@@ -368,25 +387,25 @@ const processRequest = function(args, handlerFinishedCallback) {
         let phantomArgs = [];
         let phantomOptions =  {
           logger: {  debug: nolog, info: nolog, warn: log, error: log }
-//           logLevel: "debug"
-          };
+          //           logLevel: "debug"
+        };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
         catch(handlerFinishedCallback);
       } else {
         let errMsg = "Container " + containerId + " somehow awaiting resolution of promise to create of phantom instance!";
-        let error = new Error(errMsg);
         console.error(errMsg);
-        handlerFinishedCallback(error);
+        handlerFinishedCallback(errMsg);
       }
     }
+  }
 };
 exports.processRequest = processRequest;
 
 exports.handler = (event, context, handlerFinishedCallback) => {
-  let argsError = validateArguments(event);
+  let argsErrMsg = preValidateArguments(event);
   if (argsError) {
-    handlerFinishedCallback(argsError);
+    handlerFinishedCallback(argsErrorMsg, null);
   } else {
     let queryStringParams = event[queryStringPropName];
 
