@@ -320,8 +320,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
         console.log("Since no bucket name was passed, we assume this is not a lambda environment.")
         let result = getFileUrlFromFilePath(filePath);
         console.log("Constructed result URL => " + result);
-        promiseResult = new Promise.resolve(result);
-        console.log("promiseResult is: " + JSON.stringify(promiseResult));
+        promiseResult = Promise.resolve(result);
       } else {
         promiseResult = handleUpload(filePath, bucketName, fileName);
       }
