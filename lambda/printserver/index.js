@@ -404,7 +404,7 @@ exports.processRequest = processRequest;
 
 exports.handler = (event, context, handlerFinishedCallback) => {
   let argsErrMsg = preValidateArguments(event);
-  if (argsError) {
+  if (argsErrMsg) {
     handlerFinishedCallback(argsErrorMsg, null);
   } else {
     let queryStringParams = event[queryStringPropName];
