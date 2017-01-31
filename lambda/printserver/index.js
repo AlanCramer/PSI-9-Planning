@@ -10,14 +10,10 @@ const sessionIdQsName = "jsessionid";
 const urlPropName = "encodedFileUrl";
 const bucketPropName = "bucketName";
 const sessionIdPropName = "jsessionid";
-const accessKeyIdPropName = "accessKeyId";
-const secretAccessKeyPropName = "secretAccessKey";
 
 exports.urlPropName = urlPropName;
 exports.bucketPropName = bucketPropName;
 exports.sessionIdPropName = sessionIdPropName;
-exports.accessKeyIdPropName = accessKeyIdPropName;
-exports.secretAccessKeyPropName = secretAccessKeyPropName;
 
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
@@ -50,8 +46,6 @@ const validateArguments = function (event) {
     err = "event does not contain: " + queryStringPropName;
   } else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
     err = "(page) '" + urlQsName + "' was not provided (in query string)";
-  } else if (!queryStringParameters.hasOwnProperty(bucketQsName)) {
-    err = "'" + bucketQsName + "' (name) was not provided (in query string)"
   }
   return err;
 };
@@ -77,6 +71,12 @@ const createSessionCookie = function (decodedUrl, sessionId) {
     value: sessionId
   }
   return cookie;
+};
+
+const getFileUrlFromFilePath = function(filePath) {
+  console.log("Called getFileUrlFromFilePath(%s)", filePath);
+  const fileUrl = "file://" + filePath;
+  return fileUrl;
 };
 
 const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler) {
@@ -240,18 +240,35 @@ const phantomExitHandler = function(error, result, callback) {
       if (callback && typeof callback === "function")
       {
         let fnName = callback.name;
-        console.log("Calling phantom exit callback with name: " + fnName);
+        if (fnName) {
+          console.log("Calling phantom exit callback with name: " + fnName);
+        } else {
+          console.log("Calling phantom exit callback...");
+        }
         callback(error,result);
       }
     };
 
-    console.log("Phantom exit promise: " + JSON.stringify(phantomExitPromise));
+    //console.log("Phantom exit promise: " + JSON.stringify(phantomExitPromise));
+    // Old versions of phantom, the exit method is synchronous (w/o promises) instead of asynchronous (w/ promises).
     if (!phantomExitPromise) {
       finishedExitingPhantom();
     } else {
       phantomExitPromise.then(finishedExitingPhantom);
     };
   }
+};
+
+const handleUpload = function (filePath, bucketName, fileName) {
+  console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, fileName);
+  let uploadPromise = getUploadPromise(filePath, bucketName, fileName);
+  // console.log("Page upload promise: " + JSON.stringify(uploadPromise));
+  let promiseResult = uploadPromise.then( function () {
+    let signedUrlPromise = getSignedUrlPromise(bucketName, fileName);
+    // console.log("Signed URL promise: " + JSON.stringify(signedUrlPromise));
+    return signedUrlPromise;
+  })
+  return promiseResult;
 };
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
@@ -298,18 +315,17 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     }).
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
-      console.log("Preparing to upload file: '%s' to bucket: %s under key: %s", filePath, bucketName, fileName);
-      let uploadPromise = null;
-      // @@@ DT: Uncomment the following line and comment out the subsequent line to disable use of AWS for testing.
-      //      uploadPromise = Promise.reject(filePath);
-      uploadPromise = getUploadPromise(filePath, bucketName, fileName);
-      // console.log("Page upload promise: " + JSON.stringify(uploadPromise));
-      return uploadPromise;
-    }).
-    then( function () {
-      let signedUrlPromise = getSignedUrlPromise(bucketName, fileName);
-      // console.log("Signed URL promise: " + JSON.stringify(signedUrlPromise));
-      return signedUrlPromise;
+      let promiseResult = null;
+      if (!bucketName || bucketName.length == 0) {
+        console.log("Since no bucket name was passed, we assume this is not a lambda environment.")
+        let result = getFileUrlFromFilePath(filePath);
+        console.log("Constructed result URL => " + result);
+        promiseResult = new Promise.resolve(result);
+        console.log("promiseResult is: " + JSON.stringify(promiseResult));
+      } else {
+        promiseResult = handleUpload(filePath, bucketName, fileName);
+      }
+      return promiseResult;
     }).
     then ( function (result) {
       console.log("In final then handler with result: " + JSON.stringify(result));
@@ -349,7 +365,7 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
-           logLevel: "debug"
+//           logLevel: "debug"
           };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).

@@ -1,23 +1,31 @@
 const index = require("./index");
+const commandLineArgs = require('command-line-args');
+
+const accessKeyIdPropName = "accessKeyId";
+const secretAccessKeyPropName = "secretAccessKey";
 
 const getProcessArgs = function () {
     let args = {};
-    let argv = process.argv;
-    let numArgs = argv.length;
-    console.log("Processing args: " + JSON.stringify(argv));
-    if (numArgs < 6) {
-      console.error("Not enough args: %d", numArgs);
-    } else {
-      args[index.urlPropName] = argv[2];
-      args[index.bucketPropName]= argv[3];
-      args[index.accessKeyIdPropName]= argv[4];
-      args[index.secretAccessKeyPropName] = argv[5];
-      if (numArgs >= 7)
-      {
-        args[index.sessionIdPropName] = argv[6];
-      }
+    const optionDefinitions = [
+      { name: index.urlPropName, alias: 'u', type: String, defaultOption: true },
+      { name: index.sessionIdPropName, alias: 'j', type: String},
+      { name: index.bucketPropName, alias: 'b', type: String, group: "aws"},
+      { name: accessKeyIdPropName, alias: 'a', type: String, group: "aws"},
+      { name: secretAccessKeyPropName, alias: 's', type: String, group: "aws"}
+    ];
+    try {
+      let argv = process.argv;
+      console.log("Processing raw command line args: " + JSON.stringify(process.argv));
+      args = commandLineArgs(optionDefinitions);
+      console.log("Parsed command line args: " + JSON.stringify(args));
+      if (!args._all[index.urlPropName]) {
+        console.error("Missing required option name: " + index.urlPropName);
+      };
     }
-    return args;
+    catch (error) {
+      console.error("Error parsing command line arguments: " + error);
+    };
+    return args._all;
 };
 
 const commandLineFinishedCallback = function (error,result) {
@@ -25,13 +33,14 @@ const commandLineFinishedCallback = function (error,result) {
 };
 
 let args = getProcessArgs();
-if (args.accessKeyId && args.secretAccessKey)
-{
+let accessKeyId = args[accessKeyIdPropName];
+let secretAccessKey = args[secretAccessKeyPropName];
+if (accessKeyId && secretAccessKey) {
   console.log("Setting up default credentials to AWS");
-  let credentials = new index.AWS.Credentials({accessKeyId: args.accessKeyId, secretAccessKey: args.secretAccessKey});
+  let credentials = new index.AWS.Credentials({accessKeyId: accessKeyId, secretAccessKey: secretAccessKey});
   index.AWS.config.credentials = credentials;
-  delete args.accessKeyId;
-  delete args.secretAccessKey;
+  delete args[accessKeyIdPropName];
+  delete args[secretAccessKeyPropName];
   index.S3 = new index.AWS.S3();
 }
 index.processRequest(args, commandLineFinishedCallback);
