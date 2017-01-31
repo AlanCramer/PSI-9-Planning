@@ -17,7 +17,7 @@ exports.sessionIdPropName = sessionIdPropName;
 
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 20000;
+const pageRenderTimeout = 10000;
 
 // Node.js dependencies
 const Guid = require("guid");
@@ -74,7 +74,6 @@ const createSessionCookie = function (decodedUrl, sessionId) {
 };
 
 const getFileUrlFromFilePath = function(filePath) {
-  console.log("Called getFileUrlFromFilePath(%s)", filePath);
   const fileUrl = "file://" + filePath;
   return fileUrl;
 };
@@ -298,9 +297,10 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     then( function () {
       fileName = getNewFileName(pdfExtension);
       filePath = getTempFilePath(fileName);
-      console.log("Rendering opened page to file: %s", filePath);
       let timeoutPromise = new Promise( function (resolve,reject) {
+        console.log("Starting timeout of %d ms...", pageRenderTimeout);
         setTimeout( function () {
+          console.log("Rendering page to file: %s", filePath);
           let pageRenderPromise = phantomPage.render(filePath);
           pageRenderPromise.then(resolve);
         }, pageRenderTimeout);
@@ -309,6 +309,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       return timeoutPromise;
     }).
     then( function () {
+      console.log("Closing page");
       let closePromise = phantomPage.close();
       // console.log("Page close promise: " + JSON.stringify(closePromise));
       return closePromise;
@@ -362,8 +363,11 @@ const processRequest = function(args, handlerFinishedCallback) {
     } else {
       if (!phantomCreatePromise) {
         console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
+        const log = console.log;
+        const nolog = function() {};
         let phantomArgs = [];
         let phantomOptions =  {
+          logger: {  debug: nolog, info: nolog, warn: log, error: log }
 //           logLevel: "debug"
           };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
