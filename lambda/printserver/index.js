@@ -12,9 +12,16 @@ const bucketPropName = "bucketName";
 const sessionIdPropName = "jsessionid";
 const accessKeyIdPropName = "accessKeyId";
 const secretAccessKeyPropName = "secretAccessKey";
+
+exports.urlPropName = urlPropName;
+exports.bucketPropName = bucketPropName;
+exports.sessionIdPropName = sessionIdPropName;
+exports.accessKeyIdPropName = accessKeyIdPropName;
+exports.secretAccessKeyPropName = secretAccessKeyPropName;
+
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 90000;
+const pageRenderTimeout = 20000;
 
 // Node.js dependencies
 const Guid = require("guid");
@@ -23,6 +30,9 @@ const phantom = require("phantom");
 const fs = require("fs");
 const AWS = require("aws-sdk");
 var S3 = new AWS.S3();
+
+exports.AWS = AWS;
+exports.S3 = S3;
 
 // module/container variables
 var phantomCreatePromise = null;
@@ -339,7 +349,7 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
         let phantomArgs = [];
         let phantomOptions =  {
-//            logLevel: "debug"
+           logLevel: "debug"
           };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
@@ -352,6 +362,7 @@ const processRequest = function(args, handlerFinishedCallback) {
       }
     }
 };
+exports.processRequest = processRequest;
 
 exports.handler = (event, context, handlerFinishedCallback) => {
   let argsError = validateArguments(event);
@@ -371,40 +382,3 @@ exports.handler = (event, context, handlerFinishedCallback) => {
     processRequest(qsArgs,handlerFinishedCallback);
   }
 };
-
-const getProcessArgs = function () {
-    let args = {};
-    let argv = process.argv;
-    let numArgs = argv.length;
-    console.log("Processing args: " + JSON.stringify(argv));
-    if (numArgs < 6) {
-      console.error("Not enough args: %d", numArgs);
-    } else {
-      args[urlPropName] = argv[2];
-      args[bucketPropName]= argv[3];
-      args[accessKeyIdPropName]= argv[4];
-      args[secretAccessKeyPropName] = argv[5];
-      if (numArgs >= 7)
-      {
-        args[sessionIdPropName] = argv[6];
-      }
-    }
-    return args;
-};
-
-const commandLineFinishedCallback = function (error,result) {
-  console.log("Called commandLineFinishedCallback: ('%s',%s)", JSON.stringify(error),JSON.stringify(result));
-};
-/*
-let args = getProcessArgs();
-if (args.accessKeyId && args.secretAccessKey)
-{
-  console.log("Setting up default credentials to AWS");
-  let credentials = new AWS.Credentials({accessKeyId: args.accessKeyId, secretAccessKey: args.secretAccessKey});
-  AWS.config.credentials = credentials;
-  delete args.accessKeyId;
-  delete args.secretAccessKey;
-  S3 = new AWS.S3();
-}
-processRequest(args, commandLineFinishedCallback);
-*/
