@@ -1,0 +1,19 @@
+{
+    "title" : "This is a Bar Chart",
+    "data"  : [
+        {   "name" : "Theme",
+            "values" : [ 57, 92 ],
+            "cssClasses" : [ "level-a", "level-b"] },
+        {   "name" : "Context Clues",
+            "values" : [ 60, 12],
+            "cssClasses" : [ "level-a", "level-b"] },
+        {   "name" : "Word Meanings",
+            "values" : [ 60, 12],
+            "cssClasses" : [ "level-a", "level-b"] } ],
+    "legend" : [
+        {   "name" : "Level A",
+            "cssClasses" : "level-a"},
+        {   "name" : "Level B",
+            "cssClasses" : "level-b"}
+        ]
+}

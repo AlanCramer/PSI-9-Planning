@@ -1,5 +1,5 @@
 
-var reportUrl = 'WAC.html'
+var reportUrl = 'http://localhost:8080/WAC.html?model=fakeBCModel.json';
 var fs = require('fs');
 var CookieJar = "cookiejar.json";
 
@@ -90,12 +90,13 @@ if(fs.isFile(CookieJar)) {
         console.log("added " + JSON.stringify(x));
     });
 }
-
+/*
 var hostId = "h503000001";
 var schoolId = "empjhp0412vfv6ldrj18ltoo_1uamve0";
 var classId = "plupr0hig81pb0m6h7cqgid9_1uamve0";
 var schoolClassesUrl = getSchoolClassesURL(hostId, schoolId, classId);
 console.log("Attempting to open url: " + schoolClassesUrl);
+
 page.open(schoolClassesUrl, function(status) {
     console.log("Loaded " + schoolClassesUrl + " with status: " + status);
     var cookies = page.cookies;
@@ -109,6 +110,7 @@ page.open(schoolClassesUrl, function(status) {
       var classInfo = getClassHeaderInfo(resultObject);
       subTitle = getSubTitle(classInfo);
       console.log("Generated subTitle: " + subTitle);
+*/
       console.log("Loading report page at: " + reportUrl);
       page.open(reportUrl, function(status) {
         console.log("Loaded " + reportUrl + " with status: " + status);
@@ -120,7 +122,9 @@ page.open(schoolClassesUrl, function(status) {
             phantom.exit();
         }, 2000);
       });
+/*
     } else {
       phantom.exit(1);
     }
 });
+*/

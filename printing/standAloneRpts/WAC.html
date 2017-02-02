@@ -32,28 +32,29 @@
 <script src='reportHorizBarChartDir.js'></script>
 
 <script>
-    var barChartDiv = d3.select('body').append('div').attr('class', 'bar-chart-div');
-    var fakeBCModel = {
-        title : 'This is a Bar Chart',
-        data  : [
-            {   name : 'Theme',
-                values : [ 57, 92 ],
-                cssClasses : [ 'level-a', 'level-b'] },
-            {   name : 'Context Clues',
-                values : [ 60, 12],
-                cssClasses : [ 'level-a', 'level-b'] },
-            {   name : 'Word Meanings',
-                values : [ 60, 12],
-                cssClasses : [ 'level-a', 'level-b'] } ],
-        legend : [
-            {   name : 'Level A',
-                cssClasses : 'level-a'},
-            {   name : 'Level B',
-                cssClasses : 'level-b'}
-            ]
-    };
-    createBarChart(barChartDiv, fakeBCModel);
+  function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+  var barChartDiv = d3.select('body').append('div').attr('class', 'bar-chart-div');
+  var barChartModelUrl= getParameterByName("model");
+  if (barChartModelUrl) {
+    var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET", barChartModelUrl, false);
+    xmlhttp.send();
+    var fakeBCModel = JSON.parse(xmlhttp.responseText);
+    if (fakeBCModel) {
+      createBarChart(barChartDiv, fakeBCModel);
+    }
+  }
 </script>
-
+<div><img src="images/d3Report/work_shop_logo.svg" style="visibility: hidden"/></div>
 </body>
 </html>
