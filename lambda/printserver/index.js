@@ -19,6 +19,11 @@ exports.sessionIdPropName = sessionIdPropName;
 const pdfExtension = ".pdf";
 const pageRenderTimeout = 10000;
 
+// HTTP status codes
+const httpStatusOk = 200;
+const httpStatusBadRequest = 400;
+const httpStatusInternalServerError = 500;
+
 // Node.js dependencies
 const Guid = require("guid");
 const parseuri = require("parseuri");
@@ -39,6 +44,27 @@ let phantomExitPromise = null;
 
 // functions
 
+const createResponseObject = function (statusCode, body) {
+  let response = {statusCode, headers: {}, body};
+  return response;
+};
+
+const createErrorResponse = function (statusCode, errMsg) {
+  let error = null;
+  let errType = typeof errMsg;
+  if (errType === "string") {
+    error = new Error(errMsg);
+  } else if (errType === "object" && errMsg instanceof Error) {
+    error = errMsg;
+  } else {
+    error = new Error(JSON.stringify(errMsg));
+  }
+  return error;
+//  let body = { errorMessage: errMsg };
+//  let response = createResponseObject(statusCode, body);
+//  return response;
+}
+
 const isValidUrl = function (url) {
   let result = parseuri(url);
   let protocol = result.protocol;
@@ -52,9 +78,9 @@ const preValidateArguments = function (event) {
   let err = null;
   const queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
-    err = "event does not contain: " + queryStringPropName;
+    err = new Error("event does not contain: " + queryStringPropName);
   } else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
-    err = "(page) '" + urlQsName + "' was not provided (in query string)";
+    err = new Error("(page) '" + urlQsName + "' was not provided (in query string)");
   }
   return err;
 };
@@ -286,7 +312,6 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     });
   };
 
-  const httpStatusOk = 200;
   let phantomPage = null;
   let fileName = null;
   let filePath = null;
@@ -339,13 +364,14 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
     }).
     then ( function (result) {
       console.log("In final then handler with result body: " + JSON.stringify(result));
-      let resultObject = {statusCode: httpStatusOk, headers:{}, body: result};
+      let resultObject = createResponseObject(httpStatusOk, result);
       phantomExitHandler(null, resultObject, handlerFinishedCallback);
     }).
     catch( function (error) {
-      console.log("In final catch handler with error: " + error);
-      let errMsg = isError ? error.message : error;
-      phantomExitHandler(errMsg, null, handlerFinishedCallback);
+      console.log("In final catch handler with error: " + JSON.stringify(error));
+      let errMsg = error instanceof Error ? error.message : error;
+      let responseObject = createErrorResponse(httpStatusInternalServerError, errMsg);
+      phantomExitHandler(responseObject, null, handlerFinishedCallback);
     });
 };
 
@@ -370,9 +396,9 @@ const processRequest = function(args, handlerFinishedCallback) {
 
   if (!isValidUrl(decodedUrlOfPageToPrint)) {
     let errMsg = "Url: '" + decodedUrlOfPageToPrint + "' is not a valid url!";
-    console.error(errMsg);
-    console.error('Calling handlerFinishedCallback("%s",null)', errMsg);
-    handlerFinishedCallback(errMsg, null);
+    let errObj = createErrorResponse(httpStatusBadRequest, errMsg);
+    console.error('Validation failure, calling handlerFinishedCallback(%s,null)', JSON.stringify(errObj));
+    handlerFinishedCallback(errObj, null);
   } else {
     console.log("'%s' appears to be a valid url - proceeding...");
     // create phantomInstance object if it doesn't already exist (once per container)
@@ -391,21 +417,35 @@ const processRequest = function(args, handlerFinishedCallback) {
         };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
-        catch(handlerFinishedCallback);
+        catch(function (error) {
+          // This is likely due to a failure in creating the phantom instance.
+          let errObj = createErrorResponse(httpStatusInternalServerError, error);
+          console.error('Failed to create phantom instance: %s', JSON.stringify(errObj));
+          handlerFinishedCallback(errObj, null);
+        });
       } else {
+        // This is an internal error. We wanted to be able to reuse the phantom instance (one per container)
         let errMsg = "Container " + containerId + " somehow awaiting resolution of promise to create of phantom instance!";
         console.error(errMsg);
-        handlerFinishedCallback(errMsg);
+        let errObj = createErrorResponse(httpStatusInternalServerError, error);
+        handlerFinishedCallback(errObj, null);
       }
     }
   }
 };
 exports.processRequest = processRequest;
 
-exports.handler = (event, context, handlerFinishedCallback) => {
-  let argsErrMsg = preValidateArguments(event);
-  if (argsErrMsg) {
-    handlerFinishedCallback(argsErrorMsg, null);
+exports.handler = (event, context, callback) => {
+  const handlerFinishedCallback = function(error, result) {
+      console.log("Called handlerFinishedCallback(%s, %s)", JSON.stringify(error),JSON.stringify(result));
+      callback(error,result);
+  };
+
+  let argsErr = preValidateArguments(event);
+  if (argsErr) {
+    let errObj = createErrorResponse(httpStatusBadRequest, argsErr);
+    console.error('Failed validation - calling handlerFinishedCallback(%s,null)', JSON.stringify(errObj));
+    handlerFinishedCallback(errObj, null);
   } else {
     let queryStringParams = event[queryStringPropName];
 
