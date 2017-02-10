@@ -1,0 +1,1168 @@
+{
+  "barChartModel": {
+    "title": "Assessment Averages",
+    "data": [
+      {
+        "name": "Cite Textual Evidence",
+        "values": [
+          0,
+          50
+        ],
+        "cssClasses": [
+          "level-a",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Identify Central Idea / Main Idea",
+        "values": [
+          0,
+          0
+        ],
+        "cssClasses": [
+          "level-a",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Summarize",
+        "values": [
+          67,
+          67
+        ],
+        "cssClasses": [
+          "level-a",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Nouns",
+        "values": [
+          100
+        ],
+        "cssClasses": [
+          "level-a"
+        ]
+      },
+      {
+        "name": "Sentence Fragments",
+        "values": [
+          0,
+          33
+        ],
+        "cssClasses": [
+          "level-a",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Verbs",
+        "values": [
+          50
+        ],
+        "cssClasses": [
+          "level-a"
+        ]
+      },
+      {
+        "name": "Word Strategies",
+        "values": [
+          50,
+          50
+        ],
+        "cssClasses": [
+          "level-a",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Common and Proper Nouns",
+        "values": [
+          0
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Verb Tense",
+        "values": [
+          100
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      }
+    ],
+    "cssClasses": [
+      "level-a",
+      "level-b"
+    ],
+    "filterData": [
+      {
+        "name": "Reading",
+        "keeperRows": [
+          "Cite Textual Evidence",
+          "Identify Central Idea / Main Idea",
+          "Summarize"
+        ]
+      },
+      {
+        "name": "Language",
+        "keeperRows": [
+          "Nouns",
+          "Sentence Fragments",
+          "Verbs",
+          "Word Strategies",
+          "Common and Proper Nouns",
+          "Verb Tense"
+        ]
+      }
+    ],
+    "legendFields": [
+      {
+        "name": "Level A (below grade level): 1 student",
+        "cssClass": "level-a"
+      },
+      {
+        "name": "Level B (at grade level): 1 student",
+        "cssClass": "level-b"
+      }
+    ]
+  },
+  "titleModel": {
+    "title": "Workshop Assessment Report",
+    "subTitle": "R180UA1",
+    "logo": "work_shop_logo.svg"
+  },
+  "tableModel": {
+    "columnHeadings": [
+      {
+        "colName": "student",
+        "title": "Student",
+        "cssClass": "leftJustified"
+      },
+      {
+        "colName": "testDate",
+        "title": "Test Date"
+      },
+      {
+        "colName": "Cite Textual Evidence",
+        "title": "Cite Textual Evidence"
+      },
+      {
+        "colName": "Identify Central Idea / Main Idea",
+        "title": "Identify Central Idea / Main Idea"
+      },
+      {
+        "colName": "Summarize",
+        "title": "Summarize"
+      },
+      {
+        "colName": "Nouns",
+        "title": "Nouns"
+      },
+      {
+        "colName": "Sentence Fragments",
+        "title": "Sentence Fragments"
+      },
+      {
+        "colName": "Verbs",
+        "title": "Verbs"
+      },
+      {
+        "colName": "Word Strategies",
+        "title": "Word Strategies"
+      },
+      {
+        "colName": "testScore",
+        "title": "Test Score"
+      }
+    ],
+    "data": [
+      {
+        "id": "g9h4p6nmjprr1psugv9dr09s_1grk0f0",
+        "student": "Aguilar, Leliana",
+        "testDate": "10/28/16",
+        "Nouns": "1 / 1",
+        "Identify Central Idea / Main Idea": "0 / 2",
+        "Cite Textual Evidence": "0 / 2",
+        "Word Strategies": "1 / 2",
+        "Verbs": "1 / 2",
+        "Summarize": "2 / 3",
+        "Sentence Fragments": "0 / 3",
+        "testScore": 33
+      }
+    ],
+    "footer": [
+      0,
+      0,
+      67,
+      100,
+      0,
+      50,
+      50,
+      33
+    ],
+    "showLevelAB": true,
+    "title": "Skill Results",
+    "showTitle": true,
+    "showSuperheadings": true,
+    "superheadings": [
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      },
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      },
+      {
+        "colspan": 3,
+        "text": "Reading",
+        "style": "colored"
+      },
+      {
+        "colspan": 4,
+        "text": "Language",
+        "style": "colored"
+      },
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      }
+    ],
+    "skillStrandList": [
+      {
+        "skill": "Cite Textual Evidence",
+        "strand": "Reading"
+      },
+      {
+        "skill": "Identify Central Idea / Main Idea",
+        "strand": "Reading"
+      },
+      {
+        "skill": "Summarize",
+        "strand": "Reading"
+      },
+      {
+        "skill": "Nouns",
+        "strand": "Language"
+      },
+      {
+        "skill": "Sentence Fragments",
+        "strand": "Language"
+      },
+      {
+        "skill": "Verbs",
+        "strand": "Language"
+      },
+      {
+        "skill": "Word Strategies",
+        "strand": "Language"
+      }
+    ],
+    "levelA": [
+      {
+        "id": "g9h4p6nmjprr1psugv9dr09s_1grk0f0",
+        "student": "Aguilar, Leliana",
+        "testDate": "10/28/16",
+        "Nouns": "1 / 1",
+        "Identify Central Idea / Main Idea": "0 / 2",
+        "Cite Textual Evidence": "0 / 2",
+        "Word Strategies": "1 / 2",
+        "Verbs": "1 / 2",
+        "Summarize": "2 / 3",
+        "Sentence Fragments": "0 / 3",
+        "testScore": 33
+      }
+    ],
+    "levelB": [
+      {
+        "id": "cqmpphp2pt735dnsjrn5lmm7_1grk0f0",
+        "student": "Cohen, Cereza",
+        "testDate": "10/28/16",
+        "Common and Proper Nouns": "0 / 2",
+        "Identify Central Idea / Main Idea": "0 / 2",
+        "Cite Textual Evidence": "1 / 2",
+        "Word Strategies": "1 / 2",
+        "Verb Tense": "1 / 1",
+        "Summarize": "2 / 3",
+        "Sentence Fragments": "1 / 3",
+        "testScore": 40
+      }
+    ]
+  },
+  "teacherTableModel": {
+    "columnHeadings": [
+      {
+        "colName": "student",
+        "title": "Student",
+        "cssClass": "leftJustified"
+      }
+    ],
+    "data": [
+      {
+        "id": "g9h4p6nmjprr1psugv9dr09s_1grk0f0",
+        "student": "Aguilar, Leliana"
+      }
+    ],
+    "hasData": false,
+    "show": true,
+    "footer": [],
+    "showLevelAB": true,
+    "title": "Teacher Scored Items",
+    "showTitle": true,
+    "showSuperheadings": false,
+    "superheadings": [],
+    "teachScoredSkillStrandList": [],
+    "noData": true
+  },
+  "summaryModel": {
+    "classAvg": 33,
+    "summaryTitle": "Summary",
+    "summary": "This report summarizes student performance on strands and skills tested in a Workshop Assessment.",
+    "sections": [
+      {
+        "info": "<h1>33%</h1>",
+        "desc": "Average Test Score (Level A)"
+      },
+      {
+        "info": "<h1>40%</h1>",
+        "desc": "Average Test Score (Level B)"
+      },
+      {
+        "info": "<h4>Identify Central Idea / Main Idea</h4>",
+        "desc": "Target Skill"
+      }
+    ]
+  },
+  "toolbarModel": {
+    "dropDownList": [
+      "Workshop 1, Interim",
+      "Workshop 1, End of Workshop",
+      "Workshop 2, Interim",
+      "Workshop 2, End of Workshop",
+      "Workshop 3, Interim",
+      "Workshop 3, End of Workshop",
+      "Workshop 4, Interim",
+      "Workshop 4, End of Workshop",
+      "Workshop 5, Interim",
+      "Workshop 5, End of Workshop",
+      "Workshop 6, Interim",
+      "Workshop 6, End of Workshop"
+    ],
+    "showDatePicker": "false",
+    "showDropDown": "true",
+    "startDate": "auto",
+    "currentValue": "Workshop 1, Interim",
+    "defaultValue": "Workshop 1, Interim"
+  },
+  "originalMdlA": {
+    "tableModel": {
+      "superheadings": [
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        },
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        },
+        {
+          "colspan": 3,
+          "text": "Reading",
+          "style": "colored"
+        },
+        {
+          "colspan": 4,
+          "text": "Language",
+          "style": "colored"
+        },
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        }
+      ],
+      "columnHeadings": [
+        {
+          "colName": "student",
+          "title": "Student",
+          "cssClass": "leftJustified"
+        },
+        {
+          "colName": "testDate",
+          "title": "Test Date"
+        },
+        {
+          "colName": "Cite Textual Evidence",
+          "title": "Cite Textual Evidence"
+        },
+        {
+          "colName": "Identify Central Idea / Main Idea",
+          "title": "Identify Central Idea / Main Idea"
+        },
+        {
+          "colName": "Summarize",
+          "title": "Summarize"
+        },
+        {
+          "colName": "Nouns",
+          "title": "Nouns"
+        },
+        {
+          "colName": "Sentence Fragments",
+          "title": "Sentence Fragments"
+        },
+        {
+          "colName": "Verbs",
+          "title": "Verbs"
+        },
+        {
+          "colName": "Word Strategies",
+          "title": "Word Strategies"
+        },
+        {
+          "colName": "testScore",
+          "title": "Test Score"
+        }
+      ],
+      "data": [
+        {
+          "id": "g9h4p6nmjprr1psugv9dr09s_1grk0f0",
+          "student": "Aguilar, Leliana",
+          "testDate": "10/28/16",
+          "Nouns": "1 / 1",
+          "Identify Central Idea / Main Idea": "0 / 2",
+          "Cite Textual Evidence": "0 / 2",
+          "Word Strategies": "1 / 2",
+          "Verbs": "1 / 2",
+          "Summarize": "2 / 3",
+          "Sentence Fragments": "0 / 3",
+          "testScore": 33
+        }
+      ],
+      "footer": [
+        0,
+        0,
+        67,
+        100,
+        0,
+        50,
+        50,
+        33
+      ]
+    },
+    "teacherTableModel": {
+      "superheadings": [],
+      "columnHeadings": [
+        {
+          "colName": "student",
+          "title": "Student",
+          "cssClass": "leftJustified"
+        }
+      ],
+      "data": [
+        {
+          "id": "g9h4p6nmjprr1psugv9dr09s_1grk0f0",
+          "student": "Aguilar, Leliana"
+        }
+      ],
+      "footer": [],
+      "hasData": false
+    }
+  },
+  "originalMdlB": {
+    "tableModel": {
+      "superheadings": [
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        },
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        },
+        {
+          "colspan": 3,
+          "text": "Reading",
+          "style": "colored"
+        },
+        {
+          "colspan": 4,
+          "text": "Language",
+          "style": "colored"
+        },
+        {
+          "colspan": 1,
+          "text": "",
+          "style": "clear"
+        }
+      ],
+      "columnHeadings": [
+        {
+          "colName": "student",
+          "title": "Student",
+          "cssClass": "leftJustified"
+        },
+        {
+          "colName": "testDate",
+          "title": "Test Date"
+        },
+        {
+          "colName": "Cite Textual Evidence",
+          "title": "Cite Textual Evidence"
+        },
+        {
+          "colName": "Identify Central Idea / Main Idea",
+          "title": "Identify Central Idea / Main Idea"
+        },
+        {
+          "colName": "Summarize",
+          "title": "Summarize"
+        },
+        {
+          "colName": "Common and Proper Nouns",
+          "title": "Common and Proper Nouns"
+        },
+        {
+          "colName": "Sentence Fragments",
+          "title": "Sentence Fragments"
+        },
+        {
+          "colName": "Verb Tense",
+          "title": "Verb Tense"
+        },
+        {
+          "colName": "Word Strategies",
+          "title": "Word Strategies"
+        },
+        {
+          "colName": "testScore",
+          "title": "Test Score"
+        }
+      ],
+      "data": [
+        {
+          "id": "cqmpphp2pt735dnsjrn5lmm7_1grk0f0",
+          "student": "Cohen, Cereza",
+          "testDate": "10/28/16",
+          "Common and Proper Nouns": "0 / 2",
+          "Identify Central Idea / Main Idea": "0 / 2",
+          "Cite Textual Evidence": "1 / 2",
+          "Word Strategies": "1 / 2",
+          "Verb Tense": "1 / 1",
+          "Summarize": "2 / 3",
+          "Sentence Fragments": "1 / 3",
+          "testScore": 40
+        }
+      ],
+      "footer": [
+        50,
+        0,
+        67,
+        0,
+        33,
+        100,
+        50,
+        40
+      ]
+    },
+    "teacherTableModel": {
+      "superheadings": [],
+      "columnHeadings": [
+        {
+          "colName": "student",
+          "title": "Student",
+          "cssClass": "leftJustified"
+        }
+      ],
+      "data": [
+        {
+          "id": "cqmpphp2pt735dnsjrn5lmm7_1grk0f0",
+          "student": "Cohen, Cereza"
+        }
+      ],
+      "footer": [],
+      "hasData": false
+    }
+  },
+  "lrsTableModelA": {
+    "header": [
+      [
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "Reading",
+          "colspan": 3,
+          "class": "colored"
+        },
+        {
+          "displayValue": "Language",
+          "colspan": 4,
+          "class": "colored"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        }
+      ],
+      [
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Student</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'student' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": true
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Date</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testDate' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Cite Textual Evidence</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Cite Textual Evidence' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Identify Central Idea / Main Idea</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Identify Central Idea / Main Idea' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Summarize</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Summarize' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Nouns</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Nouns' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Sentence Fragments</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Sentence Fragments' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Verbs</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Verbs' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Word Strategies</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Word Strategies' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Score</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testScore' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        }
+      ]
+    ],
+    "body": [
+      [
+        {
+          "displayValue": "<a ui-sref=\"{student: 'g9h4p6nmjprr1psugv9dr09s_1grk0f0'}\" ui-sref-opts=\"{notify: false}\">Aguilar, Leliana</a>",
+          "class": {
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "10/28/16",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 2 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 2 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>2 / 3 </span><span class=\"tt\">(67%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 1 </span><span class=\"tt\">(100%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 3 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 2 </span><span class=\"tt\">(50%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 2 </span><span class=\"tt\">(50%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "33%",
+          "class": {
+            "leftJustified": false
+          }
+        }
+      ]
+    ],
+    "footer": [
+      [
+        {
+          "displayValue": "Level A Average",
+          "class": {
+            "levelAB": true,
+            "blue-border": true,
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "0%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "0%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "67%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "100%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "0%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "50%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "50%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "33%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        }
+      ]
+    ],
+    "sortedBy": "student",
+    "sortAscending": true,
+    "columns": [
+      {
+        "name": "student",
+        "width": "120%"
+      },
+      {
+        "name": "testDate",
+        "width": "70%"
+      },
+      {
+        "name": "Cite Textual Evidence",
+        "width": "70%"
+      },
+      {
+        "name": "Identify Central Idea / Main Idea",
+        "width": "70%"
+      },
+      {
+        "name": "Summarize",
+        "width": "70%"
+      },
+      {
+        "name": "Nouns",
+        "width": "70%"
+      },
+      {
+        "name": "Sentence Fragments",
+        "width": "70%"
+      },
+      {
+        "name": "Verbs",
+        "width": "70%"
+      },
+      {
+        "name": "Word Strategies",
+        "width": "70%"
+      },
+      {
+        "name": "testScore",
+        "width": "70%"
+      }
+    ],
+    "class": "font14"
+  },
+  "lrsTableModelB": {
+    "header": [
+      [
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "Reading",
+          "colspan": 3,
+          "class": "colored"
+        },
+        {
+          "displayValue": "Language",
+          "colspan": 4,
+          "class": "colored"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        }
+      ],
+      [
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Student</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'student' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": true
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Date</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testDate' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Cite Textual Evidence</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Cite Textual Evidence' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Identify Central Idea / Main Idea</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Identify Central Idea / Main Idea' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Summarize</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Summarize' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Common and Proper Nouns</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Common and Proper Nouns' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Sentence Fragments</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Sentence Fragments' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Verb Tense</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Verb Tense' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Word Strategies</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Word Strategies' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Score</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testScore' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        }
+      ]
+    ],
+    "body": [
+      [
+        {
+          "displayValue": "<a ui-sref=\"{student: 'cqmpphp2pt735dnsjrn5lmm7_1grk0f0'}\" ui-sref-opts=\"{notify: false}\">Cohen, Cereza</a>",
+          "class": {
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "10/28/16",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 2 </span><span class=\"tt\">(50%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 2 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>2 / 3 </span><span class=\"tt\">(67%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 2 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 3 </span><span class=\"tt\">(33%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 1 </span><span class=\"tt\">(100%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 2 </span><span class=\"tt\">(50%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "40%",
+          "class": {
+            "leftJustified": false
+          }
+        }
+      ]
+    ],
+    "footer": [
+      [
+        {
+          "displayValue": "Level B Average",
+          "class": {
+            "levelAB": true,
+            "blue-border": true,
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "50%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "0%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "67%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "0%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "33%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "100%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "50%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "40%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        }
+      ]
+    ],
+    "sortedBy": "student",
+    "sortAscending": true,
+    "columns": [
+      {
+        "name": "student",
+        "width": "120%"
+      },
+      {
+        "name": "testDate",
+        "width": "70%"
+      },
+      {
+        "name": "Cite Textual Evidence",
+        "width": "70%"
+      },
+      {
+        "name": "Identify Central Idea / Main Idea",
+        "width": "70%"
+      },
+      {
+        "name": "Summarize",
+        "width": "70%"
+      },
+      {
+        "name": "Common and Proper Nouns",
+        "width": "70%"
+      },
+      {
+        "name": "Sentence Fragments",
+        "width": "70%"
+      },
+      {
+        "name": "Verb Tense",
+        "width": "70%"
+      },
+      {
+        "name": "Word Strategies",
+        "width": "70%"
+      },
+      {
+        "name": "testScore",
+        "width": "70%"
+      }
+    ],
+    "class": "font14"
+  },
+  "lrsTeacherTableModelA": {
+    "header": [],
+    "body": [],
+    "footer": [],
+    "sortedBy": null,
+    "sortAscending": true
+  },
+  "lrsTeacherTableModelB": {
+    "header": [],
+    "body": [],
+    "footer": [],
+    "sortedBy": null,
+    "sortAscending": true
+  }
+}

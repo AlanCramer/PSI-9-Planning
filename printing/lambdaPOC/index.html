@@ -1,0 +1,54 @@
+<html>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+  <workshop-assessment-class-printed-report/>
+</div>
+
+<script>
+const getParameterByName = function(name, url) {
+  if (!url) {
+    url = window.location.href;
+  }
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+};
+
+const instantiateModelData = function(scope,callback) {
+  if (!scope.model.url) {
+    console.error("Model url not available!");
+  } else {
+    var xhr=new XMLHttpRequest();
+    xhr.open("GET", scope.model.url);
+    xhr.onreadystatechange = function () {
+          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              const data = JSON.parse(xhr.responseText);
+              console.log("Successfully parsed model data!");
+              scope.model.data = data;
+              if (callback) {
+                callback(scope);
+              }
+          }
+      };
+    xhr.send();
+  }
+};
+
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+  $scope.report=getParameterByName("report");
+  const modelUrl = getParameterByName("modelUrl");
+  $scope.model={url:modelUrl};
+  console.log("initializing angular controller myCtrl: report=%s, modelUrl=%s", $scope.report, $scope.model.url);
+  instantiateModelData($scope);
+});
+</script>
+<script src="scripts/directives/reports/workshopAssessmentClassPrintedReportDir.js"></script>
+
+</body>
+</html>

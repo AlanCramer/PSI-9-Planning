@@ -1,0 +1,184 @@
+<div id='workshopAssessmentClassPrintedReport' class='class-report' ng-if="model.wkshpAsmtReportInit">
+
+    <div id='reportTitle' class="title-div">
+        <report-title title-data="model.titleData"></report-title>
+    </div>
+
+    <div id='reportToolbar'>
+        <rpt-tool-bar tool-bar-data="model.toolBar" show-drop-down="true" watch-for-drop-change="model.dropValue"></rpt-tool-bar>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <!--No data available panel-->
+    <div ng-if="model.tableData.noDataPanel">
+        <div class="noDataPanel">
+            <!--Center horiz and vert-->
+            <label class="noDataPanelTitle">
+                No Data Available
+            </label>
+
+            <label class="noDataPanelSubTitle">
+                Please return once students have completed activities related to this report.
+            </label>
+        </div>
+    </div>
+
+    <div ng-if="!model.tableData.noDataPanel">
+        <div id='reportSummary' class="summary-div">
+            <report-summary summary-data="model.summaryData"></report-summary>
+        </div>
+
+        <div id='wa-c-assess-avgs-bar-chart' ng-repeat="fd in model.barChartData.filterData">
+            <report-horiz-bar-chart chart-data="model.barChartData" active-filter-name="{{fd.name}}"></report-horiz-bar-chart>
+        </div>
+
+        <!-- Skill Results Table -->
+        <div class="levelToggle">
+            <span>
+                <label class="title">Skill Results</label>
+            </span>
+
+            <span>
+                <label
+                    ng-class="{ 'LevelAB_Selected' : true , 'LevelAB_Normal' : false }">
+                    Level A
+                </label>
+            </span>
+        </div>
+
+        <lrs-table
+            table-model="model.lrsTableModelA"
+            ng-if="model.lrsTableModelA.body.length !== 0"
+            fixed-columns="{left: 1, right: 1}">
+        </lrs-table>
+
+        <div class="noDataPanel" ng-if="model.lrsTableModelA.body.length === 0">
+            <label class="noDataPanelTitle">
+                No Data Available
+            </label>
+
+            <label class="noDataPanelSubTitle">
+                Please return once students have completed activities related to this report.
+            </label>
+        </div>
+
+        <div class="levelToggle">
+            <span>
+                <label class="title">Skill Results</label>
+            </span>
+
+            <span>
+                <label
+                    ng-class="{ 'LevelAB_Selected' : true , 'LevelAB_Normal' : false }">
+                    Level B
+                </label>
+            </span>
+        </div>
+
+        <lrs-table
+            table-model="model.lrsTableModelB"
+            ng-if="model.lrsTableModelB.body.length !== 0"
+            fixed-columns="{left: 1, right: 1}">
+        </lrs-table>
+
+        <div class="noDataPanel" ng-if="model.lrsTableModelB.body.length === 0">
+            <label class="noDataPanelTitle">
+                No Data Available
+            </label>
+
+            <label class="noDataPanelSubTitle">
+                Please return once students have completed activities related to this report.
+            </label>
+        </div>
+
+        <!-- Teacher Scored Items Table -->
+        <div class="levelToggle" ng-if="isEndOfWorkshop">
+            <span>
+                <label class="title">Teacher Scored Items</label>
+            </span>
+
+            <span>
+                <label
+                    ng-class="{ 'LevelAB_Selected' : true , 'LevelAB_Normal' : false }">
+                    Level A
+                </label>
+            </span>
+        </div>
+
+        <div id='wa-c-teach-scored-report-table-a' ng-if="isEndOfWorkshop && !model.teacherTableModel.noData">
+            <lrs-table
+                table-model="model.lrsTeacherTableModelA"
+                ng-if="model.lrsTeacherTableModelA.body.length !== 0">
+            </lrs-table>
+
+            <div class="noDataPanel" ng-if="model.lrsTeacherTableModelA.body.length === 0">
+                <label class="noDataPanelTitle">
+                    No Data Available
+                </label>
+
+                <label class="noDataPanelSubTitle">
+                    Please visit the Assignment Board to grade written responses.
+                </label>
+            </div>
+        </div>
+
+        <!--If the teacher table model has no data for Level A or B, display this instead:-->
+        <div ng-if="isEndOfWorkshop && model.teacherTableModel.noData">
+            <div class="noDataPanel">
+                <label class="noDataPanelTitle">
+                    No Data Available
+                </label>
+
+                <label class="noDataPanelSubTitle">
+                    Please visit the Assignment Board to grade written responses.
+                </label>
+            </div>
+        </div>
+
+        <div class="levelToggle" ng-if="isEndOfWorkshop">
+            <span>
+                <label class="title">Teacher Scored Items</label>
+            </span>
+
+            <span>
+                <label
+                    ng-class="{ 'LevelAB_Selected' : true , 'LevelAB_Normal' : false }">
+                    Level B
+                </label>
+            </span>
+        </div>
+
+        <div id='wa-c-teach-scored-report-table-b' ng-if="isEndOfWorkshop && !model.teacherTableModel.noData">
+            <lrs-table
+                table-model="model.lrsTeacherTableModelB"
+                ng-if="model.lrsTeacherTableModelB.body.length !== 0">
+            </lrs-table>
+
+            <div class="noDataPanel" ng-if="model.lrsTeacherTableModelB.body.length === 0">
+                <label class="noDataPanelTitle">
+                    No Data Available
+                </label>
+
+                <label class="noDataPanelSubTitle">
+                    Please visit the Assignment Board to grade written responses.
+                </label>
+            </div>
+        </div>
+
+        <!--If the teacher table model has no data for Level A or B, display this instead:-->
+        <div ng-if="isEndOfWorkshop && model.teacherTableModel.noData">
+            <div class="noDataPanel">
+                <label class="noDataPanelTitle">
+                    No Data Available
+                </label>
+
+                <label class="noDataPanelSubTitle">
+                    Please visit the Assignment Board to grade written responses.
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
