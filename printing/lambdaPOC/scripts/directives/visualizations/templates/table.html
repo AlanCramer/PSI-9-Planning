@@ -1,0 +1,85 @@
+<div id="mainTable">
+    <!--Table title-->
+    <span ng-if="tableData.showTitle">
+        <label id="Title" > {{tableData.title}}</label>
+    </span>
+
+    <!--Table level AB Option-->
+    <span ng-if="tableData.showLevelAB">
+        <label class="Level-A-Level-B" ng-click="clickLevel('A')"  ng-class="{ 'LevelAB_Selected' : levelSelectedA , 'LevelAB_Normal' : !levelSelectedA }">Level A</label>
+        <label class="Level-A-Level-B" ng-click="clickLevel('B')"  ng-class="{ 'LevelAB_Selected' : !levelSelectedA , 'LevelAB_Normal' : levelSelectedA }">Level B</label>
+    </span>
+
+    <table id="main-table" class="table table-bordered table-striped2">
+        <colgroup>
+        <thead>
+            <!--Table superheader option-->
+            <div ng-if="showSuperHeader">
+                <tr>
+                    <th ng-repeat="superheading in tableData.superheadings" colspan="{{getSuperheadingColspan(superheading, levelSelectedA)}}" ng-class="superheading.style">
+                        <span> {{superheading.text}} </span>
+                    </th>
+                </tr>
+            </div>
+
+            <!--Draw table columns-->
+            <tr>
+                <th ng-repeat="heading in tableData.columnHeadings" ng-click="clickHeading($index)" ng-class="{'abInFocus' : heading.focus, 'abNotInFocus': !heading.focus  }" ng-hide="shouldAppear(heading, levelSelectedA)">
+                    {{heading.title}}
+                    <span ng-if="heading.caret=='U'" style="float: right; vertical-align: middle"><img src="images/d3Report/down.svg"></span>
+                    <span ng-if="heading.caret=='D'" style="float: right"><img src="images/d3Report/up.svg"></span>
+                </th>
+            </tr>
+        </thead>
+
+        <!-- Draw table body -->
+        <tbody>
+            <tr ng-repeat="row in tableData.data" ng-class="trGetClass(row, $index)">
+                <td ng-repeat="cell in getCellsToRender(row, levelSelectedA)"  ng-class="getCSSClassForColumn($index, tableData.columnHeadings, levelSelectedA)">
+                    <span style="display: block; margin-right: auto" ng-if="getDataType($index)=='M'">
+                        <img src="{{getImagePath(getData(row,$index))}}">
+                    </span>
+                    <span ng-if="'SNXFDL'.indexOf(getDataType($index))>=0">{{getData(row,$index)}}</span>
+                    <span ng-if="getDataType($index) == 'P'">{{getData(row,$index) + '%'}}</span>
+                    <span ng-if="getDataType($index)=='I'">{{getData(row,$index) | number:0}}</span>
+                    <span ng-if="getDataType($index)=='A'" style="text-align: left"> <a ui-sref="{student: GetStudentIdForRow(row)}" ui-sref-opts="{notify:false}"> {{getData(row,$index)}} </a></span>
+                    <span ng-if="getDataType($index) == 'H'" ng-bind-html="getData(row, $index, true)"></span>
+                    <span class='tt' ng-if="getCellHoverText(row, $index) != ''">{{getCellHoverText(row, $index);}}</span>
+                </td>
+            </tr>
+        </tbody>
+
+        <!--Draw Average / Total footer-->
+        <tfoot ng-if = "tableData.showAvgTotalFooter">
+            <tr id="avgTotRow">
+                <td>
+                    <!--{{showAverages}}-->
+                    <label ng-click="clickAverages()" ng-class="{'abUnderlineBold' : showAverages, 'abNormal' : showTotals}">Averages</label>
+                    <label ng-click="clickTotals()" ng-class="{'abUnderlineBold' : showTotals, 'abNormal' : showAverages}">Totals</label>
+                </td>
+
+                <td ng-repeat="toe in tableData.footer" ng-if="$index > 0" align="center">
+                    <span ng-show = "showAverages"> {{toe.average}} </span>
+                    <span ng-show = "showTotals"> {{toe.total}} </span>
+                </td>
+            </tr>
+        </tfoot>
+
+        <tfoot ng-if = "tableData.showLevelAB">
+            <tr id="LevelAB">
+                <td ng-repeat="toe in tableData.footer" align="center" ng-hide="shouldAppear(tableData.columnHeadings[$index], levelSelectedA)">
+                    <span ng-show = "levelSelectedA"> {{toe.LevelA}} </span>
+                    <span ng-show = "!levelSelectedA"> {{toe.LevelB}} </span>
+                </td>
+            </tr>
+        </tfoot>
+
+        <tfoot ng-if = "tableData.showFooter">
+            <tr id="simpleFooter">
+                <td ng-repeat="toe in tableData.footer track by $index" align="center">
+                    <span> {{toe}} </span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

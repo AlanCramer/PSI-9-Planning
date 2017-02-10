@@ -1,6 +1,7 @@
 <html>
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/d3/d3.min.js"></script>
 
 <div ng-app="myApp" ng-controller="myCtrl">
   <workshop-assessment-class-printed-report/>
@@ -20,16 +21,16 @@ const getParameterByName = function(name, url) {
 };
 
 const instantiateModelData = function(scope,callback) {
-  if (!scope.model.url) {
+  if (!scope.modelUrl) {
     console.error("Model url not available!");
   } else {
     var xhr=new XMLHttpRequest();
-    xhr.open("GET", scope.model.url);
+    xhr.open("GET", scope.modelUrl);
     xhr.onreadystatechange = function () {
           if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
               const data = JSON.parse(xhr.responseText);
               console.log("Successfully parsed model data!");
-              scope.model.data = data;
+              scope.data = data;
               if (callback) {
                 callback(scope);
               }
@@ -43,12 +44,18 @@ var app = angular.module("myApp", []);
 app.controller("myCtrl", function($scope) {
   $scope.report=getParameterByName("report");
   const modelUrl = getParameterByName("modelUrl");
-  $scope.model={url:modelUrl};
-  console.log("initializing angular controller myCtrl: report=%s, modelUrl=%s", $scope.report, $scope.model.url);
+  $scope.modelUrl=modelUrl;
+  $scope.model = {};
+  console.log("initializing angular controller myCtrl: report=%s, modelUrl=%s", $scope.report, $scope.modelUrl);
   instantiateModelData($scope);
 });
 </script>
+<script src="scripts/apis/reports/sharedReportApiSrv.js"></script>
 <script src="scripts/directives/reports/workshopAssessmentClassPrintedReportDir.js"></script>
+<script src="scripts/directives/visualizations/reportTitleDir.js"></script>
+<script src="scripts/directives/visualizations/reportSummaryDir.js"></script>
+<script src="scripts/directives/visualizations/reportHorizBarChartDir.js"></script>
+<script src="scripts/directives/visualizations/lrsTableDir.js"></script>
 
 </body>
 </html>
