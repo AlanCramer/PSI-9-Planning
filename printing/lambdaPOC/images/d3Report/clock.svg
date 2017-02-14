@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: sketchtool 3.4.4 (395) - http://www.bohemiancoding.com/sketch -->
+    <title>Clock</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Reports---Phonics" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Phonics-Proficiency---Student" sketch:type="MSArtboardGroup" transform="translate(-343.000000, -198.000000)" fill="#9B9B9B">
+            <g id="Body" sketch:type="MSLayerGroup" transform="translate(237.000000, 121.000000)">
+                <g id="Header" sketch:type="MSShapeGroup">
+                    <g id="Tools" transform="translate(0.000000, 77.000000)">
+                        <g id="Reminder" transform="translate(106.000000, 0.000000)">
+                            <path d="M10,9.775 L10,4.375 C10,4.03125 9.72,3.75 9.375,3.75 C9.03,3.75 8.75,4.03125 8.75,4.375 L8.75,10 C8.75,10.21875 8.87,10.4 9.04125,10.511875 L12.72375,14.19375 C12.958125,14.43125 13.3375,14.43125 13.571875,14.19375 C13.80625,13.9625 13.80625,13.580625 13.571875,13.35 L10,9.775 L10,9.775 Z M10,18.75 C5.1675,18.75 1.25,14.83125 1.25,10 C1.25,5.16875 5.1675,1.25 10,1.25 C14.8325,1.25 18.75,5.16875 18.75,10 C18.75,14.83125 14.8325,18.75 10,18.75 L10,18.75 Z M10,0 C4.4775,0 0,4.475 0,10 C0,15.51875 4.4775,20 10,20 C15.5225,20 20,15.51875 20,10 C20,4.475 15.5225,0 10,0 L10,0 Z" id="Clock"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

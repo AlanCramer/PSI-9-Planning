@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: sketchtool 3.4.4 (395) - http://www.bohemiancoding.com/sketch -->
+    <title>Print Copy</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Reports---Phonics" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Phonics-Proficiency---Student" sketch:type="MSArtboardGroup" transform="translate(-479.000000, -199.000000)" fill="#9B9B9B">
+            <g id="Body" sketch:type="MSLayerGroup" transform="translate(237.000000, 121.000000)">
+                <g id="Header" sketch:type="MSShapeGroup">
+                    <g id="Tools" transform="translate(0.000000, 77.000000)">
+                        <g id="Print" transform="translate(242.000000, 1.000000)">
+                            <path d="M18.75,15.625 C18.75,15.96875 18.47,16.25 18.125,16.25 L16.25,16.25 L16.25,14.375 C16.25,14.03125 15.97,13.75 15.625,13.75 L4.375,13.75 C4.03,13.75 3.75,14.03125 3.75,14.375 L3.75,16.25 L1.875,16.25 C1.53,16.25 1.25,15.96875 1.25,15.625 L1.25,13.125 C1.25,12.78125 1.53,12.5 1.875,12.5 L18.125,12.5 C18.47,12.5 18.75,12.78125 18.75,13.125 L18.75,15.625 L18.75,15.625 Z M15,18.125 C15,18.46875 14.72,18.75 14.375,18.75 L5.625,18.75 C5.28,18.75 5,18.46875 5,18.125 L5,15.625 C5,15.28125 5.28,15 5.625,15 L14.375,15 C14.72,15 15,15.28125 15,15.625 L15,18.125 L15,18.125 Z M5,1.875 C5,1.53125 5.28,1.25 5.625,1.25 L14.375,1.25 C14.72,1.25 15,1.53125 15,1.875 L15,10.625 C15,10.96875 14.72,11.25 14.375,11.25 L5.625,11.25 C5.28,11.25 5,10.96875 5,10.625 L5,1.875 L5,1.875 Z M18.75,11.25 L16.25,11.25 L16.25,1.25 C16.25,0.55625 15.69,0 15,0 L5,0 C4.309375,0 3.75,0.55625 3.75,1.25 L3.75,11.25 L1.25,11.25 C0.559375,11.25 0,11.80625 0,12.5 L0,16.25 C0,16.9375 0.559375,17.5 1.25,17.5 L3.75,17.5 L3.75,19.375 C3.75,19.71875 4.03,20 4.375,20 L15.625,20 C15.97,20 16.25,19.71875 16.25,19.375 L16.25,17.5 L18.75,17.5 C19.44,17.5 20,16.9375 20,16.25 L20,12.5 C20,11.80625 19.44,11.25 18.75,11.25 L18.75,11.25 Z" id="Print-Copy"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
