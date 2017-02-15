@@ -66,13 +66,14 @@ const instantiateModelData = function(modelUrl) {
 };
 
 var app = angular.module("myApp", []);
-app.controller("myCtrl", function($scope) {
+app.controller("myCtrl", ['$scope', function($scope) {
   $scope.report=getParameterByName("report");
   const modelUrl = getParameterByName("modelUrl");
   $scope.modelUrl=modelUrl;
   $scope.model = {};
   console.log("initializing angular controller myCtrl: report=%s, modelUrl=%s", $scope.report, $scope.modelUrl);
-});
+}]);
+
 </script>
 <script src="scripts/apis/reports/sharedReportApiSrv.js"></script>
 <script src="scripts/directives/reports/workshopAssessmentClassPrintedReportDir.js"></script>
