@@ -46,7 +46,7 @@
 //                      scope.isEndOfWorkshop = assessmentName.indexOf('End of Workshop') !== -1;
 
                       model.wkshpAsmtReportInit = true;
-                      //scope.$digest();
+                      scope.$digest();
                   }).catch(function (reason) {
                     console.error("Promise failed due to: %s", JSON.stringify(reason));
                   });
