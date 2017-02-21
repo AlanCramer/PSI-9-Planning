@@ -1,5 +1,5 @@
 'use strict';
-      app.directive('workshopAssessmentClassPrintedReport',['$http',
+      angular.module('myApp').directive('workshopAssessmentClassPrintedReport',['$http',
         function ($http) {
 
           var directive = {

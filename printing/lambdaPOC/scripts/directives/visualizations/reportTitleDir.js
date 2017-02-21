@@ -1,7 +1,7 @@
 
 'use strict';
 
-  app.directive('reportTitle',
+  angular.module('myApp').directive('reportTitle',
       function () {
 
           return {

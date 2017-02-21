@@ -1,5 +1,5 @@
 'use strict';
-  app.directive('lrsTable',
+  angular.module('myApp').directive('lrsTable',
       function () {
           return {
               restrict: 'E',

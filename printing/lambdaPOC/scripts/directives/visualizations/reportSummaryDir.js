@@ -4,7 +4,7 @@
 // summaries have
 // A summary section, width ~30%, with a title and subheading
 // An array of sections, with Title and Description
-app.directive('reportSummary', ['$window',
+angular.module('myApp').directive('reportSummary', ['$window',
     function ($window) {
 
         var d3 = $window.d3;
