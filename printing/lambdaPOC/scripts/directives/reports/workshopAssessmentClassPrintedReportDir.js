@@ -1,6 +1,6 @@
 'use strict';
-      app.directive('workshopAssessmentClassPrintedReport',['$timeout',
-        function ($timeout) {
+      app.directive('workshopAssessmentClassPrintedReport',['$http',
+        function ($http) {
 
           var directive = {
             restrict: 'E',
@@ -14,15 +14,13 @@
           return directive;
 
           function getData (scope) {
-
               var model = scope.model = {
                   wkshpAsmtReportInit: false
               };
-
-              $timeout(function init() {
-                  var dataPromise = instantiateModelData(scope.modelUrl);
-
-                  dataPromise.then(function (data) {
+              $http({method:'GET',
+                    url:scope.modelUrl}).
+                    then(function(response) {
+                      const data = response.data;
                       console.log("Promise was resolved with data.");
                       model.titleData = data.titleModel;
                       model.toolBar = data.toolbarModel;
@@ -40,18 +38,11 @@
                       model.activeLrsTeacherTableModel = data.lrsTeacherTableModelA;
                       model.lrsTeacherTableModelA = data.lrsTeacherTableModelA;
                       model.lrsTeacherTableModelB = data.lrsTeacherTableModelB;
-
-                      // Needed to detect when to show the teacher scored items table
-//                      var assessmentName = workshopAssessmentApiSrv.getCurrentAssessmentName() || '';
-//                      scope.isEndOfWorkshop = assessmentName.indexOf('End of Workshop') !== -1;
-
                       model.wkshpAsmtReportInit = true;
-                      scope.$digest();
-                  }).catch(function (reason) {
-                    console.error("Promise failed due to: %s", JSON.stringify(reason));
-                  });
-              });
-          }
+                    }).catch(function (response) {
+                      console.error("Promise failed: %s", JSON.stringify(response));
+                    });
+              }
 
           function wacController ($scope) {
             console.log("called wacController");

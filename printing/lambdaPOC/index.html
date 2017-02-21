@@ -23,55 +23,11 @@ const getParameterByName = function(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 };
 
-const instantiateModelData = function(modelUrl) {
-  const promise = new Promise(function(resolve, reject) {
-    if (!modelUrl) {
-      const missingUrlError = new Error("Model url not available!");
-      console.error(missingUrlError);
-      reject(missingUrlError);
-    } else {
-      let xhr=new XMLHttpRequest();
-      xhr.open("GET", modelUrl);
-      xhr.onreadystatechange = function () {
-        if(xhr.readyState === XMLHttpRequest.DONE) {
-          // We have a fully processed response which can be evaluated
-          if (xhr.status === 200) {
-            // we got a successful response which presumably contains model data
-            // which we should be able to parse as valid JSON
-            let data = null;
-            try {
-              data = JSON.parse(xhr.responseText);
-              console.log("Successfully parsed model data!");
-              // return the parsed JSON model data
-              resolve(data);
-            } catch (parseError) {
-              // return an error from a failure to parse JSON data
-              reject(parseError);
-            };
-          } else {
-            // we got a failure response - send it back to the requestor
-            let responseObject = {
-              status: xhr.status,
-              type: xhr.responseType,
-              text: xhr.responseText
-            };
-            reject(responseObject);
-          }
-        };
-      };
-      xhr.send();
-    };
-  });
-  return promise;
-};
-
 var app = angular.module("myApp", []);
 app.controller("myCtrl", ['$scope', function($scope) {
-  $scope.report=getParameterByName("report");
   const modelUrl = getParameterByName("modelUrl");
   $scope.modelUrl=modelUrl;
-  $scope.model = {};
-  console.log("initializing angular controller myCtrl: report=%s, modelUrl=%s", $scope.report, $scope.modelUrl);
+  console.log("initializing angular controller myCtrl: modelUrl=%s", $scope.modelUrl);
 }]);
 
 </script>
