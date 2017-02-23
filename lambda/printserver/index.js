@@ -17,7 +17,7 @@ exports.sessionIdPropName = sessionIdPropName;
 
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
-const pageRenderTimeout = 10000;
+const pageRenderTimeout = 30000;
 
 // HTTP status codes
 const httpStatusOk = 200;
@@ -120,8 +120,8 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   page.property("paperSize", {
     //viewportSize: { width: 960, height: 1200 },
     //zoomFactor: .1,
-      width: '12in',
-      height: '34in',
+      width: '24in',
+      height: '48in',
       border: '50px',
       margin: '0px',
 // @@@ DT: Comment out the header and footer section to stop the error: SyntaxError: Unexpected EOF
@@ -161,7 +161,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   });
 
   page.on('onResourceRequested', function(requestData) {
-//    console.log('page.onResourceRequested ...'); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
+    console.log('page.onResourceRequested: %s', requestData.url); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
 /*
     for (var key in requestData) {
       console.log('Key: ' + key + ', Value: ' + requestData[key]);
@@ -173,7 +173,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
     // This 'stage' check can be removed if you want to view
     // more info about the chunks of the response as it is received.
     if (response.stage === 'end') {
-//      console.log('page.onResourceReceived ...'); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
+      console.log('page.onResourceReceived: %s', response.url); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
 /*
       for (var key in response) {
         console.log('Key: ' + key + ', Value: ' + response[key]);
