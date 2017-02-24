@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     padding: 40px 50px 0px 50px;/* See :after trick below for bottom */
-    overflow: scroll;
+    overflow: visible;
 
     .date-reset-button {
         &:hover,
@@ -92,7 +92,7 @@ td {
 
         .section-info {
             margin-bottom: 5px;
-            overflow: hidden;
+            overflow: visible;
             text-align: bottom;
 
             h1, h2, h3, h4, h5 {
@@ -226,7 +226,7 @@ td {
 .report-table
 td
 div {
-    overflow: hidden;
+    overflow: visible;
     display: table-cell;
     vertical-align: middle;
 }
@@ -614,7 +614,7 @@ svg {
 
 #rpt-table{
     width: @min-width;
-    overflow: scroll;
+    overflow: visible;
 }
 
 .table-striped2>{
@@ -794,7 +794,7 @@ svg {
         text-align: center;
         border: 1px solid #ddd;
         padding: 6px;
-        overflow: hidden;
+        overflow: visible;
     }
 
     tbody {
@@ -828,7 +828,7 @@ svg {
         flex-direction: row;
         justify-content: space-between;
         align-items: middle;
-        overflow: hidden;
+        overflow: visible;
         vertical-align: middle;
     }
 
@@ -904,7 +904,7 @@ svg {
     }
 
     .innerColumns {
-        overflow-x: scroll; /* Enables the horizontal scrollbar only on the inner columns of the table */
+        overflow-x: visible; /* Enables the horizontal scrollbar only on the inner columns of the table */
         padding-bottom: 1.2em;
     }
 

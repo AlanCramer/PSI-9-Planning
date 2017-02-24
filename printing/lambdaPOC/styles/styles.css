@@ -1,6 +1,6 @@
 /* extra variables for stand alone app and designed for printing */
 #workshopAssessmentClassPrintedReport {
-  width: 1024px;
+  width: 2048px;
 }
 .class-report,
 .student-report {
@@ -8,7 +8,7 @@
   width: 100%;
   padding: 40px 50px 0px 50px;
   /* See :after trick below for bottom */
-  overflow: scroll;
+  overflow: visible;
 }
 .class-report .date-reset-button:hover,
 .student-report .date-reset-button:hover,
@@ -85,7 +85,7 @@
 }
 #summary-div div.section-info-div .section-info {
   margin-bottom: 5px;
-  overflow: hidden;
+  overflow: visible;
   text-align: bottom;
 }
 #summary-div div.section-info-div .section-info h1,
@@ -179,7 +179,7 @@
   font-size: 14px;
 }
 .report-table td div {
-  overflow: hidden;
+  overflow: visible;
   display: table-cell;
   vertical-align: middle;
 }
@@ -457,7 +457,7 @@ div.flex-center-align span.dot-color-none {
 }
 #rpt-table {
   width: 1024;
-  overflow: scroll;
+  overflow: visible;
 }
 .table-striped2 {
   margin-top: 20px;
@@ -624,7 +624,7 @@ div.flex-center-align span.dot-color-none {
   text-align: center;
   border: 1px solid #ddd;
   padding: 6px;
-  overflow: hidden;
+  overflow: visible;
 }
 .lrsTable tbody > tr:nth-child(even) {
   background-color: #f4f4f4;
@@ -649,7 +649,7 @@ div.flex-center-align span.dot-color-none {
   flex-direction: row;
   justify-content: space-between;
   align-items: middle;
-  overflow: hidden;
+  overflow: visible;
   vertical-align: middle;
 }
 .lrsTable .caretImg {
@@ -710,7 +710,7 @@ div.flex-center-align span.dot-color-none {
   padding-bottom: 1.2em;
 }
 .lrsTable.fixedColumns .innerColumns {
-  overflow-x: scroll;
+  overflow-x: visible;
   /* Enables the horizontal scrollbar only on the inner columns of the table */
   padding-bottom: 1.2em;
 }
