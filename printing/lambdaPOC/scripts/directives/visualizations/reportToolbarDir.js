@@ -3,7 +3,7 @@
  */
 
 'use strict';
-angular.module('myApp').directive('reportToolbar', ['$window',
+window.angular.module('myApp').directive('reportToolbar', ['$window',
     function ($window, $timeout) {
 
         var d3 = $window.d3;

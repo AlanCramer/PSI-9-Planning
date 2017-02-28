@@ -1,5 +1,5 @@
 'use strict';
-angular.module('myApp').factory('sharedReportApiSrv',
+window.angular.module('myApp').factory('sharedReportApiSrv',
 
     function () {
 

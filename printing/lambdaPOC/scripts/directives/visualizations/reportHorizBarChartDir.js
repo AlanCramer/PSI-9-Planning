@@ -18,7 +18,7 @@
 // }
 //
 
-angular.module('myApp').directive('reportHorizBarChart', ['$window', 'sharedReportApiSrv',
+window.angular.module('myApp').directive('reportHorizBarChart', ['$window', 'sharedReportApiSrv',
     function ($window, sharedApi) {
 
         var d3 = $window.d3,
