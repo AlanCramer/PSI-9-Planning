@@ -17,21 +17,40 @@
               var model = scope.model = {
                   wkshpAsmtReportInit: false
               };
-              $http({method:'GET',
-                    url:scope.modelUrl}).
+              const modelUrl = scope.$eval('modelUrl');
+              if (!modelUrl) {
+                const errMsg = "modelUrl was not provided!";
+                console.error(errMsg);
+                alert(errMsg);
+              } else {
+                $http({method:'GET',
+                    url:modelUrl}).
                     then(function(response) {
                       const data = response.data;
-                      console.log("Promise was resolved with data.");
+                      console.log("getData: Promise was resolved with data.");
                       model.titleData = data.titleModel;
                       model.toolBar = data.toolbarModel;
                       model.summaryData = data.summaryModel;
-                      model.barChartData = data.barChartModel;
-                      model.tableData = data.tableModel;
+                      let barChartData = null;
+                      if (data.barChartModel) {
+                        barChartData = data.barChartModel;
+                      } else if (data.barChartData) {
+                        barChartData = data.barChartData;
+                      }
+                      model.barChartData = barChartData;
+                      let tableData = null;
+                      if (data.tableModel)
+                      {
+                        tableData = data.tableModel;
+                      } else if (data.tableData) {
+                        tableData = data.tableData;
+                      }
+                      model.tableData = tableData;
                       model.teacherTableModel = data.teacherTableModel;
-                      model.tableData.noDataPanel =
-                          data.tableModel.data.length === 0   &&
-                          data.tableModel.levelA.length === 0 &&
-                          data.tableModel.levelB.length === 0;
+                      model.tableData.noDataPanel = !tableData ||
+                          ((!tableData.data   || tableData.data.length === 0)   &&
+                           (!tableData.levelA || tableData.levelA.length === 0) &&
+                           (!tableData.levelB && tableData.levelB.length === 0))
                       model.activeLrsTableModel = data.lrsTableModelA;
                       model.lrsTableModelA = data.lrsTableModelA;
                       model.lrsTableModelB = data.lrsTableModelB;
@@ -40,8 +59,9 @@
                       model.lrsTeacherTableModelB = data.lrsTeacherTableModelB;
                       model.wkshpAsmtReportInit = true;
                     }).catch(function (response) {
-                      console.error("Promise failed: %s", JSON.stringify(response));
+                      console.error("getData: Promise failed: %s", JSON.stringify(response));
                     });
+                  }
               }
 
           function wacController ($scope) {
