@@ -17,6 +17,8 @@ exports.sessionIdPropName = sessionIdPropName;
 
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
+const renderFileExtension=pdfExtension; //".jpeg";
+const renderArgs=undefined;//{format: 'jpeg', quality: '100'};
 const pageRenderTimeout = 30000;
 
 // HTTP status codes
@@ -116,13 +118,12 @@ const getFileUrlFromFilePath = function(filePath) {
 const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler) {
   console.log("Setting up a phantom page (callbacks and paperSize)...")
   const page = webpage;
-
   page.property("paperSize", {
-    //viewportSize: { width: 960, height: 1200 },
+      viewportSize: { width: 2048, height: 4096 },
     //zoomFactor: .1,
-      width: '24in',
-      height: '48in',
-      border: '50px',
+      width: '2048px',
+      height: '4096px',
+      border: '0px',
       margin: '0px',
 // @@@ DT: Comment out the header and footer section to stop the error: SyntaxError: Unexpected EOF
 /*
@@ -148,7 +149,11 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   });
 
   page.on('onError', function(msg,trace) { // http://phantomjs.org/api/webpage/handler/on-error.html
-    console.error('page.onError',msg);
+    console.error('page.onError: %s',msg);
+/*    trace.forEach(function(item) {
+     console.log('  ', item.file, ':', item.line);
+    });
+*/
     phantomErrorHandler(msg);
   });
 
@@ -313,8 +318,8 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
   };
 
   let phantomPage = null;
-  let fileName = null;
-  let filePath = null;
+  let renderFileName = null;
+  let renderFilePath = null;
 
   // @@@ DT: Below is the sequence of operations.
   console.log("Creating phantom page...");
@@ -330,13 +335,14 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       return openPromise;
     }).
     then( function () {
-      fileName = getNewFileName(pdfExtension);
-      filePath = getTempFilePath(fileName);
+      console.log("Setting up filename to render");
+      renderFileName = getNewFileName(renderFileExtension);
+      renderFilePath = getTempFilePath(renderFileName);
       let timeoutPromise = new Promise( function (resolve,reject) {
         console.log("Starting timeout of %d ms...", pageRenderTimeout);
         setTimeout( function () {
-          console.log("Rendering page to file: %s", filePath);
-          let pageRenderPromise = phantomPage.render(filePath);
+          console.log("Rendering page to file: %s", renderFilePath);
+          let pageRenderPromise = phantomPage.render(renderFilePath,renderArgs);
           pageRenderPromise.then(resolve);
         }, pageRenderTimeout);
       });
@@ -354,11 +360,11 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       let promiseResult = null;
       if (!bucketName || bucketName.length === 0) {
         console.log("Since no bucket name was passed, we assume this is not a lambda environment.")
-        let result = getFileUrlFromFilePath(filePath);
+        let result = getFileUrlFromFilePath(renderFilePath);
         console.log("Constructed result URL => " + result);
         promiseResult = Promise.resolve(result);
       } else {
-        promiseResult = handleUpload(filePath, bucketName, fileName);
+        promiseResult = handleUpload(renderFilePath, bucketName, renderFileName);
       }
       return promiseResult;
     }).
@@ -410,10 +416,10 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
         const log = console.log;
         const nolog = function() {};
-        let phantomArgs = [];
+        let phantomArgs = ['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1']; // ['--version'];
         let phantomOptions =  {
-          logger: {  debug: nolog, info: nolog, warn: log, error: log }
-          //           logLevel: "debug"
+          logger: {  debug: log, info: nolog, warn: log, error: log },
+                     logLevel: "debug"
         };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
