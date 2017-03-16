@@ -17,6 +17,9 @@ With the server running, you should be able to produce the PDF with:
 
 although this is known to create an empty pdf with phantomjs 2.1.1 and the local url above. (you can see your version with "phantomjs --version")
 
+A simplified Angular app does seem to produce a non-empty PDF under phantomjs 2.1.1:
+phantomjs rasterize.js http://localhost:8000/angularAgain.html myout.pdf
+
 Try, for example,
 phantomjs rasterize.js http://www.google.com myout.pdf
 
