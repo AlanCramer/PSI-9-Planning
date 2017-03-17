@@ -207,6 +207,8 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
     console.log("Adding cookie '%s' to page.", JSON.stringify(cookie));
     page.addCookie(cookie);
   };
+
+  console.log("finished setting up phantom page");
 };
 
 const getNewFileName = function (extension) {
@@ -395,6 +397,17 @@ const processRequest = function(args, handlerFinishedCallback) {
     } else {
       console.log("Phantom instance created: " + instance);
       phantomInstance = instance;
+      phantomInstance.onError = function(msg, trace) {
+        var msgStack = ['PHANTOM ERROR: ' + msg];
+        if (trace && trace.length) {
+          msgStack.push('TRACE:');
+          trace.forEach(function(t) {
+            msgStack.push(' -> ' + (t.file || t.sourceURL) + ': ' + t.line + (t.function ? ' (in function ' + t.function +')' : ''));
+          });
+        }
+        console.error(msgStack.join('\n'));
+        phantomInstance.exit(1);
+      };
     }
     phantomCreatePromise = null;
     createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
@@ -416,10 +429,10 @@ const processRequest = function(args, handlerFinishedCallback) {
         console.log("Container %s creating new phantom instance.", containerId, configTimestamp);
         const log = console.log;
         const nolog = function() {};
-        let phantomArgs = ['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1']; // ['--version'];
+        let phantomArgs = [];//['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1 --debug=true']; // ['--version'];
         let phantomOptions =  {
-          logger: {  debug: log, info: nolog, warn: log, error: log },
-                     logLevel: "debug"
+          logger: {  debug: nolog, info: nolog, warn: log, error: log }//,
+//                     logLevel: "debug"
         };
         phantomCreatePromise = phantom.create(phantomArgs,phantomOptions);
         phantomCreatePromise.then(capturePhantomInstance).
