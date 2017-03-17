@@ -1,5 +1,5 @@
 
-var reportUrl = 'http://localhost:8080/WAC.html?model=fakeBCModel.json';
+var reportUrl = 'http://localhost:8000/WAC.html?model=fakeBCModel.json';
 var fs = require('fs');
 var CookieJar = "cookiejar.json";
 
