@@ -3,23 +3,28 @@
 // string constants
 // query string parameters (intended for API gateway)
 const queryStringPropName = "queryStringParameters";
-const urlQsName = "url";
+const pageUrlQsName = "pageurl";
 const bucketQsName = "bucket";
 const sessionIdQsName = "jsessionid";
 // internal args properties
-const urlPropName = "encodedFileUrl";
+const urlPropName = "encodedPageUrl";
 const bucketPropName = "bucketName";
 const sessionIdPropName = "jsessionid";
+const modelUrlName = "modelUrl";
+const modelUrlParamName = modelUrlName;
+const modelUrlPropName = modelUrlName;
+const pageUrlIsStandAloneAppPropName = "pageUrlIsStandAloneApp";
 
 exports.urlPropName = urlPropName;
 exports.bucketPropName = bucketPropName;
 exports.sessionIdPropName = sessionIdPropName;
+exports.modelUrlPropName = modelUrlPropName;
 
 // PDF extension of temporary file to render page
 const pdfExtension = ".pdf";
 const renderFileExtension=pdfExtension; //".jpeg";
 const renderArgs=undefined;//{format: 'jpeg', quality: '100'};
-const pageRenderTimeout = 10000;
+const pageRenderTimeout = 30000;
 
 // HTTP status codes
 const httpStatusOk = 200;
@@ -32,7 +37,6 @@ const expressServerHost = "localhost";
 const expressServerPort = process.env.PORT || 3000;
 const standAloneAppSubDir = "standAloneApp";
 const standAloneAppPath = "/angularAgain.html";
-const modelUrlParamName = "modelUrl";
 const modelUrlDefaultValue = "modelData/workshopAssessmentMergedModel.json";
 
 // Node.js dependencies
@@ -86,21 +90,19 @@ const isValidUrl = function (url) {
 //  console.log("parseuri('%s') => %s; valid: %s", url, JSON.stringify(result), JSON.stringify(valid));
   return valid;
 };
-
+/*
 const preValidateArguments = function (event) {
   let err = null;
   const queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
     err = new Error("event does not contain: " + queryStringPropName);
   }
-/*
-   else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
-    err = new Error("(page) '" + urlQsName + "' was not provided (in query string)");
-  }
-*/
+//   else if (!queryStringParameters.hasOwnProperty(pageUrlQsName)) {
+//    err = new Error("(page) '" + pageUrlQsName + "' was not provided (in query string)");
+//  }
   return err;
 };
-
+*/
 const createSessionCookie = function (decodedUrl, sessionId) {
   /*
   {"domain":"h503000001.education.scholastic.com",
@@ -326,7 +328,7 @@ const handleUpload = function (filePath, bucketName, fileName) {
   return promiseResult;
 };
 
-const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
+const createAndProcessPage = function (decodedUrl, bucketName, sessionId, pageUrlIsStandAloneApp, handlerFinishedCallback) {
   const phantomErrorHandler = function (error) {
     // TODO: Should we call phantomExitHandler here - since we depend on the throw getting to the promise catch handler which will ultimately call phantomExitHandler also.
     // Perhaps this is appropriate since it stops all operations mid-stream. And the later call should be a no-op if it has already started or finished exiting.
@@ -353,6 +355,31 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       return openPromise;
     }).
     then( function () {
+        console.log("page was opened successfully - maybe not ready to render yet");
+        let pageReadyPromise = new Promise( function (resolve,reject) {
+          if (pageUrlIsStandAloneApp) {
+            let gotWacData = phantomPage.evaluate(function () {
+              return app.gotWacData;
+            })
+            if (gotWacData) {
+              console.log("app.gotWacData = true");
+              resolve(true);
+            } else {
+              console.log("app.gotWacData = false (waiting)...");
+              phantomPage.on('onCallback', function(cbData) {
+                console.log("stand-alone app called window.callPhantom() (after $get($scope.modelUrl))");
+                resolve(cbData);
+              });
+            }
+          }
+          else {
+            console.log("page url is not for stand-alone app (don't need to check for wacData being loaded)");
+            resolve(true);
+          }
+        });
+        return pageReadyPromise;
+    }).
+    then ( function() {
       console.log("Setting up filename to render");
       renderFileName = getNewFileName(renderFileExtension);
       renderFilePath = getTempFilePath(renderFileName);
@@ -367,12 +394,14 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handle
       // console.log("Page render promise: " + JSON.stringify(timeoutPromise));
       return timeoutPromise;
     }).
+    /*
     then( function () {
       console.log("Closing page");
       let closePromise = phantomPage.close();
       // console.log("Page close promise: " + JSON.stringify(closePromise));
       return closePromise;
     }).
+    */
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
       let promiseResult = null;
@@ -406,6 +435,7 @@ const processRequest = function(args, handlerFinishedCallback) {
   let decodedUrlOfPageToPrint = decodeURIComponent(encodedUrlOfPageToPrint);
   let bucketName = args[bucketPropName];
   let sessionId = args[sessionIdPropName];
+  let pageUrlIsStandAloneApp = args[pageUrlIsStandAloneAppPropName];
 
   const capturePhantomInstance = function(instance) {
     if (phantomInstance) {
@@ -428,7 +458,7 @@ const processRequest = function(args, handlerFinishedCallback) {
       };
     }
     phantomCreatePromise = null;
-    createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, handlerFinishedCallback);
+    createAndProcessPage(decodedUrlOfPageToPrint, bucketName, sessionId, pageUrlIsStandAloneApp, handlerFinishedCallback);
   };
 
   if (!isValidUrl(decodedUrlOfPageToPrint)) {
@@ -437,7 +467,7 @@ const processRequest = function(args, handlerFinishedCallback) {
     console.error('Validation failure, calling handlerFinishedCallback(%s,null)', JSON.stringify(errObj));
     handlerFinishedCallback(errObj, null);
   } else {
-    console.log("'%s' appears to be a valid url - proceeding...");
+    console.log("'%s' appears to be a valid url - proceeding...", decodedUrlOfPageToPrint);
     // create phantomInstance object if it doesn't already exist (once per container)
     if (phantomInstance) {
       console.log("Container %s reusing phantom instance created at: %s", containerId, configTimestamp);
@@ -500,12 +530,17 @@ const stopWebServer = function(stoppedCallback) {
 
 const getLocalWebRequestArgs = function(originalArgs) {
   var updatedArgs = originalArgs;
-  var url = expressServerProtocol + "://" + expressServerHost + ":" + expressServerPort + standAloneAppPath + "?" + modelUrlParamName + "=" + modelUrlDefaultValue;
+  var modelUrlValue = modelUrlDefaultValue;
+  if (updatedArgs[modelUrlPropName]) {
+    modelUrlValue = updatedArgs[modelUrlPropName];
+  }
+  var url = expressServerProtocol + "://" + expressServerHost + ":" + expressServerPort + standAloneAppPath + "?" + modelUrlParamName + "=" + modelUrlValue;
   updatedArgs[urlPropName] = url;
   return updatedArgs;
 };
 
 const processLocalWebRequest = function(args, handlerFinishedCallback) {
+  args[pageUrlIsStandAloneAppPropName] = true;
   const stopWebServerFirstCallback = function (error,result) {
     console.log("Reached stopWebServerFirstCallback");
     const stoppedWebServerCallback = function () {
@@ -529,20 +564,25 @@ exports.handler = (event, context, callback) => {
       console.log("Called handlerFinishedCallback(%s, %s)", JSON.stringify(error),JSON.stringify(result));
       callback(error,result);
   };
-
+/*
   let argsErr = preValidateArguments(event);
   if (argsErr) {
     let errObj = createErrorResponse(httpStatusBadRequest, argsErr);
     console.error('Failed validation - calling handlerFinishedCallback(%s,null)', JSON.stringify(errObj));
     handlerFinishedCallback(errObj, null);
   } else {
+*/
     let queryStringParams = event[queryStringPropName];
 
     const getQueryStringArgs = function (queryStringParams) {
         let args = {};
-        args[urlPropName] = queryStringParams[urlQsName]
-        args[bucketPropName] = queryStringParams[bucketQsName];
-        args[sessionIdPropName] = queryStringParams[sessionIdQsName];
+        if (queryStringParams) {
+          args[urlPropName] = queryStringParams[pageUrlQsName]
+          args[bucketPropName] = queryStringParams[bucketQsName];
+          args[sessionIdPropName] = queryStringParams[sessionIdQsName];
+          args[modelUrlPropName] = queryStringParams[modelUrlParamName];
+          args[pageUrlIsStandAloneAppPropName] = false;
+        }
         return args;
     };
     let qsArgs = getQueryStringArgs(queryStringParams);
@@ -551,5 +591,5 @@ exports.handler = (event, context, callback) => {
     } else {
       processLocalWebRequest(qsArgs,handlerFinishedCallback);
     }
-  }
+//  }
 };

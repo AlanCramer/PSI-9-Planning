@@ -1,0 +1,653 @@
+{
+  "wkshpAsmtReportInit": true,
+  "dropValue": "Workshop 1, Interim",
+  "titleData": {
+    "title": "Workshop Assessment Report",
+    "subTitle": "R180U B 11.30",
+    "logo": "work_shop_logo.svg"
+  },
+  "toolBar": {
+    "dropDownList": [
+      "Workshop 1, Interim",
+      "Workshop 1, End of Workshop",
+      "Workshop 2, Interim",
+      "Workshop 2, End of Workshop",
+      "Workshop 3, Interim",
+      "Workshop 3, End of Workshop",
+      "Workshop 4, Interim",
+      "Workshop 4, End of Workshop",
+      "Workshop 5, Interim",
+      "Workshop 5, End of Workshop",
+      "Workshop 6, Interim",
+      "Workshop 6, End of Workshop"
+    ],
+    "showDatePicker": "false",
+    "showDropDown": "true",
+    "startDate": "auto",
+    "currentValue": "Workshop 1, Interim",
+    "defaultValue": "Workshop 1, Interim"
+  },
+  "summaryData": {
+    "classAvg": null,
+    "summaryTitle": "Summary",
+    "summary": "This report summarizes student performance on strands and skills tested in a Workshop Assessment.",
+    "sections": [
+      {
+        "info": "<h1>N/A</h1>",
+        "desc": "Average Test Score (Level A)"
+      },
+      {
+        "info": "<h1>40%</h1>",
+        "desc": "Average Test Score (Level B)"
+      },
+      {
+        "info": "<h4>Summarize</h4>",
+        "desc": "Target Skill"
+      }
+    ]
+  },
+  "barChartData": {
+    "title": "Assessment Averages",
+    "data": [
+      {
+        "name": "Identify Central Idea / Main Idea",
+        "values": [
+          38
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Summarize",
+        "values": [
+          33
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Prefixes",
+        "values": [
+          75
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      },
+      {
+        "name": "Words in Context / Context Clues",
+        "values": [
+          33
+        ],
+        "cssClasses": [
+          "level-b",
+          "level-b"
+        ]
+      }
+    ],
+    "cssClasses": [
+      "level-b"
+    ],
+    "filterData": [
+      {
+        "name": "Reading",
+        "keeperRows": [
+          "Identify Central Idea / Main Idea",
+          "Summarize"
+        ]
+      },
+      {
+        "name": "Language",
+        "keeperRows": [
+          "Prefixes",
+          "Words in Context / Context Clues"
+        ]
+      }
+    ],
+    "legendFields": [
+      {
+        "name": "Level A (below grade level): 0 students",
+        "cssClass": "level-a"
+      },
+      {
+        "name": "Level B (at grade level): 2 students",
+        "cssClass": "level-b"
+      }
+    ]
+  },
+  "tableData": {
+    "columnHeadings": [
+      {
+        "colName": "student",
+        "title": "Student",
+        "cssClass": "leftJustified"
+      },
+      {
+        "colName": "testDate",
+        "title": "Test Date"
+      },
+      {
+        "colName": "testScore",
+        "title": "Test Score"
+      }
+    ],
+    "data": [],
+    "footer": [
+      null
+    ],
+    "showLevelAB": true,
+    "title": "Skill Results",
+    "showTitle": true,
+    "showSuperheadings": true,
+    "superheadings": [
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      },
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      },
+      {
+        "colspan": 1,
+        "text": "",
+        "style": "clear"
+      }
+    ],
+    "skillStrandList": [],
+    "levelA": [],
+    "levelB": [
+      {
+        "id": "aoj0ccrkspddkp8hjd50oogr_1uamve0",
+        "student": "Copeland, Tifa",
+        "testDate": "2016-12-05T15:51:32.789Z",
+        "Identify Central Idea / Main Idea": "0 / 4",
+        "Prefixes": "1 / 2",
+        "Summarize": "0 / 6",
+        "Words in Context / Context Clues": "0 / 3",
+        "testScore": 7
+      },
+      {
+        "id": "ni7vuq08udd184p8d019ev1i_1uamve0",
+        "student": "Hayden, Jackal",
+        "testDate": "2016-12-05T15:54:22.283Z",
+        "Identify Central Idea / Main Idea": "3 / 4",
+        "Prefixes": "2 / 2",
+        "Summarize": "4 / 6",
+        "Words in Context / Context Clues": "2 / 3",
+        "testScore": 73
+      }
+    ],
+    "noDataPanel": false
+  },
+  "teacherTableModel": {
+    "columnHeadings": [
+      {
+        "colName": "student",
+        "title": "Student",
+        "cssClass": "leftJustified"
+      }
+    ],
+    "data": [],
+    "hasData": false,
+    "show": true,
+    "footer": [],
+    "showLevelAB": true,
+    "title": "Teacher Scored Items",
+    "showTitle": true,
+    "showSuperheadings": false,
+    "superheadings": [],
+    "teachScoredSkillStrandList": [],
+    "noData": true
+  },
+  "activeLrsTableModel": {
+    "header": [
+      [
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        }
+      ],
+      [
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Student</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'student' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": true
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Date</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testDate' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Score</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testScore' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        }
+      ]
+    ],
+    "body": [],
+    "footer": [
+      [
+        {
+          "displayValue": "Level A Average",
+          "class": {
+            "levelAB": true,
+            "blue-border": true,
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "NaN%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        }
+      ]
+    ],
+    "sortedBy": "student",
+    "sortAscending": true,
+    "columns": [
+      {
+        "name": "student",
+        "width": "120%"
+      },
+      {
+        "name": "testDate",
+        "width": "70%"
+      },
+      {
+        "name": "testScore",
+        "width": "70%"
+      }
+    ],
+    "class": "font14"
+  },
+  "lrsTableModelA": {
+    "header": [
+      [
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        }
+      ],
+      [
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Student</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'student' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": true
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Date</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testDate' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Score</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testScore' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        }
+      ]
+    ],
+    "body": [],
+    "footer": [
+      [
+        {
+          "displayValue": "Level A Average",
+          "class": {
+            "levelAB": true,
+            "blue-border": true,
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "NaN%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        }
+      ]
+    ],
+    "sortedBy": "student",
+    "sortAscending": true,
+    "columns": [
+      {
+        "name": "student",
+        "width": "120%"
+      },
+      {
+        "name": "testDate",
+        "width": "70%"
+      },
+      {
+        "name": "testScore",
+        "width": "70%"
+      }
+    ],
+    "class": "font14"
+  },
+  "lrsTableModelB": {
+    "header": [
+      [
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        },
+        {
+          "displayValue": "Reading",
+          "colspan": 2,
+          "class": "colored"
+        },
+        {
+          "displayValue": "Language",
+          "colspan": 2,
+          "class": "colored"
+        },
+        {
+          "displayValue": "",
+          "colspan": 1,
+          "class": "clear"
+        }
+      ],
+      [
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Student</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'student' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": true
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Date</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testDate' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Identify Central Idea / Main Idea</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Identify Central Idea / Main Idea' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Summarize</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Summarize' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Prefixes</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Prefixes' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Words in Context / Context Clues</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'Words in Context / Context Clues' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        },
+        {
+          "displayValue": "<div class=\"columnHeading\"><span>Test Score</span><img class=\"caretImg\" src=\"{{!tableModel.sortAscending && tableModel.sortedBy === 'testScore' ? 'images/d3Report/down.svg' : 'images/d3Report/up.svg'}}\"/></div>",
+          "class": {
+            "focused": false
+          }
+        }
+      ]
+    ],
+    "body": [
+      [
+        {
+          "displayValue": "<a ui-sref=\"{student: 'aoj0ccrkspddkp8hjd50oogr_1uamve0', report:'103.2'}\" ui-sref-opts=\"{notify: false}\">Copeland, Tifa</a>",
+          "class": {
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "12/5/16",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 4 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 6 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>1 / 2 </span><span class=\"tt\">(50%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>0 / 3 </span><span class=\"tt\">(0%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "7%",
+          "class": {
+            "leftJustified": false
+          }
+        }
+      ],
+      [
+        {
+          "displayValue": "<a ui-sref=\"{student: 'ni7vuq08udd184p8d019ev1i_1uamve0', report:'103.2'}\" ui-sref-opts=\"{notify: false}\">Hayden, Jackal</a>",
+          "class": {
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "12/5/16",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>3 / 4 </span><span class=\"tt\">(75%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>4 / 6 </span><span class=\"tt\">(67%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>2 / 2 </span><span class=\"tt\">(100%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "<span>2 / 3 </span><span class=\"tt\">(67%)</span>",
+          "class": {
+            "leftJustified": false
+          }
+        },
+        {
+          "displayValue": "73%",
+          "class": {
+            "leftJustified": false
+          }
+        }
+      ]
+    ],
+    "footer": [
+      [
+        {
+          "displayValue": "Level B Average",
+          "class": {
+            "levelAB": true,
+            "blue-border": true,
+            "leftJustified": true
+          }
+        },
+        {
+          "displayValue": "",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "38%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "33%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "75%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "33%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        },
+        {
+          "displayValue": "40%",
+          "class": {
+            "levelAB": true,
+            "blue-border": true
+          }
+        }
+      ]
+    ],
+    "sortedBy": "student",
+    "sortAscending": true,
+    "columns": [
+      {
+        "name": "student",
+        "width": "120%"
+      },
+      {
+        "name": "testDate",
+        "width": "70%"
+      },
+      {
+        "name": "Identify Central Idea / Main Idea",
+        "width": "70%"
+      },
+      {
+        "name": "Summarize",
+        "width": "70%"
+      },
+      {
+        "name": "Prefixes",
+        "width": "70%"
+      },
+      {
+        "name": "Words in Context / Context Clues",
+        "width": "70%"
+      },
+      {
+        "name": "testScore",
+        "width": "70%"
+      }
+    ],
+    "class": "font14"
+  },
+  "activeLrsTeacherTableModel": {
+    "header": [],
+    "body": [],
+    "footer": [],
+    "sortedBy": null,
+    "sortAscending": true
+  },
+  "lrsTeacherTableModelA": {
+    "header": [],
+    "body": [],
+    "footer": [],
+    "sortedBy": null,
+    "sortAscending": true
+  },
+  "lrsTeacherTableModelB": {
+    "header": [],
+    "body": [],
+    "footer": [],
+    "sortedBy": null,
+    "sortAscending": true
+  }
+}

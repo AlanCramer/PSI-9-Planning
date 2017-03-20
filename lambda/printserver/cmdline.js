@@ -8,6 +8,7 @@ const getProcessArgs = function () {
     let args = {};
     const optionDefinitions = [
       { name: index.urlPropName, alias: 'u', type: String, defaultOption: true },
+      { name: index.modelUrlPropName, alias: 'm', type: String},
       { name: index.sessionIdPropName, alias: 'j', type: String},
       { name: index.bucketPropName, alias: 'b', type: String, group: "aws"},
       { name: accessKeyIdPropName, alias: 'a', type: String, group: "aws"},
@@ -45,10 +46,8 @@ if (accessKeyId && secretAccessKey) {
   delete args[secretAccessKeyPropName];
   index.S3 = new index.AWS.S3();
 }
-/*
-if (args._all[index.urlPropName]) {
+if (args[index.urlPropName]) {
   index.processRequest(args, commandLineFinishedCallback);
 } else {
-*/
   index.processLocalWebRequest(args, commandLineFinishedCallback);
-//}
+}
