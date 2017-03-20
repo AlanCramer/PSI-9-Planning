@@ -17,6 +17,10 @@
     "url": "https://github.com/AlanCramer/PSI-9-Planning/issues"
   },
   "homepage": "https://github.com/AlanCramer/PSI-9-Planning#readme",
+  "scripts": {
+    "prezip" : "export PHANTOMJS_PLATFORM=linux; export PHANTOMJS_ARCH=x64; npm rebuild",
+    "zip": "zip -r ../platform.zip ."
+  },
   "dependencies": {
     "aws-sdk": "^2.22.0",
     "command-line-args": "^4.0.1",
