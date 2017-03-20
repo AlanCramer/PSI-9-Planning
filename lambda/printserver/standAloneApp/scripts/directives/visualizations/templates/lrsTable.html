@@ -1,0 +1,41 @@
+<div class="lrsTable">
+    <table ng-class="tableModel.class">
+        <colgroup>
+            <col ng-repeat="column in tableModel.columns track by $index"
+                 width="{{column.width}}">
+        </colgroup>
+        <thead>
+            <tr ng-repeat="headerRow in tableModel.header"
+                ng-class="headerRow.class">
+                <th ng-repeat="headerCell in headerRow track by $index"
+                    compile="headerCell.displayValue"
+                    ng-class="headerCell.class"
+                    colspan="{{headerCell.colspan}}"
+                    ng-click="headerCell.onClick(headerCell, headerRow, tableModel.header, tableModel)">
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="bodyRow in tableModel.body"
+                ng-class="bodyRow.class">
+                <td ng-repeat="bodyCell in bodyRow track by $index"
+                    compile="bodyCell.displayValue"
+                    ng-class="bodyCell.class"
+                    colspan="{{bodyCell.colspan}}">
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr ng-repeat="footerRow in tableModel.footer"
+                ng-class="footerRow.class">
+                <td ng-repeat="footerCell in footerRow track by $index"
+                    compile="footerCell.displayValue"
+                    ng-class="footerCell.class"
+                    colspan="{{footerCell.colspan}}">
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

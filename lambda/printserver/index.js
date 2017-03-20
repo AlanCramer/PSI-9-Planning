@@ -19,19 +19,29 @@ exports.sessionIdPropName = sessionIdPropName;
 const pdfExtension = ".pdf";
 const renderFileExtension=pdfExtension; //".jpeg";
 const renderArgs=undefined;//{format: 'jpeg', quality: '100'};
-const pageRenderTimeout = 30000;
+const pageRenderTimeout = 10000;
 
 // HTTP status codes
 const httpStatusOk = 200;
 const httpStatusBadRequest = 400;
 const httpStatusInternalServerError = 500;
 
+// Express server constants
+const expressServerProtocol = "http";
+const expressServerHost = "localhost";
+const expressServerPort = process.env.PORT || 3000;
+const standAloneAppSubDir = "standAloneApp";
+const standAloneAppPath = "/angularAgain.html";
+const modelUrlParamName = "modelUrl";
+const modelUrlDefaultValue = "modelData/workshopAssessmentMergedModel.json";
+
 // Node.js dependencies
-const Guid = require("guid");
 const parseuri = require("parseuri");
+const Guid = require("guid");
 const phantom = require("phantom");
 const fs = require("fs");
 const AWS = require("aws-sdk");
+const express =require("express");
 var S3 = new AWS.S3();
 
 exports.AWS = AWS;
@@ -42,7 +52,8 @@ var phantomCreatePromise = null;
 var phantomInstance = null;
 var containerId = Date.now().toString().slice(-6); // Any unique-ish id will do.
 var configTimestamp = new Date().toISOString();
-let phantomExitPromise = null;
+var phantomExitPromise = null;
+var expressWebServer = null;
 
 // functions
 
@@ -81,9 +92,12 @@ const preValidateArguments = function (event) {
   const queryStringParameters = event[queryStringPropName];
   if (!queryStringParameters) {
     err = new Error("event does not contain: " + queryStringPropName);
-  } else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
+  }
+/*
+   else if (!queryStringParameters.hasOwnProperty(urlQsName)) {
     err = new Error("(page) '" + urlQsName + "' was not provided (in query string)");
   }
+*/
   return err;
 };
 
@@ -314,6 +328,8 @@ const handleUpload = function (filePath, bucketName, fileName) {
 
 const createAndProcessPage = function (decodedUrl, bucketName, sessionId, handlerFinishedCallback) {
   const phantomErrorHandler = function (error) {
+    // TODO: Should we call phantomExitHandler here - since we depend on the throw getting to the promise catch handler which will ultimately call phantomExitHandler also.
+    // Perhaps this is appropriate since it stops all operations mid-stream. And the later call should be a no-op if it has already started or finished exiting.
     phantomExitHandler(error, null, function () {
       throw error;
     });
@@ -406,7 +422,9 @@ const processRequest = function(args, handlerFinishedCallback) {
           });
         }
         console.error(msgStack.join('\n'));
-        phantomInstance.exit(1);
+        const error = new Error(msg);
+        const result = null;
+        phantomExitHandler(error,result, handlerFinishedCallback);
       };
     }
     phantomCreatePromise = null;
@@ -452,7 +470,59 @@ const processRequest = function(args, handlerFinishedCallback) {
     }
   }
 };
+
+const startWebServer = function(port, startedCallback) {
+  var scriptDir = process.cwd() + "/" + standAloneAppSubDir;
+  var app = express();
+  app.use(express.static(scriptDir));
+  // Start listening
+  expressWebServer = app.listen(port, function() {
+    console.log('Server listening on port ' + port);
+    if (startedCallback) {
+      startedCallback();
+    }
+  });
+};
+
+const stopWebServer = function(stoppedCallback) {
+  const maybeCallCallback = function() {
+    if (stoppedCallback) {
+      stoppedCallback();
+    }
+  };
+  if (!expressWebServer) {
+    maybeCallCallback();
+  } else {
+    expressWebServer.close(maybeCallCallback);
+    expressWebServer = null;
+  }
+};
+
+const getLocalWebRequestArgs = function(originalArgs) {
+  var updatedArgs = originalArgs;
+  var url = expressServerProtocol + "://" + expressServerHost + ":" + expressServerPort + standAloneAppPath + "?" + modelUrlParamName + "=" + modelUrlDefaultValue;
+  updatedArgs[urlPropName] = url;
+  return updatedArgs;
+};
+
+const processLocalWebRequest = function(args, handlerFinishedCallback) {
+  const stopWebServerFirstCallback = function (error,result) {
+    console.log("Reached stopWebServerFirstCallback");
+    const stoppedWebServerCallback = function () {
+      console.log("Reached stoppedWebServerCallback");
+      handlerFinishedCallback(error,result);
+    }
+    stopWebServer(stoppedWebServerCallback);
+  };
+  let modifiedArgs = getLocalWebRequestArgs(args);
+  const startedWebServerCallback = function () {
+    processRequest(modifiedArgs, stopWebServerFirstCallback);
+  }
+  startWebServer(expressServerPort, startedWebServerCallback);
+};
+
 exports.processRequest = processRequest;
+exports.processLocalWebRequest = processLocalWebRequest;
 
 exports.handler = (event, context, callback) => {
   const handlerFinishedCallback = function(error, result) {
@@ -476,6 +546,10 @@ exports.handler = (event, context, callback) => {
         return args;
     };
     let qsArgs = getQueryStringArgs(queryStringParams);
-    processRequest(qsArgs,handlerFinishedCallback);
+    if (qsArgs[urlPropName]) {
+      processRequest(qsArgs,handlerFinishedCallback);
+    } else {
+      processLocalWebRequest(qsArgs,handlerFinishedCallback);
+    }
   }
 };

@@ -20,6 +20,7 @@
   "dependencies": {
     "aws-sdk": "^2.22.0",
     "command-line-args": "^4.0.1",
+    "express": "^4.15.2",
     "fs": "0.0.1-security",
     "guid": "0.0.12",
     "parseuri": "0.0.5",

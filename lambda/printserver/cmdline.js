@@ -18,9 +18,11 @@ const getProcessArgs = function () {
       console.log("Processing raw command line args: " + JSON.stringify(process.argv));
       args = commandLineArgs(optionDefinitions);
       console.log("Parsed command line args: " + JSON.stringify(args));
+/*
       if (!args._all[index.urlPropName]) {
         console.error("Missing required option name: " + index.urlPropName);
       };
+*/
     }
     catch (error) {
       console.error("Error parsing command line arguments: " + error);
@@ -43,4 +45,10 @@ if (accessKeyId && secretAccessKey) {
   delete args[secretAccessKeyPropName];
   index.S3 = new index.AWS.S3();
 }
-index.processRequest(args, commandLineFinishedCallback);
+/*
+if (args._all[index.urlPropName]) {
+  index.processRequest(args, commandLineFinishedCallback);
+} else {
+*/
+  index.processLocalWebRequest(args, commandLineFinishedCallback);
+//}
