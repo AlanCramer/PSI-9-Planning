@@ -49,40 +49,49 @@ app.directive('wacPrintReport', ['paths',
     }
 ]);
 
-app.directive('lrsTable', ['paths',
-    function(paths) {
-        return {
-            restrict: 'E',
-            scope: {
-                tableModel: '='
-            },
-            templateUrl: paths.templates.lrsTable
-        };
-    }
-]);
+// TODO: This needs to be modularized much better. Currently, it pollutes the global scope
+// with module "exports", and dependencies (along with their load order) are implicit. Not good.
 
-// Copied from http://stackoverflow.com/questions/17417607/angular-ng-bind-html-and-directive-within-it?noredirect=1&lq=1
-app.directive('compile', ['$compile',
-    function ($compile) {
-        return function(scope, element, attrs) {
-            scope.$watch(
-                function(scope) {
-                  // watch the 'compile' expression for changes
-                  return scope.$eval(attrs.compile);
-                },
-                function(value) {
-                  // when the 'compile' expression changes
-                  // assign it into the current DOM
-                  element.html(value);
+// For example, using Gulp / Grunt (for a single, minified, concatenated JS file)
+// or a module loader (such as RequireJS, for dynamic module loading)
 
-                  // compile the new DOM and link it to the current
-                  // scope.
-                  // NOTE: we only compile .childNodes so that
-                  // we don't get into infinite loop compiling ourselves
-                  $compile(element.contents())(scope);
-                }
-            );
-        };
-    }
-]);
+addSharedReportServiceToModule('wac');
+addLRSTableDirectiveToModule('wac');
+addHorizBarChartDirectiveToModule('wac');
 
+// app.directive('lrsTable', ['paths',
+//     function(paths) {
+//         return {
+//             restrict: 'E',
+//             scope: {
+//                 tableModel: '='
+//             },
+//             templateUrl: paths.templates.lrsTable
+//         };
+//     }
+// ]);
+
+// // Copied from http://stackoverflow.com/questions/17417607/angular-ng-bind-html-and-directive-within-it?noredirect=1&lq=1
+// app.directive('compile', ['$compile',
+//     function ($compile) {
+//         return function(scope, element, attrs) {
+//             scope.$watch(
+//                 function(scope) {
+//                   // watch the 'compile' expression for changes
+//                   return scope.$eval(attrs.compile);
+//                 },
+//                 function(value) {
+//                   // when the 'compile' expression changes
+//                   // assign it into the current DOM
+//                   element.html(value);
+
+//                   // compile the new DOM and link it to the current
+//                   // scope.
+//                   // NOTE: we only compile .childNodes so that
+//                   // we don't get into infinite loop compiling ourselves
+//                   $compile(element.contents())(scope);
+//                 }
+//             );
+//         };
+//     }
+// ]);
