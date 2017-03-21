@@ -1,0 +1,48 @@
+<style type="text/css" scoped>
+
+#toolbar {
+    top: 10px;
+}
+.lftBox {
+    float: left;
+    height: 20px;
+    display: block;
+    /*text-align: center;*/
+}
+.leftSpace {
+    padding-left: 1em;;
+}
+.rightBox {
+    float: right;
+}
+
+.rowSpacing {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+</style>
+
+<div id="toolbar" style="position: relative; margin-left:5px; margin-right: 5px; margin-bottom: 2px; margin-top: -20px">
+
+   <!-- <div class="lftBox">
+        <img src="images/d3Report/print-copy.png">
+    </div>
+
+    <div class="lftBox leftSpace">
+        Print
+    </div>-->
+
+    <div  class="rightBox dropdown" ng-show="showDropDown">
+        <div>
+            <select ng-model="watchForDropChange" ng-options="item for item in toolBarData.dropDownList">
+            </select>
+        </div>
+    </div>
+
+    <date-picker ng-if="showDatePicker"></date-picker>
+
+
+</div>
+
+

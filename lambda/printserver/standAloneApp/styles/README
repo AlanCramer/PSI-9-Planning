@@ -1,0 +1,9 @@
+Install less with 
+npm install -g less
+
+compile the less files with
+lessc master.less > styles.css
+
+Note that the d3Visualization file was not altered when retrieved from scent-client.
+Ideally we can find a form for d3Visualizations that can be the same for both environments.
+

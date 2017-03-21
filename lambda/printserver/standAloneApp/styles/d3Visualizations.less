@@ -1,0 +1,1548 @@
+
+.class-report,
+.student-report {
+    height: 100%;
+    width: 100%;
+    padding: 40px 50px 0px 50px;/* See :after trick below for bottom */
+    overflow: visible;
+
+    .date-reset-button {
+        &:hover,
+        &.selected {
+            color: #3397e1;
+        }
+    }
+}
+
+/* padding at the bottom of the report across browsers (FF and IE) */
+.class-report:after,
+.student-report:after {
+    content: "";
+    height: 100px;
+    display: block;
+}
+
+#title-div {
+
+}
+#title-div h1 {
+    font-weight: 100;
+    //border: 1px solid black;
+    margin:0px;
+}
+#title-div h4{
+    font-weight: 100;
+    margin:0px;
+}
+#toolbar-table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#toolbar-table
+td {
+    padding-right: 80px;
+    font-size: 14px;
+}
+
+#summary-div {
+    background-color: #f0f7ff;
+    border: 1px solid black;
+    border-radius: 5px;
+    max-height: 200px;
+    padding-left: 16px;
+    padding-top: 17px;
+    display: flex;
+    flex-direction: row;
+
+    & > div {
+        margin-bottom: 10px;
+
+        &:nth-child(1) {
+            text-align: left;
+            width: 35%;
+        }
+    }
+
+    div.summary-title-div {
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+
+        h1, h2, h3, h4, h5 {
+            margin: 0;
+        }
+
+        p {
+            margin-top: 10px;
+        }
+    }
+
+    div.summary-info-div {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    div.section-info-div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        text-align: center;
+
+        .section-info {
+            margin-bottom: 5px;
+            overflow: visible;
+            text-align: bottom;
+
+            h1, h2, h3, h4, h5 {
+                margin: 0;
+            }
+        }
+
+        .section-desc {
+            margin-bottom: 5px;
+            text-align: bottom;
+        }
+    }
+}
+
+#observerReport
+#strand-div {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    /*height: 300px;*/
+}
+
+#strand-div .title {
+    margin-top: 10px;
+}
+
+#strand-div .glyph {
+    max-height: 100%; /* Fixes a bug on Safari */
+    max-width: 100%; /* Fixes a bug on Safari */
+}
+
+#strand-div .stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+#strand-div
+.legend
+svg {
+    width: 25px;
+    height: 10px;
+    display: inline;
+    padding-right: 15px;
+}
+
+#strand-div
+.legend
+svg
+rect {
+    //    x: 0px; // not valid css, needs to be an attribute
+    //    y: 0px;
+    width: 10px;
+    height: 10px;
+}
+
+#strand-div
+.legend-label {
+    padding-right: 40px;
+}
+
+#strand-div
+.strand-circle-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+}
+
+// all bar charts
+.legend
+svg {
+    width: 10px;
+    height: 10px;
+    display: inline;
+    padding-right: 15px;
+    vertical-align: middle;
+}
+
+.legend
+svg
+rect {
+    x: 0px;
+    y: 0px;
+    width: 10px;
+    height: 10px;
+}
+
+.legend-label {
+    //padding-right: 40px;
+    //vertical-align: middle;
+}
+
+// Adjustments needed for table.html to work cross-browser
+#main-table {
+    & > tbody,
+    & > thead {
+        height: auto;
+    }
+
+    & tbody tr td:last-of-type::after {
+        content: none;
+    }
+}
+
+// common to all reports
+.report-table {
+    border-collapse: separate;
+    margin-top: 20px;
+    min-width: 100%;
+    border-radius: 5px;
+}
+
+.report-table
+th {
+    color: white;
+    background-color: #3397e1;
+    /* height: 60px; Dick T. - June 8, 2016 - This was causing the E3D superheaders to be taller than needed */
+    font-size: 13px;
+    text-align: left;
+}
+
+.report-table
+td {
+    border: 1px solid #999;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+.report-table
+td
+div {
+    overflow: visible;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.report-table
+.strand-row {
+    background-color: #99d0fc;
+    padding:7px;
+    font-weight: bold;
+}
+
+// observer table
+#obs-data-table
+th:nth-child(1) {
+    text-align: left;
+    background-color: #48647e;
+}
+
+#obs-data-table  /* lesson column */
+td:nth-child(2) {
+    width: 5%;
+    text-align: center;
+}
+
+#obs-data-table  /* strand column */
+td:nth-child(3) {
+    width: 15%;
+    text-align: left;
+}
+
+#obs-data-table  /* goal text column */
+td:nth-child(4) {
+    width: 35%;
+    text-align: left;
+}
+#obs-data-table  /* goal rating column */
+td:nth-child(5) {
+    width: 15%;
+    text-align: left;
+}
+#obs-data-table  /* Notes and Reminders column */
+td:nth-child(6) {
+    width: 25%;
+    text-align: left;
+}
+#obs-data-table
+#main-table > tbody td {
+    vertical-align: middle;
+}
+
+.obs-data-table {
+    font-size: 14px;
+
+    th {
+        font-size: 13px;
+    }
+}
+
+div.flex-center-align {
+    display: flex;
+    align-items: center;
+
+    span.css-dot {
+        height: 10px;
+        min-width: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    };
+
+    span.dot-color-green {
+        background-color: #90d953;
+    };
+
+    span.dot-color-yellow {
+        background-color: #f9c31d;
+    };
+
+    span.dot-color-red {
+        background-color: #f21f3c;
+    };
+
+    span.dot-color-none {
+        background-color: transparent;
+    };
+}
+
+/* For the Observer report's summary pane, "Most Frequent Goal Rating" */
+.goal-rating {
+    font-size: 1.5em;
+
+    &.flex-center-align {
+        justify-content: center;
+    }
+}
+
+// workshop assessment student
+#wa-s-report-strand-table
+th {
+    text-align: left;
+    //padding: 0px 0px 0px 8px; // trbl
+}
+
+#wa-s-report-strand-table
+td {
+    //text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#wa-s-report-strand-table
+td:nth-child(1) { // skills
+    width:30%;
+    text-align: left;
+}
+
+#wa-s-report-strand-table
+td:nth-child(2) { // correct
+    width: 15%;
+    text-align: center;
+}
+
+#wa-s-report-strand-table
+td:nth-child(3) { // perf score
+}
+
+#wa-s-report-strand-table
+td:nth-child(4) { // dok1
+    width: 5%;
+}
+
+#wa-s-report-strand-table
+td:nth-child(5) { // dok2
+    width: 5%;
+}
+#wa-s-report-strand-table
+td:nth-child(6) { // dok3
+    width: 5%;
+}
+#wa-s-report-strand-table
+td:nth-child(7) { // dok4
+    width: 5%;
+}
+
+#wa-s-report-strand-table
+td:nth-child(7) { // anchor
+}
+
+// teacher scored
+#wa-s-teach-scored-report-table
+th {
+    text-align: left;
+    //padding: 0px 0px 0px 8px; // trbl
+}
+
+#wa-s-teach-scored-report-table
+td {
+    //text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(1) { // skills
+    width:30%;
+    text-align: left;
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(2) { // correct
+    width: 15%;
+    text-align: center;
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(3) { // perf score
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(4) { // dok1
+    width: 5%;
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(5) { // dok2
+    width: 5%;
+}
+#wa-s-teach-scored-report-table
+td:nth-child(6) { // dok3
+    width: 5%;
+}
+#wa-s-teach-scored-report-table
+td:nth-child(7) { // dok4
+    width: 5%;
+}
+
+#wa-s-teach-scored-report-table
+td:nth-child(7) { // anchor
+}
+
+// class level workshop assessment
+#wa-c-report-strand-table {
+
+}
+
+#wa-c-report-strand-table
+th {
+    text-align: left;
+    padding: 0px 0px 0px 8px; // trbl
+}
+
+#wa-c-report-strand-table
+td {
+    min-width : 80px;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 8px;
+}
+
+#wa-c-report-strand-table
+td:nth-child(1) { // skills
+    min-width: 150px;
+    text-align: left;
+}
+
+#wa-c-bar-chart, #wa-s-bar-chart {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding:20px;
+    margin-top:20px;
+
+    .bar-chart-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .bar-chart-filter-button {
+        font-size: 18px;
+        margin-left: 50px;
+    }
+
+    svg {
+        display: block;
+    }
+
+    // reapply to override the above for the legend
+    .legend
+    svg {
+        display: inline;
+        margin-left : 20px;
+    }
+
+    // reapply to override the above for the legend
+    table
+    .legend {
+        margin-top: 20px;
+    }
+
+    .level-a {
+        fill: #bde0fc;
+    }
+
+    .level-b {
+        fill: #3397e1;
+    }
+
+    .bar-chart-filter-button {
+        padding-left: 50px;
+        font-size : 20px;
+    }
+    .bar-chart-filter-button:hover {
+        color : blue;
+    }
+}
+
+#ir-s-bar-chart, #ir-c-bar-chart {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding:20px;
+    margin-top:20px;
+
+    svg {
+        display: block;
+    }
+
+    .legend svg {
+        display: inline;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+    }
+    .bar {
+        fill: #3397e1;
+    }
+    .completed-month {
+        fill: steelblue;
+    }
+    .in-progress {
+        fill: #888888;
+    }
+
+    .bar-chart-title {
+        font-size: large;
+        font-weight: 900;
+    }
+}
+
+
+// reapply to override the above for the legend
+#wa-c-assess-avgs-bar-chart
+.legend
+svg {
+    display: inline;
+}
+
+
+#e3d-perf-bar-chart{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#e3d-perf-bar-chart
+.bar-chart-title {
+    font-size: large;
+    font-weight: 900;
+}
+
+#e3d-perf-bar-chart
+svg {
+    display: block;
+}
+
+#e3d-perf-bar-chart
+.bar{
+    fill: #3397e1;
+}
+
+#e3d-perf-bar-chart // Hide the text on the strand category labels
+.category text {
+    visibility: hidden;
+}
+
+#e3d-perf-bar-chart // Hide the text on the strand category labels
+.tick
+.category {
+    font-size : larger;
+    font-weight: 900;
+}
+
+.vert-bar-chart
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.horiz-bar-chart
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+#ir-c-words-per-month-bar-chart{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding:20px;
+    margin-top:20px;
+}
+
+#ir-c-words-per-month-bar-chart
+svg {
+    display: block;
+}
+
+#rpt-table{
+    width: @min-width;
+    overflow: visible;
+}
+
+.table-striped2>{
+    margin-top: 20px;
+}
+#main-table > tbody {
+    height: auto;
+}
+.table-striped2>thead{
+    /*height: 60px;*/
+    background-color: #3397e1;
+    color: #ffffff;
+}
+
+// Transferred here from app/scripts/directives/visualizations/templates/table.html
+#mainTable {
+    margin-top: 20px;
+
+    #avgTotRow {
+        background-color: #eff6ff;
+    };
+    #simpleFooter {
+        background-color: #eff6ff;
+    };
+    #LevelAB {
+        background-color: #eff6ff;
+    };
+    #Title {
+        float: left;
+        height: 22px;
+        font-family: "Slate Pro Medium" !important;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        color: #4a4a4a;
+        margin-right: 25px;
+    };
+    .LevelAB_Selected {
+        float: left;
+        width: 61px;
+        height: 22px;
+        font-family: "Slate Pro Medium";
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        color: #3397e1;
+        text-decoration: underline;
+        font-weight: normal;
+        cursor: pointer;
+    };
+    .LevelAB_Normal {
+        float: left;
+        width: 61px;
+        height: 22px;
+        font-family: "Slate Pro Medium";
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        color: #4a4a4a;
+        font-weight: normal;
+        cursor: pointer;
+    };
+    .Superheader{
+        height: 10px;
+        border-radius: 3px;
+        background-color: #d3ebff;
+    };
+    .clear {
+        background-color: white  !important;
+        color: #4a4a4a !important;
+    };
+    .normal {
+        background-color: #d3ebff !important;
+        color: #4a4a4a !important;
+    };
+    .leftJustified {
+        text-align: left;
+    };
+
+    .centered {
+        text-align: center;
+    };
+
+    .Reading {
+        width: 417px;
+        height: 15px;
+        font-family: SlatePro-Bk !important;
+        font-size: 13px;
+        line-height: 0.9;
+        color: #4a4a4a;
+    };
+    th.colored {
+        background-color: #d3ebff !important;
+        color: #4a4a4a !important;
+        text-align: center;
+    };
+    th.clear {
+        background-color: #ffffff !important;
+        color: #ffffff !important;
+        text-align: center;
+    };
+    td span.tt {
+        display: none;
+    };
+    td:hover span.tt {
+        display: inline;
+    };
+
+    /*
+    The following adjustments are needed since the .table-bordered class from Bootstrap,
+    located within app/vendor/bootstrap/less/tables.less, uses selectors with very high
+    specificity. Rather than using the !important crutch, we instead use these
+    verbose but highly specific selectors to override Bootstrap.
+    */
+    table.table-bordered {
+        border: 0;
+    };
+    .table-bordered > thead > tr > th.clear {
+        border: 0;
+    };
+    .table-bordered > thead > tr > th.colored {
+        border-top: 0;
+        border-right: 1px solid white;
+        border-bottom: 0;
+        border-left: 0;
+        border-radius: 5px 5px 0 0;
+    };
+    /* End of .table-bordered adjustments */
+}
+
+.lrsTable {
+    margin-top: 20px;
+    border: 0;
+
+    table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+    }
+
+    th {
+        /*border: 1px solid #ddd;*/
+        /*vertical-align: bottom;*/
+        border-bottom-width: 2px;
+        background-color: #3397e1;
+        color: #fff;
+        padding: 8px;
+        line-height: 1.42857143;
+        text-align: left;
+        font-weight: normal;
+    }
+
+    th.clear {
+        background-color: white;
+        color: #4a4a4a;
+        text-align: center;
+        border: 0;
+    }
+
+    th.colored {
+        background-color: #d3ebff;
+        color: #4a4a4a;
+        text-align: center;
+        border-top: 0;
+        border-right: 1px solid white;
+        border-bottom: 0;
+        border-left: 0;
+        border-radius: 5px 5px 0 0;
+    }
+
+    // this doesn't seem to work:
+    // tr:last-child td:first-child { border-bottom-left-radius: 15px; }
+    // tr:last-child td:last-child { border-bottom-right-radius: 15px; }
+    // but this does:
+    tr:first-child th:first-child { border-top-left-radius: 5px; }
+    tr:first-child th:last-child { border-top-right-radius: 5px; }
+
+    td {
+        line-height: 1.42857143;
+        text-align: center;
+        border: 1px solid #ddd;
+        padding: 6px;
+        overflow: visible;
+    }
+
+    tbody {
+        & > tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        & > tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        & > tr:hover {
+            background-color: #eff6ff;
+        }
+    }
+
+    .leftJustified {
+        text-align: left;
+    }
+
+    .centered {
+        text-align: center;
+    }
+
+    .levelAB {
+        background-color: #eff6ff;
+    }
+
+    .columnHeading {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: middle;
+        overflow: visible;
+        vertical-align: middle;
+    }
+
+    .caretImg {
+        margin-left: 5px;
+    }
+
+    .focused {
+        background-color: #48647e;
+    }
+
+    td span.tt {
+        display: none;
+    }
+
+    td:hover span.tt {
+        display: inline;
+    }
+
+    .wa-s-strand-row {
+        background-color: #99d0fc;
+        font-size : 14px;
+        font-weight: 900;
+    }
+
+    .font14 {
+        font-size: 14px;
+    }
+
+    .toggles a {
+        margin-right: 10px;
+        font-weight: 900;
+        color: #333;
+    }
+
+    .toggled {
+        text-decoration: none;
+        border-bottom: 2px solid #333;
+        padding-bottom: 3px;
+    }
+
+    .blue-border {
+        border-top: 2px solid #3da9e7;
+    }
+}
+
+/* For fixed column LRS Tables */
+.lrsTable.fixedColumns {
+    display: flex;
+
+    table {
+        table-layout: auto;
+    }
+
+    th, td {
+        min-width: 10em;
+    }
+
+    th {
+        padding: 0 6px;
+        height: 5em;
+    }
+
+    td {
+        height: 2.5em;
+        white-space: nowrap;
+        word-break: break-all;
+    }
+
+    .leftColumns {
+        min-width: 20%;
+        padding-bottom: 1.2em;
+    }
+
+    .innerColumns {
+        overflow-x: visible; /* Enables the horizontal scrollbar only on the inner columns of the table */
+        padding-bottom: 1.2em;
+    }
+
+    .rightColumns {
+        min-width: 12%;
+        padding-bottom: 1.2em;
+    }
+
+    tr.superheader th {
+        height: 3em;
+    }
+}
+
+#Title, .title {
+    height: 22px;
+    font-family: "Slate Pro Medium";
+    font-size: 18px;
+    letter-spacing: 0.2px;
+    color: #4a4a4a;
+    margin-right: 25px;
+};
+
+.LevelAB_Normal {
+    width: 61px;
+    height: 22px;
+    font-family: "Slate Pro Medium";
+    font-size: 18px;
+    letter-spacing: 0.2px;
+    color: #4a4a4a;
+    font-weight: normal;
+    cursor: pointer;
+};
+
+.LevelAB_Selected {
+    width: 61px;
+    height: 22px;
+    font-family: "Slate Pro Medium";
+    font-size: 18px;
+    letter-spacing: 0.2px;
+    color: #3397e1;
+    text-decoration: underline;
+    font-weight: normal;
+    cursor: pointer;
+    margin-bottom: 0;
+};
+
+.levelToggle {
+    margin-top: 20px;
+};
+
+.abUnderlineBold {
+    text-decoration: underline;
+    font-weight: bold;
+}
+.abNormal {
+    font-weight: normal;
+}
+
+.abInFocus{
+    background-color: #48647e !important;
+    /*width: 120px !important;*/
+}
+
+.abNotInFocus{
+    background-color: #3397e1 !important;
+    /*width: 60px !important;*/
+}
+
+.table-striped2>tbody>tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+.table-striped2>tbody>tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+.table-striped2>tbody>tr:hover {
+    background-color: #eff6ff;
+}
+
+.noDataPanel {
+    width: auto;
+    border-color: darkgray;
+    border-size: 2px;
+    border-style: solid;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.noDataPanelTitle {
+    font-family: "Slate Pro Book Italic";
+    font-size: 32px;
+    text-align: center;
+    width: 90%;
+    margin-top: 30px;
+}
+
+.noDataPanelSubTitle {
+    font-family: 'Slate Pro Light';
+    font-size: 18px;
+    text-align: center;
+    width: 90%;
+    margin: auto;
+
+}
+
+// after table-striped2 background color
+#wa-s-report-strand-table
+.wa-s-strand-row {
+    background-color: #99d0fc;
+    font-size : 14px;
+    font-weight: bold;
+}
+
+#wa-s-teach-scored-report-table
+.wa-s-strand-row {
+    background-color: #99d0fc;
+    font-size : 14px;
+    font-weight: bold;
+}
+
+.reading-inventory-widget {
+    background: #ffffff;
+    height:100%;
+}
+
+.reading-inventory-widget
+svg {
+    margin-right: 10%;
+}
+
+#ri-widget-div {
+    text-align: center;
+
+    .legend {
+        margin-top: 10%;
+        display: inline-block;
+        overflow: hidden;
+
+        div.legend-row {
+            width: 100px;
+            display: flex;
+            align-items: center;
+
+            span.legend-row-dot {
+                min-width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin-right: 10px;
+                margin-bottom: 3px;
+            };
+        };
+    };
+}
+
+.r180-widget-bar {
+    fill : steelblue;
+}
+
+.bar-chart-tab-selected {
+    color : blue;
+}
+
+.hide-column {
+    display: none;
+}
+
+#r180-sa-widget-nodata-image {
+    position:relative; // to center text on top
+    display : block;     // to center image in div
+    margin-left : auto;  // to center image in div
+    margin-right : auto; // to center image in div
+}
+
+// goal is to center on top of image
+#r180-sa-widget-nodata-text {
+    position : absolute;
+    text-align : center;
+    left : 0;
+    top : 40%;
+    width : 100%
+}
+
+.r180-sa-widget-div report-vert-bar-chart .vert-bar-chart {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:10px;
+}
+
+#ri-widget-div .ri-widget-title {
+    display : block;
+}
+
+#ri-widget-nodata-image {
+    position : relative; // to center text on top
+    display : block;     // to center image in div
+    margin-left : auto;  // to center image in div
+    margin-right : auto; // to center image in div
+}
+
+// goal is to center on top of image
+#ri-widget-nodata-text {
+    position : absolute;
+    text-align : center;
+    left : 0;
+    top : 40%;
+    width : 100%;
+}
+
+// Leader Central - Linear Chart
+.average-session-chart {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: rgba(248, 248, 248, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 2.5% 2.5%;
+    max-height: 650px;
+
+    label {
+        margin-bottom: 0; // Override an overly broad selector
+    }
+
+    .header {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .titleContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .chart-title {
+        /*height: auto;*/
+        font-size: 22px;
+        /*margin-right: 50px;*/
+    }
+
+    .chart-logo {
+        display: inline-block;
+    }
+
+    .timeframeButtonContainer {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        /*margin-right: 50px;*/
+
+        .timeframeButton {
+            margin-right: 20px;
+            color: #4a4a4a;
+            font-size: 1.3em;
+            font-weight: normal;
+
+            &:hover,
+            &.selected {
+                color: #3397e1;
+            }
+
+            &.selected {
+                border-bottom: 2px solid #3397e1;
+            }
+        }
+    }
+
+    path {
+        stroke: steelblue;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    line {
+        stroke: black;
+    }
+
+    text {
+        font-family: Arial;
+        font-size: 9pt;
+    }
+
+    .super-line {
+        stroke-width: 4;
+    }
+
+    .super-dot {
+        stroke: steelblue;
+        stroke-width: 3px;
+        fill: white;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+      pointer-events: none;
+    }
+
+    .tick line {
+      opacity: 0.2;
+    }
+
+    .x.axis
+    .domain {
+        display: none;
+    }
+
+    .y.axis
+    .domain {
+        display: none;
+    }
+
+    .months.axis .domain,
+    .years.axis .domain {
+        display: none;
+    }
+
+    .months.axis line,
+    .years.axis line {
+        opacity: .8;
+        fill: none;
+        stroke-width: 1px;
+        stroke: #00F;
+        shape-rendering: crispEdges;
+    }
+    .months.axis text,
+    .years.axis text{
+        //font-size: 10pt;
+        fill: #00F;
+    }
+
+    .area {
+        fill: #E9F3Fd;
+        stroke-width: 0px;
+    }
+
+    .overlay {
+        fill-opacity: 0;
+        cursor: move;
+    }
+
+    .noSessionData {
+        stroke: firebrick;
+    }
+
+    .weekends {
+        fill: #bbb;
+        fill-opacity: 0.4;
+    }
+
+    .navChart {
+        .data {
+            fill: #f0eeee;
+            stroke-width: 0px;
+        }
+
+        .line {
+            fill: none;
+            stroke: #f0eeee;
+            stroke-width: 1px;
+        }
+
+        .x.axis
+        .domain {
+            display: inline; // undo the hiding for the main chart
+            stroke-width: 1px;
+            opacity: 0.2;
+        }
+
+        .viewport {
+            .extent {
+                fill: steelblue;
+                fill-opacity: 0.2;
+                stroke: steelblue;
+            }
+        }
+    }
+}
+
+// Leader Central - Tooltip for linear Chart
+.lc-linear-tt {
+    position:relative;
+    background-color:#ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+    height: 110px;
+    width: 120px;
+    min-height:100px;
+    padding-top: 5px;
+    padding-left: 8px;
+}
+
+.lc-linear-tt p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.lc-linear-tt:after {
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-top: solid 20px #ffffff;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent;
+}
+
+.tt-title {
+    font-size: 12px;
+    color: #666666;
+    padding: 0px;
+    margin: 0px;
+}
+
+.tt-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+/* special check and non-responsive handling of IE11 */
+/* see, for example, https://philipnewcomer.net/2014/04/target-internet-explorer-10-11-css/ */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+
+    .average-session-chart {
+        // height: 650px;
+
+        .header {
+            height: 100px;
+        }
+
+        .linear-chart-svg {
+            height: 400px;
+        }
+
+        .nav-chart-svg {
+            height: 100px;
+        }
+    }
+
+    .lrsTable .caretImg {
+        height: 10px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    #ir-c-bar-chart,
+    #ir-s-bar-chart,
+    #wa-c-bar-chart,
+    #wa-s-bar-chart,
+    #e3d-perf-bar-chart {
+        svg {
+            height: 400px;
+        }
+    }
+}
+
+
+// Leader Central - Aggregate row of the table
+.aggregateRow {
+    border-bottom: solid 2px #3da9e7;
+
+    & th, & td {
+        vertical-align: middle;
+        background-color: #eff6ff;
+        color: #333;
+        line-height: 1.42857143;
+        text-align: center;
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+}
+
+.learn-more {
+    .modal-dialog {
+        width: 57%;
+    }
+
+    .modal-header {
+        border-bottom: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 30px;
+
+        span {
+            font-size: 1.8em;
+        }
+
+        &:before,
+        &:after {
+            content: none; /* Override a Bootstrap style */
+        }
+    }
+
+    .modal-body {
+        max-height: 500px;
+        overflow: scroll;
+        padding: 0 30px;
+    }
+
+    .modal-entry {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        padding: 15px 0;
+        border-bottom: 1px solid #e8eaed;
+
+        .entry-category {
+            display: inline-block;
+            min-width: 30%;
+            font-size: 1.2em;
+            font-weight: bolder;
+            margin-right: 5px;
+        }
+
+        .entry-description {
+            display: inline-block;
+            font-size: 1em;
+
+            ul li {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    .big-x {
+        font-size: 3em;
+        float: none; /* Override a Bootstrap style */
+    }
+}
+
+.learn-more-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .learn-more-icon {
+        width: 1.9em;
+        margin-right: 0.5em;
+    }
+
+    .learn-more-button {
+        font-size: 1.4em;
+        //font-size: 14px;
+        color: #9B9B9B;
+        border: 0;
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .learn-more-button:hover {
+        color: #3397e1;
+    }
+}
+
+.table-controls-container {
+    margin-top: 20px;
+    margin-bottom: -15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .about-this-table-container {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+    .about-this-table-icon {
+        width: 1.7em;
+        margin-right: 0.5em;
+    }
+
+    .about-this-table-button {
+        font-size: 1.3em;
+        color: #3397e1;
+        border: 0;
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .include-all-container {
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            color: #3397e1;
+        }
+    }
+
+    .include-all-checkbox {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin: 0 5px 0 0;
+        border-radius: 2px;
+        border: solid 1px #898d8d;
+        vertical-align: middle;
+    }
+
+    .include-all-label {
+        margin: 0;
+        font-weight: normal;
+    }
+}
+
+.disc-bullets {
+    list-style-type: disc;
+}
+
+.unlicensed-student {
+    & > img {
+        margin-left: 5px;
+        padding-bottom: 3px;
+    }
+}
+
+div.unlicensed-student-footnote {
+    font-size: 14px;
+    margin-top: 10px;
+
+    & > img {
+        padding-bottom: 4px;
+    }
+}

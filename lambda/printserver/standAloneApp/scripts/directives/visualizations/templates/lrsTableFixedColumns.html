@@ -1,0 +1,118 @@
+<div class="lrsTable fixedColumns">
+<!-- This is an alternative LRS Table template that implements fixed columns,
+     with a horizontal scrollbar allowing the user to scroll through any overflowed
+     columns. It supports multiple header and footer rows as well. -->
+    <div class="leftColumns" ng-if="fixedColumns.left">
+        <table ng-class="tableModel.class">
+            <thead>
+                <tr ng-repeat="headerRow in tableModel.header"
+                    ng-class="headerRow.class">
+                    <th ng-repeat="headerCell in headerRow.slice(0, fixedColumns.left) track by $index"
+                        compile="headerCell.displayValue"
+                        ng-class="headerCell.class"
+                        colspan="{{headerCell.colspan}}"
+                        ng-click="headerCell.onClick(headerCell, headerRow, tableModel.header, tableModel)">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="bodyRow in tableModel.body"
+                    ng-class="bodyRow.class">
+                    <td ng-repeat="bodyCell in bodyRow.slice(0, fixedColumns.left) track by $index"
+                        compile="bodyCell.displayValue"
+                        ng-class="bodyCell.class">
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr ng-repeat="footerRow in tableModel.footer"
+                    ng-class="footerRow.class">
+                    <td ng-repeat="footerCell in footerRow.slice(0, fixedColumns.left) track by $index"
+                        compile="footerCell.displayValue"
+                        ng-class="footerCell.class">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="innerColumns">
+        <table ng-class="tableModel.class">
+            <thead>
+                <tr ng-repeat="headerRow in tableModel.header"
+                    ng-class="headerRow.class">
+                    <th ng-repeat="headerCell in
+                            headerRow.slice(fixedColumns.left, headerRow.length - fixedColumns.right)
+                            track by $index"
+                        compile="headerCell.displayValue"
+                        ng-class="headerCell.class"
+                        colspan="{{headerCell.colspan}}"
+                        ng-click="headerCell.onClick(headerCell, headerRow, tableModel.header, tableModel)">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="bodyRow in tableModel.body"
+                    ng-class="bodyRow.class">
+                    <td ng-repeat="bodyCell in
+                            bodyRow.slice(fixedColumns.left, bodyRow.length - fixedColumns.right)
+                            track by $index"
+                        compile="bodyCell.displayValue"
+                        ng-class="bodyCell.class">
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr ng-repeat="footerRow in tableModel.footer"
+                    ng-class="footerRow.class">
+                    <td ng-repeat="footerCell in
+                            footerRow.slice(fixedColumns.left, footerRow.length - fixedColumns.right)
+                            track by $index"
+                        compile="footerCell.displayValue"
+                        ng-class="footerCell.class">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="rightColumns" ng-if="fixedColumns.right">
+        <table ng-class="tableModel.class">
+            <thead>
+                <tr ng-repeat="headerRow in tableModel.header"
+                    ng-class="headerRow.class">
+                    <th ng-repeat="headerCell in headerRow.slice(-fixedColumns.right) track by $index"
+                        compile="headerCell.displayValue"
+                        ng-class="headerCell.class"
+                        colspan="{{headerCell.colspan}}"
+                        ng-click="headerCell.onClick(headerCell, headerRow, tableModel.header, tableModel)">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="bodyRow in tableModel.body"
+                    ng-class="bodyRow.class">
+                    <td ng-repeat="bodyCell in bodyRow.slice(-fixedColumns.right) track by $index"
+                        compile="bodyCell.displayValue"
+                        ng-class="bodyCell.class">
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr ng-repeat="footerRow in tableModel.footer"
+                    ng-class="footerRow.class">
+                    <td ng-repeat="footerCell in footerRow.slice(-fixedColumns.right) track by $index"
+                        compile="footerCell.displayValue"
+                        ng-class="footerCell.class">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
