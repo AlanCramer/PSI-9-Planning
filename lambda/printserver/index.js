@@ -182,7 +182,7 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
   });
 
   page.on('onResourceRequested', function(requestData) {
-    console.log('page.onResourceRequested: %s', requestData.url); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
+    console.log('page.onResourceRequested: #%d: %s', requestData.id, requestData.url); // http://phantomjs.org/api/webpage/handler/on-resource-requested.html
 /*
     for (var key in requestData) {
       console.log('Key: ' + key + ', Value: ' + requestData[key]);
@@ -194,10 +194,10 @@ const setupPage = function (webpage, decodedUrl, sessionId, phantomErrorHandler)
     // This 'stage' check can be removed if you want to view
     // more info about the chunks of the response as it is received.
     if (response.stage === 'end') {
-      console.log('page.onResourceReceived: %s', response.url); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
+      console.log('page.onResourceReceived: #%d:%s (%d)', response.id, response.url, response.status); // http://phantomjs.org/api/webpage/handler/on-resource-received.html
 /*
       for (var key in response) {
-        console.log('Key: ' + key + ', Value: ' + response[key]);
+        console.log('page.onResourceReceived: #%d: Key: %s, Value: %s', response.id, key, response[key]);
       }
 
       for (var key in response.headers) {
@@ -355,7 +355,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, pageUr
       return openPromise;
     }).
     then( function () {
-        console.log("page was opened successfully - maybe not ready to render yet");
+        console.log("page was opened successfully");
         let pageReadyPromise = new Promise( function (resolve,reject) {
           if (pageUrlIsStandAloneApp) {
             let gotWacData = phantomPage.evaluate(function () {
@@ -380,7 +380,7 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, pageUr
         return pageReadyPromise;
     }).
     then ( function() {
-      console.log("Setting up filename to render");
+      console.log("page ready? - setting up filename to render");
       renderFileName = getNewFileName(renderFileExtension);
       renderFilePath = getTempFilePath(renderFileName);
       let timeoutPromise = new Promise( function (resolve,reject) {
@@ -394,14 +394,12 @@ const createAndProcessPage = function (decodedUrl, bucketName, sessionId, pageUr
       // console.log("Page render promise: " + JSON.stringify(timeoutPromise));
       return timeoutPromise;
     }).
-    /*
     then( function () {
       console.log("Closing page");
       let closePromise = phantomPage.close();
       // console.log("Page close promise: " + JSON.stringify(closePromise));
       return closePromise;
     }).
-    */
     then( function () {
       // @@@ DT: Ideally, this section should not happen if the previous section gets an error.
       let promiseResult = null;
@@ -507,7 +505,7 @@ const startWebServer = function(port, startedCallback) {
   app.use(express.static(scriptDir));
   // Start listening
   expressWebServer = app.listen(port, function() {
-    console.log('Server listening on port ' + port);
+    console.log('Started web server in: %s (listening on port: %d ',scriptDir, port);
     if (startedCallback) {
       startedCallback();
     }
@@ -523,6 +521,7 @@ const stopWebServer = function(stoppedCallback) {
   if (!expressWebServer) {
     maybeCallCallback();
   } else {
+    console.log("Stopping web server");
     expressWebServer.close(maybeCallCallback);
     expressWebServer = null;
   }
