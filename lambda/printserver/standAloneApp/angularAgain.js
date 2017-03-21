@@ -2,6 +2,7 @@
 
 // Register a new Angular module named 'wac' along with its dependencies (None right now)
 var app = angular.module('wac', []);
+app.gotWacData = false;
 
 // Configure the $location service to use html5Mode. Needed in order to
 // use $location.search() to obtain query params from modern URLs that
@@ -32,6 +33,10 @@ app.controller('wacCtrl', ['$scope', '$http', '$location', 'paths',
             $http.get($scope.modelUrl).then(function(response) {
                 $scope.wacData = (response && response.data) || {};
                 console.log('wacData: ', $scope.wacData);
+                app.gotWacData = true;
+                if (typeof window.callPhantom === 'function') {
+                  window.callPhantom({modelUrl: $scope.modelUrl});
+                }
             });
         }
     }
@@ -85,4 +90,3 @@ app.directive('compile', ['$compile',
         };
     }
 ]);
-
