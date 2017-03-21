@@ -558,6 +558,15 @@ const processLocalWebRequest = function(args, handlerFinishedCallback) {
 exports.processRequest = processRequest;
 exports.processLocalWebRequest = processLocalWebRequest;
 
+const getS3ObjectURL = function(bucket, key) {
+  // https://s3.amazonaws.com/dev-doucettec-lrs-printing/wac-qaateacher001-r180u-b-11-30.json
+  const s3Protocol = "https";
+  const s3Host = "s3.amazonaws.com";
+  const pathSep = '/'; //path.sep;
+  let url = s3Protocol + "://" + s3Host + pathSep + bucket + pathSep + key;
+  return url;
+};
+
 exports.handler = (event, context, callback) => {
   const handlerFinishedCallback = function(error, result) {
       console.log("Called handlerFinishedCallback(%s, %s)", JSON.stringify(error),JSON.stringify(result));
@@ -571,24 +580,35 @@ exports.handler = (event, context, callback) => {
     handlerFinishedCallback(errObj, null);
   } else {
 */
-    let queryStringParams = event[queryStringPropName];
 
-    const getQueryStringArgs = function (queryStringParams) {
+    const getLambdaArgs = function (event) {
         let args = {};
+        let queryStringParams = event[queryStringPropName];
         if (queryStringParams) {
           args[urlPropName] = queryStringParams[pageUrlQsName]
           args[bucketPropName] = queryStringParams[bucketQsName];
           args[sessionIdPropName] = queryStringParams[sessionIdQsName];
           args[modelUrlPropName] = queryStringParams[modelUrlParamName];
           args[pageUrlIsStandAloneAppPropName] = false;
+        } else {
+          let records = event.Records;
+          if (records && records.length > 0) {
+            let record = records[0];
+            if (record.eventSource === "aws:s3") {
+              let s3BucketName = record.s3.bucket.name;
+              let s3KeyName = record.s3.object.key;
+              args[bucketPropName] = s3BucketName;
+              args[modelUrlPropName] = getS3ObjectURL(s3BucketName, s3KeyName);
+            }
+          }
         }
         return args;
     };
-    let qsArgs = getQueryStringArgs(queryStringParams);
-    if (qsArgs[urlPropName]) {
-      processRequest(qsArgs,handlerFinishedCallback);
+    let lambdaArgs = getLambdaArgs(event);
+    if (lambdaArgs[urlPropName]) {
+      processRequest(lambdaArgs,handlerFinishedCallback);
     } else {
-      processLocalWebRequest(qsArgs,handlerFinishedCallback);
+      processLocalWebRequest(lambdaArgs,handlerFinishedCallback);
     }
 //  }
 };
