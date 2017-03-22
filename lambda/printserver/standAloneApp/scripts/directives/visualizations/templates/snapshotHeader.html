@@ -1,0 +1,23 @@
+<div class="snapshot-header">
+    <h1>{{reportTitle}}</h1>
+
+    <div class="controls-container">
+        <div class="learn-more-container" ng-click="showModal()">
+            <img class="learn-more-icon" src="images/d3Report/info-icon.svg">
+            <button class="learn-more-button">Learn More</button>
+        </div>
+
+        <div class="export-csv" ng-if="export">
+            <button ng-click="export()" ng-class="{
+                loading: status === 1,
+                ready: status === 2,
+                error: status === 3
+            }">
+                <span ng-if="!status">Export CSV</span>
+                <span ng-if="status === 1">Working...</span>
+                <span ng-if="status === 2">Download</span>
+                <span ng-if="status === 3">Error</span>
+            </button>
+        </div>
+    </div>
+</div>

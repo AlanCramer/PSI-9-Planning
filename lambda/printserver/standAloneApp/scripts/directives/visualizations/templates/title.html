@@ -1,0 +1,40 @@
+<div>
+<style type="text/css" scoped>
+    #title {
+        width: auto;
+        height: 30px;
+        font-family: "Slate Pro Light";
+        font-size: 32px;
+        letter-spacing: 0.3px;
+        color: #4a4a4a;
+        float: left;
+    }
+    .rightBox {
+        float: right;
+        margin-right: 5px;
+    }
+
+    #subTitle {
+        height: 22px;
+        top: 24px;
+        font-family: "Slate Pro Light" ;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        color: #7c7c7c;
+        margin-top: 20px;
+        clear: left;
+    }
+</style>
+        <div id="title" class="">
+            {{titleData.title}}
+        </div>
+
+        <div class="rightBox">
+            <img  src='{{"images/d3Report/" +  titleData.logo}}'>
+        </div>
+<br>
+        <div id="subTitle">
+            {{titleData.subTitle}}
+        </div>
+<br>
+</div>
