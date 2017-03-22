@@ -9,12 +9,14 @@ const sessionIdQsName = "jsessionid";
 // internal args properties
 const urlPropName = "encodedPageUrl";
 const bucketPropName = "bucketName";
+const requestKeyPropName = "requestKeyName";
 const sessionIdPropName = "jsessionid";
 const modelUrlName = "modelUrl";
 const modelUrlParamName = modelUrlName;
 const modelUrlPropName = modelUrlName;
 const pageUrlIsStandAloneAppPropName = "pageUrlIsStandAloneApp";
 
+// exported arg properties
 exports.urlPropName = urlPropName;
 exports.bucketPropName = bucketPropName;
 exports.sessionIdPropName = sessionIdPropName;
@@ -48,6 +50,7 @@ const AWS = require("aws-sdk");
 const express =require("express");
 var S3 = new AWS.S3();
 
+// exported modules
 exports.AWS = AWS;
 exports.S3 = S3;
 
@@ -90,19 +93,7 @@ const isValidUrl = function (url) {
 //  console.log("parseuri('%s') => %s; valid: %s", url, JSON.stringify(result), JSON.stringify(valid));
   return valid;
 };
-/*
-const preValidateArguments = function (event) {
-  let err = null;
-  const queryStringParameters = event[queryStringPropName];
-  if (!queryStringParameters) {
-    err = new Error("event does not contain: " + queryStringPropName);
-  }
-//   else if (!queryStringParameters.hasOwnProperty(pageUrlQsName)) {
-//    err = new Error("(page) '" + pageUrlQsName + "' was not provided (in query string)");
-//  }
-  return err;
-};
-*/
+
 const createSessionCookie = function (decodedUrl, sessionId) {
   /*
   {"domain":"h503000001.education.scholastic.com",
@@ -266,9 +257,12 @@ const getUploadPromise = function (filePath, bucketName, keyName) {
   return promiseResult;
 };
 
-const getSignedUrlPromise = function (bucketName, keyName) {
+const getS3SignedUrlPromise = function (bucketName, keyName, operation) {
   const expirationSeconds = 900; // 15 minutes (900 seconds)- the default
-  const operation = "getObject";
+  const defaultOperation = "getObject";
+  if (!operation) {
+    operation = defaultOperation;
+  }
   const params = {Bucket: bucketName, Key: keyName, Expires: expirationSeconds};
   console.log("Getting signed URL for: '" + operation + "' with: " + JSON.stringify(params));
   const promise = new Promise(function(resolve, reject) {
@@ -321,7 +315,7 @@ const handleUpload = function (filePath, bucketName, fileName) {
   let uploadPromise = getUploadPromise(filePath, bucketName, fileName);
   // console.log("Page upload promise: " + JSON.stringify(uploadPromise));
   let promiseResult = uploadPromise.then( function () {
-    let signedUrlPromise = getSignedUrlPromise(bucketName, fileName);
+    let signedUrlPromise = getS3SignedUrlPromise(bucketName, fileName);
     // console.log("Signed URL promise: " + JSON.stringify(signedUrlPromise));
     return signedUrlPromise;
   })
@@ -540,6 +534,7 @@ const getLocalWebRequestArgs = function(originalArgs) {
 
 const processLocalWebRequest = function(args, handlerFinishedCallback) {
   args[pageUrlIsStandAloneAppPropName] = true;
+
   const stopWebServerFirstCallback = function (error,result) {
     console.log("Reached stopWebServerFirstCallback");
     const stoppedWebServerCallback = function () {
@@ -548,67 +543,72 @@ const processLocalWebRequest = function(args, handlerFinishedCallback) {
     }
     stopWebServer(stoppedWebServerCallback);
   };
-  let modifiedArgs = getLocalWebRequestArgs(args);
+
   const startedWebServerCallback = function () {
-    processRequest(modifiedArgs, stopWebServerFirstCallback);
-  }
+    let modelUrlPromise = null;
+    if (!args[modelUrlPropName] &&
+      args[bucketPropName] &&
+      args[requestKeyPropName]) {
+      modelUrlPromise = getS3SignedUrlPromise(args[bucketPropName], args[requestKeyPropName]);
+    } else {
+      modelUrlPromise = Promise.resolve(args[modelUrlPropName]);
+    }
+    modelUrlPromise.then(function(modelUrlValue) {
+      args[modelUrlPropName] = modelUrlValue;
+      let modifiedArgs = getLocalWebRequestArgs(args);
+      processRequest(modifiedArgs, stopWebServerFirstCallback);
+    }).
+    catch(function(error) {
+      console.log("Failed to get signed url to request data in S3: ", error);
+      handlerFinishedCallback(error,null);
+    });
+  };
+
   startWebServer(expressServerPort, startedWebServerCallback);
 };
 
+// exported methods
 exports.processRequest = processRequest;
 exports.processLocalWebRequest = processLocalWebRequest;
-
-const getS3ObjectURL = function(bucket, key) {
-  // https://s3.amazonaws.com/dev-doucettec-lrs-printing/wac-qaateacher001-r180u-b-11-30.json
-  const s3Protocol = "https";
-  const s3Host = "s3.amazonaws.com";
-  const pathSep = '/'; //path.sep;
-  let url = s3Protocol + "://" + s3Host + pathSep + bucket + pathSep + key;
-  return url;
-};
 
 exports.handler = (event, context, callback) => {
   const handlerFinishedCallback = function(error, result) {
       console.log("Called handlerFinishedCallback(%s, %s)", JSON.stringify(error),JSON.stringify(result));
       callback(error,result);
   };
-/*
-  let argsErr = preValidateArguments(event);
-  if (argsErr) {
-    let errObj = createErrorResponse(httpStatusBadRequest, argsErr);
+  const getLambdaArgs = function (event) {
+    let args = {};
+    let queryStringParams = event[queryStringPropName];
+    if (queryStringParams) {
+      args[urlPropName] = queryStringParams[pageUrlQsName]
+      args[bucketPropName] = queryStringParams[bucketQsName];
+      args[sessionIdPropName] = queryStringParams[sessionIdQsName];
+      args[modelUrlPropName] = queryStringParams[modelUrlParamName];
+      args[pageUrlIsStandAloneAppPropName] = false;
+    } else {
+      let records = event.Records;
+      if (records && records.length > 0) {
+        let record = records[0];
+        if (record.eventSource === "aws:s3") {
+          let s3BucketName = record.s3.bucket.name;
+          let s3KeyName = record.s3.object.key;
+          args[bucketPropName] = s3BucketName;
+          args[requestKeyPropName] = s3KeyName;
+        }
+      }
+    }
+    return args;
+  };
+  let lambdaArgs = getLambdaArgs(event);
+  if (lambdaArgs[urlPropName]) {
+    processRequest(lambdaArgs,handlerFinishedCallback);
+  } else if (lambdaArgs[modelUrlPropName] ||
+    (lambdaArgs[bucketPropName] && lambdaArgs[requestKeyPropName])) {
+    processLocalWebRequest(lambdaArgs,handlerFinishedCallback);
+  } else {
+    let errMsg = "Missing one or more of these arguments: '" + modelUrlPropName + "', '" + bucketPropName + "', '" + requestKeyPropName;
+    let errObj = createErrorResponse(httpStatusBadRequest, errMsg);
     console.error('Failed validation - calling handlerFinishedCallback(%s,null)', JSON.stringify(errObj));
     handlerFinishedCallback(errObj, null);
-  } else {
-*/
-
-    const getLambdaArgs = function (event) {
-        let args = {};
-        let queryStringParams = event[queryStringPropName];
-        if (queryStringParams) {
-          args[urlPropName] = queryStringParams[pageUrlQsName]
-          args[bucketPropName] = queryStringParams[bucketQsName];
-          args[sessionIdPropName] = queryStringParams[sessionIdQsName];
-          args[modelUrlPropName] = queryStringParams[modelUrlParamName];
-          args[pageUrlIsStandAloneAppPropName] = false;
-        } else {
-          let records = event.Records;
-          if (records && records.length > 0) {
-            let record = records[0];
-            if (record.eventSource === "aws:s3") {
-              let s3BucketName = record.s3.bucket.name;
-              let s3KeyName = record.s3.object.key;
-              args[bucketPropName] = s3BucketName;
-              args[modelUrlPropName] = getS3ObjectURL(s3BucketName, s3KeyName);
-            }
-          }
-        }
-        return args;
-    };
-    let lambdaArgs = getLambdaArgs(event);
-    if (lambdaArgs[urlPropName]) {
-      processRequest(lambdaArgs,handlerFinishedCallback);
-    } else {
-      processLocalWebRequest(lambdaArgs,handlerFinishedCallback);
-    }
-//  }
+  }
 };

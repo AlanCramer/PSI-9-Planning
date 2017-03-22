@@ -19,11 +19,9 @@ const getProcessArgs = function () {
       console.log("Processing raw command line args: " + JSON.stringify(process.argv));
       args = commandLineArgs(optionDefinitions);
       console.log("Parsed command line args: " + JSON.stringify(args));
-/*
-      if (!args._all[index.urlPropName]) {
-        console.error("Missing required option name: " + index.urlPropName);
+      if (!args._all[index.urlPropName] || !args._all[index.modelUrlPropName]) {
+        console.error("Missing a required option name: " + index.urlPropName + " , " + index.modelUrlPropName);
       };
-*/
     }
     catch (error) {
       console.error("Error parsing command line arguments: " + error);
