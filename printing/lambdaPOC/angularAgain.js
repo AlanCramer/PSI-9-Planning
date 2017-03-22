@@ -50,7 +50,7 @@ app.directive('wacPrintReport', ['paths',
 ]);
 
 // TODO: This needs to be modularized much better. Currently, it pollutes the global scope
-// with module "exports", and dependencies (along with their load order) are implicit. Not good.
+// with each module's "exports", and dependencies are implicit (along with their load order). Not good.
 
 // For example, using Gulp / Grunt (for a single, minified, concatenated JS file)
 // or a module loader (such as RequireJS, for dynamic module loading)
